@@ -3100,6 +3100,8 @@ $fullMeaningfulText
                     ivBlurBackground?.setImageBitmap(bmp)
                 }
 
+                val viewDarkOverlay = viewerView.findViewById<View>(R.id.viewDarkOverlay)
+
                 // 2. Nạp ảnh chính nét căng ở trung tâm hỗ trợ zoom đa điểm
                 ivFullPhoto?.setImageBitmap(bmp)
                 tvImageSource?.visibility = View.GONE
@@ -3108,6 +3110,18 @@ $fullMeaningfulText
                     .setView(viewerView)
                     .setCancelable(true)
                     .create()
+
+                ivFullPhoto?.onSingleTap = {
+                    viewerDialog.dismiss()
+                }
+                ivFullPhoto?.onDismissRequest = {
+                    viewerDialog.dismiss()
+                }
+                ivFullPhoto?.onSwipeProgress = { alpha, _ ->
+                    ivBlurBackground?.alpha = alpha * 0.85f
+                    viewDarkOverlay?.alpha = alpha
+                    btnCloseViewer?.alpha = alpha
+                }
 
                 viewerDialog.show()
                 viewerDialog.window?.let { window ->

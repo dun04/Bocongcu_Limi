@@ -19,5 +19,9 @@ app/build/
 # Bỏ hoàn toàn thư mục AI Limi theo yêu cầu người dùng
 app/src/main/java/com/xiaomi/fixnotification/ai/
 
+# Video & logs tạm
+*.mp4
+*.log
+
 # Workspace internal
 .agents/
