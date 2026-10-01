@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardLimiChatContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+        <!-- LỚP HIỆU ỨNG BLUR / QUẦNG SÁNG KÍNH MỜ BÊN TRONG KHUNG CHAT -->
+        <View
+            android:id="@+id/viewChatBlurBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_chat_blur_layer" />
+
+        <!-- NỘI DUNG CHAT CHÍNH -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- HEADER FROSTED GLASS (Nền trong suốt đồng nhất với nền Aurora) -->
+            <LinearLayout
+                android:id="@+id/layoutLimiChatHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp">
+
+                <!-- Avatar Logo App LIMI -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="12dp"
+                    app:cardBackgroundColor="@color/button_capsule_bg"
+                    app:cardCornerRadius="19dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/app_icon" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trợ lý AI LIMI"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvAiStatusSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="Chuyên gia Tối ưu &amp; Fix Thông Báo Xiaomi"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Nút Kho Tri Thức / Đồng Bộ Drive (Đã tự động hóa hoàn toàn khi mở app/chat) -->
+                <ImageView
+                    android:id="@+id/btnAiKnowledge"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_cloud_sync"
+                    android:background="@drawable/bg_circle_button"
+                    android:visibility="gone"
+                    app:tint="@color/primary" />
+
+                <!-- Nút Xóa Lịch Sử Chat -->
+                <ImageView
+                    android:id="@+id/btnAiClearChat"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_refresh"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/text_secondary" />
+
+
+                <!-- Nút Đóng -->
+                <ImageView
+                    android:id="@+id/btnAiChatClose"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_close_white"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/text_secondary" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card_stroke" />
+
+            <!-- DANH SÁCH TIN NHẮN -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLimiChatMessages"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:descendantFocusability="beforeDescendants"
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp"
+                android:scrollbars="vertical" />
+
+            <!-- ĐANG TRẢ LỜI / TYPING INDICATOR -->
+            <LinearLayout
+                android:id="@+id/layoutLimiTyping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="6dp"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:indeterminateTint="@color/primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limi đang suy nghĩ và phản hồi..."
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <!-- CÂU HỎI GỢI Ý NHANH (QUICK CHIPS) -->
+            <HorizontalScrollView
+                android:id="@+id/layoutPromptChipsRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chipAiPrompt1"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Fix trễ thông báo Zalo / Tele"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11.5sp"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#25FFFFFF"
+                        app:strokeColor="#35FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chipAiPrompt2"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Lệnh 4 Millet là gì?"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11.5sp"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#25FFFFFF"
+                        app:strokeColor="#35FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chipAiPrompt3"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Hướng dẫn kích hoạt Shizuku"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11.5sp"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#25FFFFFF"
+                        app:strokeColor="#35FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chipAiPrompt4"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Tối ưu pin &amp; không nóng máy"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11.5sp"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#25FFFFFF"
+                        app:strokeColor="#35FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chipAiPrompt5"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Gỡ ứng dụng nào an toàn?"
+                        android:textColor="@color/text_primary"
+                        android:textSize="11.5sp"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#25FFFFFF"
+                        app:strokeColor="#35FFFFFF" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- THANH XEM TRƯỚC ẢNH ĐÍNH KÈM (Tối đa 5 ảnh) -->
+            <LinearLayout
+                android:id="@+id/layoutSelectedImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/button_capsule_bg"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/tvChatImagePreviewTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="📷 Đã đính kèm ảnh phân tích (0/5):"
+                        android:textColor="@color/primary"
+                        android:textSize="11.5sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/btnRemoveSelectedImage"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_close_white"
+                        android:background="@drawable/bg_circle_button"
+                        app:tint="#EF4444" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/scrollChatSelectedImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/layoutChatSelectedImagesContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical" />
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <!-- KHUNG NHẬP TIN NHẮN FROSTED GLASS (Nền trong suốt đồng nhất với nền Aurora) -->
+            <LinearLayout
+                android:id="@+id/layoutLimiChatInputContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
+
+                <!-- Nút Mũi Tên Bật/Tắt Hàng Gợi Ý Câu Hỏi (Ở bên trái icon nhập ảnh, nền trong suốt) -->
+                <ImageView
+                    android:id="@+id/btnTogglePromptChips"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="3dp"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Bật/tắt gợi ý câu hỏi"
+                    app:tint="@color/text_secondary"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- Nút đính kèm ảnh / máy ảnh -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLimiChatAttachImage"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="6dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:padding="0dp"
+                    app:icon="@drawable/ic_tab_camera"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="19dp"
+                    app:iconTint="@color/primary"
+                    app:backgroundTint="@color/button_capsule_bg"
+                    app:strokeColor="@color/card_stroke"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="18dp" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLimiChatInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_chat_input"
+                    android:hint="Hỏi Limi hoặc gửi ảnh..."
+                    android:textColorHint="@color/text_secondary"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13.5sp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:singleLine="true"
+                    android:imeOptions="actionSend"
+                    android:inputType="textCapSentences" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLimiChatSend"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="6dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    android:padding="0dp"
+                    app:icon="@drawable/ic_send_white"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="19dp"
+                    app:iconTint="@android:color/white"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="20dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+</FrameLayout>

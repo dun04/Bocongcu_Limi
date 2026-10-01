@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_system"
+        android:icon="@drawable/ic_nav_system"
+        android:title="Fix Noti" />
+    <item
+        android:id="@+id/nav_permissions"
+        android:icon="@drawable/ic_nav_shield"
+        android:title="Cấp Quyền App" />
+    <item
+        android:id="@+id/nav_custom"
+        android:icon="@drawable/ic_nav_add"
+        android:title="Shell/ADB" />
+    <item
+        android:id="@+id/nav_debloat"
+        android:icon="@drawable/ic_nav_trash"
+        android:title="Debloat" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_nav_settings"
+        android:title="Cài Đặt" />
+</menu>

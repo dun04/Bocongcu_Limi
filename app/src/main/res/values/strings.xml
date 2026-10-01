@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">LIMI</string>
+    <string name="shizuku_status_title">Trạng Thái Shizuku</string>
+    <string name="shizuku_checking">Đang kiểm tra Shizuku...</string>
+    <string name="shizuku_not_running">Dịch vụ Shizuku chưa chạy</string>
+    <string name="shizuku_permission_denied">Chưa được cấp quyền Shizuku</string>
+    <string name="shizuku_permission_granted">Đã cấp quyền Shizuku (ADB)</string>
+    <string name="btn_request_permission">Cấp Quyền Shizuku</string>
+    
+    <string name="section_commands">Danh Sách Lệnh Fix</string>
+    <string name="btn_run_all">Chạy Tất Cả (Lệnh 1 -> 4)</string>
+    <string name="cb_include_grant">Kèm tự cấp quyền thông báo, tự khởi chạy &amp; tắt hạn chế pin</string>
+    
+    <string name="perm_card_title">Tự Cấp Quyền &amp; Tắt Hạn Chế Pin</string>
+    <string name="perm_card_desc">Tự động cấp quyền Thông báo (Android 13+), bật Tự khởi chạy (Auto-start MIUI) và Không hạn chế pin cho toàn bộ app trong danh sách.</string>
+    <string name="btn_grant_all_apps">Cấp Quyền &amp; Tự Khởi Chạy Cho Toàn Bộ App</string>
+    
+    <string name="cmd_1_title">Lệnh 1: Fix FCM &amp; Heartbeat</string>
+    <string name="cmd_1_desc">Buộc Android sắp xếp lại FCM và gửi tín hiệu GTALK_HEARTBEAT duy trì kết nối.</string>
+    
+    <string name="cmd_2_title">Lệnh 2: Tắt Doze &amp; Standby Mode</string>
+    <string name="cmd_2_desc">Vô hiệu hóa Doze Mode và App Standby Mode để ngăn hệ thống ép ứng dụng đi ngủ.</string>
+    
+    <string name="cmd_3_title">Lệnh 3: Tắt Tiết Kiệm Pin Wi-Fi &amp; Greezer</string>
+    <string name="cmd_3_desc">Tắt tiết kiệm pin Wi-Fi và tắt cơ chế đóng băng Greezer của HyperOS/MIUI.</string>
+    
+    <string name="cmd_4_title">Lệnh 4: Miễn Trừ MILLET &amp; Kích Hoạt Sync</string>
+    <string name="cmd_4_desc">Thêm danh sách app vào MILLET_NO_RESTRICT_APP và kích hoạt lại đăng ký Push FCM.</string>
+    
+    <string name="btn_run">Chạy Lệnh</string>
+    <string name="label_millet_packages">Danh sách AppPackage (cách nhau bởi dấu phẩy):</string>
+    <string name="terminal_title">Nhật Ký Thực Thi (Terminal Output)</string>
+    <string name="btn_clear_log">Xóa Log</string>
+    <string name="btn_advanced_flagship">Nâng cao Flagship</string>
+    <string name="btn_advanced_flagship_full">Chế Độ Nâng Cao (Dành Cho Flagship)</string>
+    <string name="btn_run_all_advanced">Chạy Tất Cả 7 Lệnh Nâng Cao</string>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Elegant White Themes Palette (Light Mode) -->
+    <color name="bg_dark">#F4F5F9</color>
+    <color name="surface_dark">#FFFFFF</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_stroke">#E2E6EE</color>
+    <color name="card_stroke_active">#FF6900</color>
+
+    <!-- Xiaomi HyperOS Brand Colors -->
+    <color name="primary">#FF6900</color>
+    <color name="primary_variant">#E05300</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <!-- Vibrant Accents -->
+    <color name="accent_green">#00C853</color>
+    <color name="accent_green_dark">#009624</color>
+    <color name="accent_red">#E53935</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_cyan">#00B0FF</color>
+
+    <!-- Category Badges (Light mode optimized) -->
+    <color name="badge_chat_bg">#E0F2FE</color>
+    <color name="badge_chat_text">#0284C7</color>
+    <color name="badge_mxh_bg">#F3E8FF</color>
+    <color name="badge_mxh_text">#9333EA</color>
+    <color name="badge_bank_bg">#DCFCE7</color>
+    <color name="badge_bank_text">#16A34A</color>
+    <color name="badge_gms_bg">#FCE7F3</color>
+    <color name="badge_gms_text">#DB2777</color>
+    <color name="badge_email_bg">#FEF3C7</color>
+    <color name="badge_email_text">#D97706</color>
+    <color name="badge_default_bg">#F3F4F6</color>
+    <color name="badge_default_text">#6B7280</color>
+
+    <!-- Terminal & Code (Developer Console - Distinct cool slate gray in Light mode) -->
+    <color name="terminal_bg">#E2E8F0</color>
+    <color name="terminal_header">#CBD5E1</color>
+    <color name="terminal_text">#15803D</color>
+    <color name="terminal_text_secondary">#475569</color>
+
+    <!-- Popup / Dialog Card Tokens (Light Mode - Seamless borderless with soft shadow) -->
+    <color name="popup_stroke">@android:color/transparent</color>
+    <color name="popup_divider">#EEF2F6</color>
+
+    <!-- Typography & Frosted White Buttons (Light Mode) -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="button_capsule_bg">#E8EDF5</color>
+    
+    <!-- Translucent Frosted Glass Bottom Navigation (Light Mode - iOS & AndroidLiquidGlass Style) -->
+    <color name="frosted_glass_nav_color">#E6FFFFFF</color>
+    <color name="frosted_glass_border">#2B000000</color>
+
+    <!-- Liquid Glass Acrylic Tokens (Light Mode - Kyant0 Style) -->
+    <color name="nav_liquid_highlight">#A0FFFFFF</color>
+    <color name="nav_liquid_start">#FAFFFFFF</color>
+    <color name="nav_liquid_end">#E6EEF3F8</color>
+    <color name="nav_active_indicator_pill">#FFFFFF</color>
+    <color name="nav_active_indicator_stroke">#D4DCE8</color>
+    <color name="text_nav_active">#FF6900</color>
+    <color name="text_nav_inactive">#6C7280</color>
+
+    <!-- Semantic Glass Cards (Light Mode) -->
+    <color name="glass_card_bg">#F5FFFFFF</color>
+    <color name="glass_card_stroke">#E2E8F0</color>
+    <color name="glass_card_highlight">#CCFFFFFF</color>
+    <color name="glass_flagship_bg">#FFF8F0</color>
+    <color name="glass_flagship_stroke">#FDBA74</color>
+    <color name="glass_perm_bg">#F0FDF4</color>
+    <color name="glass_perm_stroke">#86EFAC</color>
+    <color name="glass_shizuku_alert_bg">#FEF2F2</color>
+    <color name="glass_shizuku_alert_stroke">#FECACA</color>
+    <color name="glass_shizuku_warn_bg">#FFFBEB</color>
+    <color name="glass_shizuku_warn_stroke">#FDE68A</color>
+    <color name="glass_shizuku_ok_bg">#F0FDF4</color>
+    <color name="glass_shizuku_ok_stroke">#86EFAC</color>
+
+    <!-- Hero Buttons Gradient -->
+    <color name="hero_btn_orange_start">#FF7A00</color>
+    <color name="hero_btn_orange_end">#FF5200</color>
+    <color name="hero_btn_green_start">#00E676</color>
+    <color name="hero_btn_green_end">#00B359</color>
+
+    <!-- Permission Shortcut Buttons (Light Mode) -->
+    <color name="btn_autostart_bg">#E0F2FE</color>
+    <color name="btn_autostart_stroke">#38BDF8</color>
+    <color name="btn_autostart_text">#0284C7</color>
+    <color name="btn_battery_bg">#DCFCE7</color>
+    <color name="btn_battery_stroke">#4ADE80</color>
+    <color name="btn_battery_text">#16A34A</color>
+</resources>

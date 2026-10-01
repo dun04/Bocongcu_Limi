@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="@color/glass_card_highlight" />
+        </shape>
+    </item>
+    <item android:top="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="19.5dp" />
+            <solid android:color="@color/glass_perm_bg" />
+            <stroke
+                android:width="1.2dp"
+                android:color="@color/glass_perm_stroke" />
+        </shape>
+    </item>
+</layer-list>

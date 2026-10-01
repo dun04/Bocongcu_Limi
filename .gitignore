@@ -1,0 +1,23 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+build/
+app/build/
+
+# Không đẩy các file APK đã build
+*.apk
+*.ap_
+*.aab
+
+# Bỏ hoàn toàn thư mục AI Limi theo yêu cầu người dùng
+app/src/main/java/com/xiaomi/fixnotification/ai/
+
+# Workspace internal
+.agents/

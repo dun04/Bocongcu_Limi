@@ -1,0 +1,62 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.FixNotificationXiaomi" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="android:statusBarColor">@color/bg_dark</item>
+        <item name="android:windowBackground">@color/bg_dark</item>
+        <!-- Edge-to-edge transparent navigation bar -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:alertDialogTheme">@style/AppAlertDialogTheme</item>
+        <item name="materialAlertDialogTheme">@style/AppAlertDialogTheme</item>
+    </style>
+
+    <!-- Theme đồng nhất cho tất cả Dialog Popup trong toàn bộ ứng dụng -->
+    <style name="AppAlertDialogTheme" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowAnimationStyle">@style/DialogPopAnimation</item>
+    </style>
+
+    <!-- Theme toàn màn hình Edge-to-Edge cho Limi AI Chat -->
+    <style name="FullScreenChatDialogTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogPopAnimation</item>
+    </style>
+
+    <!-- Kiểu chữ thanh mảnh cho Bottom Navigation -->
+    <style name="BottomNavTextCompact" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Khối pill cam mờ bo tròn cho mục được chọn ở Bottom Navigation (Khớp ảnh 1) -->
+    <style name="LiquidNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/nav_active_indicator_pill</item>
+        <item name="android:width">92dp</item>
+        <item name="android:height">54dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.LiquidNavPill</item>
+    </style>
+
+    <style name="ShapeAppearance.LiquidNavPill" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <!-- Hiệu ứng bung nở lớn dần từ nút bấm cho Popup Themes -->
+    <style name="PopupScaleAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_scale_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_scale_exit</item>
+    </style>
+
+    <!-- Hoạt ảnh bung mờ nảy êm ái đồng nhất cho TẤT CẢ các Dialog Popup trong app -->
+    <style name="DialogPopAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_pop_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_pop_exit</item>
+    </style>
+</resources>

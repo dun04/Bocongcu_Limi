@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Lucide BatteryCharging: Thân pin + cực pin + tia sấm sét sạc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="@color/primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M15,7H4a2,2 0 0,0 -2,2v6a2,2 0 0,0 2,2h11a2,2 0 0,0 2,-2V9a2,2 0 0,0 -2,-2z M22,11v2 M11,7l-3,5h4l-3,5" />
+</vector>
