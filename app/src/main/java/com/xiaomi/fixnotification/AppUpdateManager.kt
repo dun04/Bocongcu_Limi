@@ -180,9 +180,9 @@ object AppUpdateManager {
     fun getCurrentVersionName(context: Context): String {
         return try {
             val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            pInfo.versionName ?: "1.2.8.3.ntd"
+            pInfo.versionName ?: "1.2.8.4.ntd"
         } catch (_: Throwable) {
-            "1.2.8.3.ntd"
+            "1.2.8.4.ntd"
         }
     }
 

@@ -187,7 +187,7 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:lineSpacingExtra="3dp"
-                android:text="Phiên bản hiện tại: v1.2.8.3.ntd\nKhông có bản cập nhật mới nào trên máy chủ."
+                android:text="Phiên bản hiện tại: v1.2.8.4.ntd\nKhông có bản cập nhật mới nào trên máy chủ."
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
 
