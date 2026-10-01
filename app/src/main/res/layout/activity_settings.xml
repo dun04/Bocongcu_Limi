@@ -199,6 +199,30 @@
                         app:cornerRadius="21dp"
                         app:strokeColor="@color/card_stroke"
                         app:strokeWidth="1dp" />
+
+                    <!-- Nút Kiểm Tra Cập Nhật Phiên Bản Mới (OTA) -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCheckAppUpdate"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_marginTop="10dp"
+                        android:minHeight="42dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="Kiểm tra cập nhật phiên bản mới"
+                        android:textColor="#38BDF8"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold"
+                        app:icon="@drawable/ic_cloud_sync"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="18dp"
+                        app:iconTint="#38BDF8"
+                        app:backgroundTint="#1F38BDF8"
+                        app:cornerRadius="21dp"
+                        app:strokeColor="#4D38BDF8"
+                        app:strokeWidth="1dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

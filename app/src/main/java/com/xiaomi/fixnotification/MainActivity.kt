@@ -207,6 +207,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         auroraBgAnimator = ThemeUtils.applyBackground(binding.rootView, existingAnimator = auroraBgAnimator)
+        try {
+            AppUpdateManager.onResumeCheckPendingInstall(this)
+        } catch (_: Throwable) {}
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -2609,7 +2612,8 @@ $fullMeaningfulText
             binding.cardSettingReset,
             binding.cardSettingDeveloper,
             binding.btnOpenGuideInSettings,
-            binding.btnOpenVideoGuide
+            binding.btnOpenVideoGuide,
+            binding.btnCheckAppUpdate
         )
         settingsInteractiveButtons.forEach { btn ->
             btn?.let { ViewAnimationExtensions.applySpringTouch(it) }
@@ -2666,6 +2670,10 @@ $fullMeaningfulText
             } catch (e: Throwable) {
                 Toast.makeText(this, "Không thể mở liên kết video", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnCheckAppUpdate.setOnClickListener {
+            AppUpdateManager.checkUpdate(this, manualTrigger = true)
         }
     }
 
