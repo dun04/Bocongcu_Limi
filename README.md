@@ -86,6 +86,11 @@
 * Nhấn vào biểu tượng **Tiến độ Fix** ở đầu trang chính.
 * Hệ thống sẽ tự động quét và chấm điểm tỷ lệ % tối ưu của máy (17/17 mục).
 
+### Bước 4: Thiết lập sau khi Fix (Khuyên dùng cho App Ngân Hàng & Giữ 94% tiến độ)
+* **TẮT "Gỡ lỗi không dây" (Wireless Debugging)** & **TẮT "Gỡ lỗi USB" (USB Debugging)**: Giúp 100% các ứng dụng ngân hàng (BIDV, MB Bank, Vietcombank, Techcombank...), ví điện tử và VNeID mở và giao dịch bình thường, hoàn toàn không bị chặn hay báo phát hiện ADB.
+* **GIỮ BẬT công tắc tổng "Tùy chọn cho nhà phát triển"**: Ngăn hệ điều hành Android tự động kích hoạt lại bộ đóng băng ngầm `cached_apps_freezer` (duy trì vững chắc tiến độ **94%**, bảo đảm thông báo luôn nổ tức thì 24/24 ngay cả khi tắt màn hình qua đêm).
+* **Danh sách app đã có sẵn**: Zalo, Messenger, Telegram, WhatsApp, TikTok (đầy đủ bản Quốc tế `com.zhiliaoapp.musically`, Châu Á `com.ss.android.ugc.trill` và TikTok Lite), Facebook, Instagram, Threads, YouTube ReVanced, Gmail, Mi Fitness, BIDV, MB Bank, VCB, Techcombank, VietinBank iPay... Người dùng có thể thêm bất kỳ ứng dụng nào khác (Shopee, Grab, Be...) vào ô package ở tab Hệ Thống và bấm chạy lại Lệnh 4 là xong.
+
 ---
 
 ## 👨‍💻 Tác Giả & Bản Quyền
