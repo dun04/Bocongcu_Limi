@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardFloatingFpsRoot"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:animateLayoutChanges="false"
+  app:cardBackgroundColor="#40050811"
+  app:cardCornerRadius="8dp"
+  app:cardElevation="0dp"
+  app:strokeColor="#20FFFFFF"
+  app:strokeWidth="0.8dp">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="6dp"
+    android:paddingTop="2.5dp"
+    android:paddingEnd="6dp"
+    android:paddingBottom="2.5dp">
+
+    <!-- 1. FPS Section -->
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="FPS"
+        android:textColor="#CBD5E1"
+        android:textSize="7.5sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/tvFloatingFps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:fontFeatureSettings="tnum"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minWidth="24dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="60"
+        android:textColor="#C084FC"
+        android:textSize="10.5sp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="0.8dp"
+      android:layout_height="16dp"
+      android:layout_marginHorizontal="4.5dp"
+      android:background="#20FFFFFF" />
+
+    <!-- 2. Power SoC Section (Công suất W của chip, >10W chữ màu đỏ) -->
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="CHIP"
+        android:textColor="#CBD5E1"
+        android:textSize="7.5sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:id="@+id/tvFloatingPowerWatts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:fontFeatureSettings="tnum"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:minWidth="34dp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="4.2 W"
+        android:textColor="#00E5FF"
+        android:textSize="10.5sp"
+        android:textStyle="bold" />
+    </LinearLayout>
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

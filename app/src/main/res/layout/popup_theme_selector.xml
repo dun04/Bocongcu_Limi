@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="20dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="4dp"
+      android:paddingBottom="8dp"
+      android:text="Giao diện ứng dụng"
+      android:textColor="@color/primary"
+      android:textSize="13.5sp"
+      android:textStyle="bold" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
+      android:layout_marginBottom="8dp"
+      android:background="@color/card_stroke" />
+
+    <!-- 1. Theo hệ thống -->
+    <LinearLayout
+      android:id="@+id/itemThemeSystem"
+      android:layout_width="match_parent"
+      android:layout_height="42dp"
+      android:layout_marginBottom="6dp"
+      android:background="@drawable/bg_theme_item_inactive"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="14dp"
+      android:paddingEnd="14dp">
+
+      <ImageView
+        android:id="@+id/ivIconSystem"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_theme_system"
+        app:tint="@color/text_primary" />
+
+      <TextView
+        android:id="@+id/tvThemeSystem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Theo hệ thống"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+      <ImageView
+        android:id="@+id/ivCheckSystem"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_check_line"
+        android:visibility="gone"
+        app:tint="@color/primary" />
+    </LinearLayout>
+
+    <!-- 2. Dark themes -->
+    <LinearLayout
+      android:id="@+id/itemThemeDark"
+      android:layout_width="match_parent"
+      android:layout_height="42dp"
+      android:layout_marginBottom="6dp"
+      android:background="@drawable/bg_theme_item_inactive"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="14dp"
+      android:paddingEnd="14dp">
+
+      <ImageView
+        android:id="@+id/ivIconDark"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_theme_dark"
+        app:tint="@color/primary" />
+
+      <TextView
+        android:id="@+id/tvThemeDark"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Dark themes"
+        android:textColor="@color/primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+      <ImageView
+        android:id="@+id/ivCheckDark"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_check_line"
+        android:visibility="gone"
+        app:tint="@color/primary" />
+    </LinearLayout>
+
+    <!-- 3. White themes -->
+    <LinearLayout
+      android:id="@+id/itemThemeLight"
+      android:layout_width="match_parent"
+      android:layout_height="42dp"
+      android:background="@drawable/bg_theme_item_inactive"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="14dp"
+      android:paddingEnd="14dp">
+
+      <ImageView
+        android:id="@+id/ivIconLight"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_theme_light"
+        app:tint="@color/text_primary" />
+
+      <TextView
+        android:id="@+id/tvThemeLight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="White themes"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+      <ImageView
+        android:id="@+id/ivCheckLight"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_check_line"
+        android:visibility="gone"
+        app:tint="@color/primary" />
+    </LinearLayout>
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

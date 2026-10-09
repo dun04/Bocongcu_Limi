@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_margin="16dp"
+  app:cardBackgroundColor="@color/surface_dark"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Tiêu đề Header nổi bật theo ngôn ngữ thiết kế HyperOS -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="18dp"
+      android:paddingTop="16dp"
+      android:paddingEnd="16dp"
+      android:paddingBottom="12dp">
+
+      <!-- App Icon Badge -->
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:cardBackgroundColor="@color/button_capsule_bg"
+        app:cardCornerRadius="19dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <ImageView
+          android:id="@+id/ivGuideIcon"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          android:src="@drawable/app_icon" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/tvGuideDialogTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="CẨM NANG &amp; HƯỚNG DẪN"
+          android:textColor="@color/text_primary"
+          android:textSize="15.5sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:id="@+id/tvGuideDialogSubtitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Tối ưu thông báo, pin &amp; debloat HyperOS/MIUI"
+          android:textColor="@color/primary"
+          android:textSize="11.5sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+
+      <!-- Nút đóng X bo tròn nhộng -->
+      <ImageView
+        android:id="@+id/btnCloseGuideDialog"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_theme_item_inactive"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="7dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Thanh chuyển mục Tab Hướng Dẫn Nhanh -->
+    <HorizontalScrollView
+      android:id="@+id/scrollGuideTabs"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingStart="14dp"
+      android:paddingEnd="14dp"
+      android:paddingBottom="10dp"
+      android:scrollbars="none">
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Tab 1: Fix Hệ Thống -->
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnGuideTabSystem"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="wrap_content"
+          android:layout_height="34dp"
+          android:layout_marginEnd="6dp"
+          android:minHeight="34dp"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:paddingStart="14dp"
+          android:paddingEnd="14dp"
+          android:text="Fix Hệ Thống"
+          android:textColor="@color/primary"
+          android:textSize="11.5sp"
+          android:textStyle="bold"
+          app:backgroundTint="@color/nav_active_indicator_pill"
+          app:cornerRadius="17dp"
+          app:strokeColor="@color/nav_active_indicator_stroke"
+          app:strokeWidth="1dp" />
+
+        <!-- Tab 2: Cấp Quyền App -->
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnGuideTabPerms"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="wrap_content"
+          android:layout_height="34dp"
+          android:layout_marginEnd="6dp"
+          android:minHeight="34dp"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:paddingStart="14dp"
+          android:paddingEnd="14dp"
+          android:text="Cấp Quyền"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp"
+          android:textStyle="bold"
+          app:backgroundTint="@color/button_capsule_bg"
+          app:cornerRadius="17dp"
+          app:strokeColor="@color/card_stroke"
+          app:strokeWidth="1dp" />
+
+        <!-- Tab 3: Shell/ADB -->
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnGuideTabCustom"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="wrap_content"
+          android:layout_height="34dp"
+          android:layout_marginEnd="6dp"
+          android:minHeight="34dp"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:paddingStart="14dp"
+          android:paddingEnd="14dp"
+          android:text="Shell / ADB"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp"
+          android:textStyle="bold"
+          app:backgroundTint="@color/button_capsule_bg"
+          app:cornerRadius="17dp"
+          app:strokeColor="@color/card_stroke"
+          app:strokeWidth="1dp" />
+
+        <!-- Tab 4: Debloat -->
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnGuideTabDebloat"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="wrap_content"
+          android:layout_height="34dp"
+          android:minHeight="34dp"
+          android:insetTop="0dp"
+          android:insetBottom="0dp"
+          android:paddingStart="14dp"
+          android:paddingEnd="14dp"
+          android:text="Debloat"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp"
+          android:textStyle="bold"
+          app:backgroundTint="@color/button_capsule_bg"
+          app:cornerRadius="17dp"
+          app:strokeColor="@color/card_stroke"
+          app:strokeWidth="1dp" />
+      </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Nội dung cuộn thông tin chi tiết với kích thước đồng nhất giữa các tab -->
+    <androidx.core.widget.NestedScrollView
+      android:id="@+id/scrollGuideContent"
+      android:layout_width="match_parent"
+      android:layout_height="380dp"
+      android:fillViewport="true"
+      android:overScrollMode="never"
+      android:padding="16dp">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ================= NỘI DUNG HƯỚNG DẪN TAB 1: FIX HỆ THỐNG ================= -->
+        <LinearLayout
+          android:id="@+id/layoutGuideSystem"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:visibility="visible">
+
+          <!-- Card 0: Giới thiệu ứng dụng -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="GIỚI THIỆU"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Bộ Công Cụ LIMI Toàn Diện"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Bộ công cụ LIMI là giải pháp all-in-one chuyên biệt cho thiết bị Xiaomi / Redmi / POCO chạy HyperOS &amp; MIUI:\n• Fix Trễ Thông Báo: Bộ 15 lệnh hệ thống + 7 lệnh VIP Flagship đặc trị ngắt kết nối FCM và đóng băng ngầm (Greezer / PowerKeeper / Millet).\n• Tối Ưu Định Vị GPS: 6 lệnh nạp cấu hình A-GPS &amp; NTP Server Việt Nam giúp bắt sóng vệ tinh chuẩn xác tức thì.\n• Quản Lý Quyền &amp; Debloat: Cấp quyền chạy nền đồng loạt và gỡ ứng dụng rác an toàn kèm chức năng khôi phục 1 chạm.\n• Trợ Lý AI LIMI: AI chuyên gia tích hợp phân tích thị giác hình ảnh và kho tri thức đám mây tự động đồng bộ."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 1: Quy trình fix -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="QUY TRÌNH"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Quy Trình Fix Thông Báo Nhanh"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Bước 1: Kích hoạt Shizuku (qua Ghép nối Wi-Fi/ADB hoặc quyền Root).\n• Bước 2 (Tab 1): Bấm 'Chạy tất cả Lệnh 1 -> 4' để mở cổng FCM, gỡ Doze Mode và đưa app vào Millet Whitelist chống đóng băng.\n• Bước 3 (Flagship): Nếu dùng dòng máy Flagship / HyperOS 2 &amp; 3, bấm vào biểu ngữ 'Lệnh Nâng Cao Cho Flagship' để chạy 7 lệnh đặc trị Greezer &amp; PowerKeeper.\n• Bước 4 (GPS): Vào tab Shell/ADB bấm 'Tối ưu GPS Việt Nam' nếu cần fix bắt sóng GPS.\n• Bước 5 (Quan trọng): Sau khi chạy lệnh xong, KHỞI ĐỘNG LẠI MÁY. Sau đó chỉ cần TẮT 'Gỡ lỗi không dây' &amp; 'Gỡ lỗi USB', giữ BẬT công tắc tổng 'Tùy chọn nhà phát triển' để app ngân hàng vào 100% mượt mà và duy trì tối đa 94% tiến độ."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 2: Tiêu thụ pin -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="TIÊU THỤ PIN"
+                  android:textColor="@color/accent_green"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Mức Tiêu Thụ Pin Tăng Thêm Thế Nào?"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Tăng rất ít (chỉ 2% – 4% cả ngày): Hoàn toàn không đáng kể so với việc nhận tin nhắn nổ ngay lập tức, không lo nhỡ cuộc gọi.\n• Gói Heartbeat siêu nhẹ: Gói tin chỉ vài chục bytes gửi tới máy chủ Google, tiết kiệm pin hơn rất nhiều so với việc từng app phải tự chạy ngầm liên tục để kéo dữ liệu.\n• Để máy qua đêm (7–8 tiếng): Tụt khoảng 2% – 4% pin chờ, hoàn toàn tối ưu và bình thường."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 3: Kiểm tra FCM & Hiện tượng Pin Yếu -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="DIAGNOSTICS"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Kiểm Tra Kết Nối FCM &amp; Lưu Ý Pin Yếu"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Bấm mã: *#*#426#*#* để vào Google FCM Diagnostics kiểm tra trạng thái máy chủ mtalk.google.com.\n• 'Server: Connected': Socket thông báo hoạt động bình thường. Bộ đếm 'Time connected' là thời lượng của phiên kết nối mạng hiện tại (sẽ reset về 00:00 khi đổi Wi-Fi / 4G hoặc làm mới kết nối).\n• Pin yếu dưới 20% (ERR_IO_FIN): Khi pin &lt; 20%, Xiaomi tự ngắt socket ngầm để chống sập nguồn. Khi cắm sạc trên 20%, máy sẽ TỰ ĐỘNG KẾT NỐI LẠI (Auto-Reconnect) mà không cần chạy lại lệnh. Bạn cũng có thể gạt Bật/Tắt Chế độ máy bay 1 lần để làm mới ngay."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                  android:id="@+id/btnCopyFcmCode"
+                  style="@style/Widget.Material3.Button.TonalButton"
+                  android:layout_width="0dp"
+                  android:layout_height="40dp"
+                  android:layout_marginEnd="6dp"
+                  android:layout_weight="1"
+                  android:minHeight="40dp"
+                  android:insetTop="0dp"
+                  android:insetBottom="0dp"
+                  android:singleLine="true"
+                  android:text="Sao chép mã"
+                  android:textColor="@color/text_primary"
+                  android:textSize="12sp"
+                  android:textStyle="bold"
+                  app:backgroundTint="@color/button_capsule_bg"
+                  app:cornerRadius="20dp"
+                  app:strokeColor="@color/card_stroke"
+                  app:strokeWidth="1dp" />
+
+                <com.google.android.material.button.MaterialButton
+                  android:id="@+id/btnDialFcmCode"
+                  style="@style/Widget.Material3.Button.TonalButton"
+                  android:layout_width="0dp"
+                  android:layout_height="40dp"
+                  android:layout_marginStart="6dp"
+                  android:layout_weight="1"
+                  android:minHeight="40dp"
+                  android:insetTop="0dp"
+                  android:insetBottom="0dp"
+                  android:singleLine="true"
+                  android:text="Mở quay số"
+                  android:textColor="@color/primary"
+                  android:textSize="12sp"
+                  android:textStyle="bold"
+                  app:backgroundTint="@color/nav_active_indicator_pill"
+                  app:cornerRadius="20dp"
+                  app:strokeColor="@color/nav_active_indicator_stroke"
+                  app:strokeWidth="1dp" />
+              </LinearLayout>
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 4: Bảo mật & App Ngân Hàng (Developer Options) -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="BẢO MẬT &amp; BANK"
+                  android:textColor="@color/accent_orange"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Tùy Chọn Nhà Phát Triển &amp; App Ngân Hàng"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Cơ chế phát hiện của App Ngân Hàng: Các ứng dụng ngân hàng (BIDV, MB Bank, VCB, Techcombank, VNeID...) CHỈ quét và chặn 2 mục: 'Gỡ lỗi USB' (USB Debugging) và 'Gỡ lỗi không dây' (Wireless Debugging). Chúng TUYỆT ĐỐI KHÔNG quét hay chặn công tắc tổng 'Tùy chọn nhà phát triển'.\n• HƯỚNG DẪN THIẾT LẬP CHUẨN VÀNG SAU KHI FIX XONG:\n 1. Mở Shizuku bấm Dừng (Stop).\n 2. Vào Cài đặt máy &gt; Cài đặt bổ sung &gt; Tùy chọn nhà phát triển:\n   - TẮT 'Gỡ lỗi không dây' (Wireless Debugging) - cổng ghép nối Wi-Fi.\n   - TẮT 'Gỡ lỗi USB' (USB Debugging).\n   - GIỮ BẬT công tắc tổng 'Tùy chọn cho nhà phát triển' ở trên cùng!\n 3. Khởi động lại điện thoại (Restart).\n• LỢI ÍCH VƯỢT TRỘI:\n - App ngân hàng &amp; VNeID 100% vào bình thường không bị báo lỗi ADB.\n - Duy trì trọn vẹn 100% tiến độ: Android không tự kích hoạt lại bộ đóng băng 'cached_apps_freezer', chống trễ tin nhắn khi tắt màn qua đêm."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 4.5: Danh Sách Các App Đã Tích Hợp Sẵn Trong Lệnh Fix & Thêm App Mới -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="DANH SÁCH APP"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Các App Đã Fix Sẵn &amp; Hướng Dẫn Thêm App"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Các ứng dụng đã được tích hợp sẵn 100% trong lệnh:\n - Nhắn tin &amp; Gọi: Zalo, Messenger, Telegram, WhatsApp, Tin nhắn RCS / Google IMS, Danh bạ máy.\n - Mạng xã hội &amp; Video: TikTok (đầy đủ bản Quốc tế com.zhiliaoapp.musically, bản Châu Á com.ss.android.ugc.trill &amp; TikTok Lite), Facebook, Instagram, Threads, YouTube ReVanced.\n - Email &amp; Tiện ích: Gmail, Mi Health / Mi Fitness, MicroG GMS, Google Play Services (GMS &amp; GSF).\n - App Ngân hàng phổ biến: BIDV, MB Bank, Vietcombank, Techcombank, VietinBank iPay.\n• Hướng dẫn thêm ứng dụng mới bất kỳ:\n - Nếu bạn dùng app khác (Shopee, Lazada, Be, Grab, Skype, Teams, MoMo, Cake, VPBank, TPBank...):\n - Vào tab 'Hệ Thống', tại ô 'Danh sách gói ứng dụng (Package Name)', gõ thêm tên package của app (cách nhau bằng dấu phẩy) hoặc bấm nút chọn app trên giao diện để tự động thêm.\n - Bấm lại 'Chạy Lệnh 4' (hoặc 'Chạy tất cả Lệnh 1 -&gt; 4'). LIMI sẽ tự động cấp toàn bộ quyền Doze Whitelist, Millet Whitelist, AppOps WAKE_LOCK, RUN_IN_BACKGROUND, 10020, 10021, 10022 và khóa Standby Bucket ACTIVE! ĐẶC BIỆT: Lệnh sẽ ghi vĩnh viễn vào XML hệ thống (chuẩn cơ chế bất tử V1.0.1) nên BẠN KHÔNG CẦN KHÓA ĐA NHIỆM NỮA!"
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 5: Đặc Trị Thông Báo Gmail -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="GMAIL PUSH"
+                  android:textColor="@color/badge_email_text"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Đặc Trị Thông Báo Tức Thì Cho Gmail"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Bước 1 (Trong App Gmail): Mở Gmail &gt; Cài đặt &gt; Chọn tài khoản email &gt; Đổi 'Thông báo' thành 'Tất cả' &gt; Vào 'Thông báo hộp thư đến' tích 'Thông báo cho mọi thư'.\n• Bước 2 (Hệ thống): Cài đặt máy &gt; Tài khoản và đồng bộ &gt; Đảm bảo 'Tự động đồng bộ hóa' đang BẬT.\n• Bước 3 (HyperOS): Quản lý ứng dụng &gt; Gmail &gt; Tiết kiệm pin: Không hạn chế + Bật Tự khởi chạy + Bật 'Đánh thức màn hình khi có thông báo'."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- ================= NỘI DUNG HƯỚNG DẪN TAB 2: CẤP QUYỀN APP ================= -->
+        <LinearLayout
+          android:id="@+id/layoutGuidePerms"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:visibility="gone">
+
+          <!-- Card 1: Quy trình cấp quyền -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="QUY TRÌNH"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Quy Trình Cấp Quyền Ứng Dụng"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Bước 1: Tích chọn các ứng dụng bạn muốn nhận thông báo (chạm đúng ô checkbox). Danh sách mặc định hiển thị 5 app, bấm 'Mở rộng danh sách' để xem thêm.\n• Xem thông tin chi tiết app: Chạm hoặc nhấn giữ 2s vào thẻ app bất kỳ để mở popup hiển thị Package Name, SDK, đường dẫn APK và phím tắt mở Cài đặt ứng dụng.\n• Bước 2: Bấm nút 'Cấp toàn bộ quyền cho các app đã chọn' để kích hoạt đồng loạt quyền màn hình khóa, cửa sổ nổi, popup nền qua Shizuku.\n• Bước 3: Sử dụng phím tắt ' Tự khởi chạy' và ' Tiết kiệm pin' để vào nhanh cài đặt Bảo mật Xiaomi."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 2: Vì sao cần quyền màn hình khóa -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="GIẢI THÍCH"
+                  android:textColor="@color/accent_cyan"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Tại Sao Cần Cấp Các Quyền Này?"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Hiển thị trên màn hình khóa: Cho phép banner thông báo và cuộc gọi Zalo/Messenger sáng màn hình khi điện thoại đang khóa.\n• Hiển thị cửa sổ pop-up khi chạy nền: Cho phép app bật thông báo nổi heads-up ngay cả khi bạn đang mở ứng dụng khác hoặc chơi game.\n• Tự khởi chạy: Cho phép dịch vụ nền của app tự động chạy lại sau khi bạn vô tình đóng app hoặc sau khi khởi động lại máy."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- ================= NỘI DUNG HƯỚNG DẪN TAB 3: DEBLOAT DỌN RÁC ================= -->
+        <LinearLayout
+          android:id="@+id/layoutGuideDebloat"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:visibility="gone">
+
+          <!-- Card 1: Bloatware gợi ý -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="KHUYÊN DÙNG"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Bloatware Rác An Toàn Nên Gỡ"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• MSA (com.miui.msa.global): Dịch vụ quảng cáo hệ thống Xiaomi.\n• Analytics (com.miui.analytics): Dịch vụ thu thập phân tích chạy ngầm hao pin.\n• Daemon (com.miui.daemon): Tiến trình theo dõi hệ thống chạy ngầm.\n• Joyose (com.xiaomi.joyose): Dịch vụ bóp xung nhịp / giới hạn fps khi chơi game và chạy tác vụ nặng.\n• Mi Pay / Mi Credit: Các dịch vụ thanh toán và quảng cáo tài chính nội địa."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 2: Lưu ý an toàn & Phân loại Debloat & Khôi phục -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="TÍNH NĂNG MỚI"
+                  android:textColor="@color/accent_orange"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Thao Tác, Phân Loại &amp; Khôi Phục App"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Nhãn Bloatware rác (Màu Cam/Vàng): Các dịch vụ quảng cáo ngầm, có thể gỡ an toàn giúp giải phóng RAM.\n• Nhãn App Hệ Thống (Màu Đỏ): Cảnh báo hệ thống, tuyệt đối KHÔNG gỡ Launcher, Bảo Mật, SystemUI.\n• Chạm hoặc giữ 2s vào thẻ app: Mở popup hiển thị thông tin package name, SDK, và nút mở chi tiết app trong cài đặt.\n• Khôi phục ứng dụng đã xóa: Trong nút 'Thao tác ' chọn 'Khôi phục ứng dụng đã xóa' để mở popup danh sách các gói đã gỡ và phục hồi lại chỉ với 1 chạm."
+                android:textColor="@color/text_primary"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- ================= NỘI DUNG HƯỚNG DẪN TAB 4: LỆNH TÙY CHỈNH & TERMINAL ================= -->
+        <LinearLayout
+          android:id="@+id/layoutGuideCustom"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:visibility="gone">
+
+          <!-- Card 1: Sử dụng Terminal -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="TERMINAL"
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Chạy Lệnh ADB Shell Trực Tiếp"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Ô nhập lệnh mở rộng 4 dòng: Dễ dàng nhập và chỉnh sửa các chuỗi lệnh dài một cách thuận tiện.\n• Chạy lệnh qua Shizuku: Thực thi trực tiếp các câu lệnh ADB Shell mà không cần cáp nối máy tính.\n• Bảng Terminal độc lập: Nhật ký chạy của từng trang hiển thị tách biệt, không bị trùng lặp hay lẫn lộn, có nút 'Xóa log' và 'Lưu log' tiện lợi."
+                android:textColor="@color/text_primary"
+                android:textIsSelectable="true"
+                android:textSize="12.5sp" />
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 2: Lệnh gợi ý sao chép nhanh -->
+          <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="14dp">
+
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/badge_pill_bg"
+                  android:paddingStart="8dp"
+                  android:paddingTop="3dp"
+                  android:paddingEnd="8dp"
+                  android:paddingBottom="3dp"
+                  android:text="GỢI Ý LỆNH"
+                  android:textColor="@color/badge_mxh_text"
+                  android:textSize="10.5sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="8dp"
+                  android:text="Danh Sách Lệnh ADB Shell Tiện Ích"
+                  android:textColor="@color/text_primary"
+                  android:textSize="14sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 1: Doze Whitelist -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="1. Danh sách app miễn trừ Doze (không bị ngủ đông):"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdWhitelist"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="dumpsys deviceidle whitelist"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 2: Battery -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="2. Kiểm tra thông số pin, điện áp, nhiệt độ &amp; dòng sạc:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdBattery"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="dumpsys battery"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 3: Packages Enabled -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="3. Liệt kê toàn bộ package ứng dụng đang hoạt động:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdPackagesE"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="pm list packages -e"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 4: Packages 3rd Party -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="4. Liệt kê các ứng dụng bên thứ 3 đã cài đặt:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdPackages3"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="pm list packages -3"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 5: Getprop Incremental -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="5. Kiểm tra mã phiên bản bản dựng ROM HyperOS/MIUI:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdGetprop"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="getprop ro.build.version.incremental"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Lệnh 6: Power state -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="6. Kiểm tra trạng thái đánh thức màn hình (Wakefulness):"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdPower"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="dumpsys power | grep mWakefulness"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Đường kẻ phân cách -->
+              <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/card_stroke" />
+
+              <!-- 7. Ẩn vạch cử chỉ -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="7. Ẩn hoàn toàn vạch cử chỉ dưới đáy màn hình:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Tác dụng: Ẩn thanh vạch ngang điều hướng trên Xiaomi / HyperOS / MIUI, giúp trải nghiệm tràn viền toàn màn hình không bị che khuất."
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdHideGesture"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="settings put global hide_gesture_line 1"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+              <!-- Đường kẻ phân cách -->
+              <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/card_stroke" />
+
+              <!-- 8. Hiện lại vạch cử chỉ -->
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_theme_item_inactive"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="8. Khôi phục hiện lại vạch cử chỉ hệ thống:"
+                  android:textColor="@color/text_secondary"
+                  android:textIsSelectable="true"
+                  android:textSize="11.5sp" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Tác dụng: Bật lại thanh vạch ngang điều hướng cử chỉ mặc định của hệ thống."
+                  android:textColor="@color/primary"
+                  android:textSize="10.5sp" />
+
+                <TextView
+                  android:id="@+id/tvCmdShowGesture"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="6dp"
+                  android:background="@drawable/bg_code_box"
+                  android:fontFamily="monospace"
+                  android:paddingStart="10dp"
+                  android:paddingTop="7dp"
+                  android:paddingEnd="10dp"
+                  android:paddingBottom="7dp"
+                  android:text="settings put global hide_gesture_line 0"
+                  android:textColor="@color/accent_cyan"
+                  android:textIsSelectable="true"
+                  android:textSize="12sp"
+                  android:textStyle="bold" />
+              </LinearLayout>
+
+            </LinearLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Footer: Checkbox & Nút Đã hiểu -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingStart="16dp"
+      android:paddingTop="10dp"
+      android:paddingEnd="16dp"
+      android:paddingBottom="14dp">
+
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbDoNotShowAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không tự động hiện lại khi mở app"
+        android:textColor="@color/text_secondary"
+        android:textSize="12.5sp"
+        app:buttonTint="@color/primary" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDismissGuide"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="6dp"
+        android:minHeight="44dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Đã hiểu &amp; Bắt đầu sử dụng"
+        android:textColor="@android:color/white"
+        android:textSize="13.5sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/primary"
+        app:cornerRadius="22dp"
+        app:elevation="2dp" />
+    </LinearLayout>
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

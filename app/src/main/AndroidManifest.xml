@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FixNotificationXiaomi"
+        tools:targetApi="31">
+
+        <meta-data
+            android:name="moe.shizuku.client.V3_SUPPORT"
+            android:value="true" />
+
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- FileProvider phục vụ tự động cài đặt bản cập nhật APK trực tiếp trong app -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Dịch vụ theo dõi chu kỳ sạc & đo độ chai pin ngầm -->
+        <service
+            android:name=".BatteryTrackerService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync|specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Theo dõi chu kỳ sạc và đo độ chai pin ngầm" />
+        </service>
+
+        <!-- Dịch vụ Cửa Sổ Nổi (Floating Thermal HUD Overlay) -->
+        <service
+            android:name=".FloatingThermalOverlayService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Hiển thị HUD giám sát nhiệt độ CPU và Pin nổi trên màn hình" />
+        </service>
+
+        <!-- BroadcastReceiver tự động phát hiện cắm/rút sạc và khởi động máy -->
+        <receiver
+            android:name=".BatteryStateReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Màn hình khởi động với video Khoidong.mp4 -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:theme="@style/Theme.FixNotificationXiaomi">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Trang Cài đặt riêng biệt -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round" />
+
+        <!-- Trang Thông tin thiết bị (My Device) -->
+        <activity
+            android:name=".MyDeviceActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="My Device"
+            android:roundIcon="@mipmap/ic_launcher_round" />
+
+        <!-- Trang Màn Hình Giám Sát Nhiệt Độ Realtime (Pin & CPU) -->
+        <activity
+            android:name=".ThermalMonitorActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Màn Hình Giám Sát Nhiệt Độ"
+            android:roundIcon="@mipmap/ic_launcher_round" />
+
+        <!-- Trang Kiểm tra Chai Pin & Sức Khỏe Pin -->
+        <activity
+            android:name=".BatteryHealthActivity"
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Chai Pin"
+            android:roundIcon="@mipmap/ic_launcher_round" />
+
+        <!-- Trang Xem Video Tự Hào Việt Nam -->
+        <activity
+            android:name=".VietnamVideoActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Theme.FixNotificationXiaomi" />
+
+    </application>
+
+</manifest>

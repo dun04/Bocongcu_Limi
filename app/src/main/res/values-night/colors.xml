@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Luxury HyperOS Dark Palette (Dark Themes) -->
+    <color name="bg_dark">#0B0C10</color>
+    <color name="surface_dark">#13141B</color>
+    <color name="card_bg">#161720</color>
+    <color name="card_stroke">#252838</color>
+    <color name="card_stroke_active">#FF6900</color>
+
+    <!-- Xiaomi HyperOS Brand Colors -->
+    <color name="primary">#FF6900</color>
+    <color name="primary_variant">#E05300</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <!-- Vibrant Accents -->
+    <color name="accent_green">#00E676</color>
+    <color name="accent_green_dark">#00B359</color>
+    <color name="accent_red">#FF4D4D</color>
+    <color name="accent_orange">#FF9800</color>
+    <color name="accent_cyan">#00E5FF</color>
+
+    <!-- Category Badges -->
+    <color name="badge_chat_bg">#13273D</color>
+    <color name="badge_chat_text">#38BDF8</color>
+    <color name="badge_mxh_bg">#2A1D4E</color>
+    <color name="badge_mxh_text">#C084FC</color>
+    <color name="badge_bank_bg">#093322</color>
+    <color name="badge_bank_text">#34D399</color>
+    <color name="badge_gms_bg">#36144B</color>
+    <color name="badge_gms_text">#F472B6</color>
+    <color name="badge_email_bg">#38240D</color>
+    <color name="badge_email_text">#FBBF24</color>
+    <color name="badge_default_bg">#1F212D</color>
+    <color name="badge_default_text">#9CA3AF</color>
+
+    <!-- Terminal & Code -->
+    <color name="terminal_bg">#07080A</color>
+    <color name="terminal_header">#101217</color>
+    <color name="terminal_text">#00FF9D</color>
+    <color name="terminal_text_secondary">#8E92A4</color>
+
+    <!-- Popup / Dialog Card Tokens (Dark Mode - Subtle sleek dark border) -->
+    <color name="popup_stroke">#252838</color>
+    <color name="popup_divider">#252838</color>
+
+    <!-- Typography & Frosted Dark Glass Buttons (Dark Mode) -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8E92A4</color>
+    <color name="button_capsule_bg">#1E202B</color>
+    
+    <!-- Translucent Frosted Glass Bottom Navigation (Dark Mode - iOS & AndroidLiquidGlass Style) -->
+    <color name="frosted_glass_nav_color">#E00F1118</color>
+    <color name="frosted_glass_border">#38FFFFFF</color>
+
+    <!-- Liquid Glass Acrylic Tokens (Dark Mode - Kyant0 Style) -->
+    <color name="nav_liquid_highlight">#50FFFFFF</color>
+    <color name="nav_liquid_start">#E61A1E2B</color>
+    <color name="nav_liquid_end">#CC0F1118</color>
+    <color name="nav_active_indicator_pill">#E6272B3C</color>
+    <color name="nav_active_indicator_stroke">#66FFFFFF</color>
+    <color name="text_nav_active">#FF6900</color>
+    <color name="text_nav_inactive">#8E92A4</color>
+
+    <!-- Semantic Glass Cards (Dark Mode) -->
+    <color name="glass_card_bg">#E6141622</color>
+    <color name="glass_card_stroke">#332E344A</color>
+    <color name="glass_card_highlight">#40FFFFFF</color>
+    <color name="glass_flagship_bg">#2024170D</color>
+    <color name="glass_flagship_stroke">#66FF9800</color>
+    <color name="glass_perm_bg">#1C082417</color>
+    <color name="glass_perm_stroke">#5000E676</color>
+    <color name="glass_shizuku_alert_bg">#252E1416</color>
+    <color name="glass_shizuku_alert_stroke">#66FF4D4D</color>
+    <color name="glass_shizuku_warn_bg">#252B1C0B</color>
+    <color name="glass_shizuku_warn_stroke">#66FF9800</color>
+    <color name="glass_shizuku_ok_bg">#1C082417</color>
+    <color name="glass_shizuku_ok_stroke">#5000E676</color>
+
+    <!-- Hero Buttons Gradient -->
+    <color name="hero_btn_orange_start">#FF7A00</color>
+    <color name="hero_btn_orange_end">#FF5200</color>
+    <color name="hero_btn_green_start">#00E676</color>
+    <color name="hero_btn_green_end">#00B359</color>
+
+    <!-- Permission Shortcut Buttons (Dark Mode) -->
+    <color name="btn_autostart_bg">#132B45</color>
+    <color name="btn_autostart_stroke">#38BDF8</color>
+    <color name="btn_autostart_text">#38BDF8</color>
+    <color name="btn_battery_bg">#0D3822</color>
+    <color name="btn_battery_stroke">#34D399</color>
+    <color name="btn_battery_text">#34D399</color>
+</resources>

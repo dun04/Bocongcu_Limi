@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/batteryHealthRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/bg_dark">
+
+  <!-- Header Bar: Nút Back + Tiêu đề 'Chai Pin' + Nút 'Lịch sử' -->
+  <LinearLayout
+    android:id="@+id/topBatteryHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+      android:id="@+id/btnBackBatteryHealth"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:focusable="true"
+      android:padding="8dp"
+      android:src="@drawable/ic_arrow_back"
+      app:tint="@color/text_primary" />
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_weight="1"
+      android:text="Chai Pin"
+      android:textColor="@color/text_primary"
+      android:textSize="18.5sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/btnHistoryBatteryHealth"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:focusable="true"
+      android:padding="8dp"
+      android:text="Lịch sử"
+      android:textColor="@color/primary"
+      android:textSize="14sp"
+      android:textStyle="bold" />
+  </LinearLayout>
+
+  <androidx.core.widget.NestedScrollView
+    android:id="@+id/batteryScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/topBatteryHeader"
+    android:clipToPadding="false"
+    android:overScrollMode="never">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingHorizontal="16dp"
+      android:paddingBottom="30dp">
+
+      <!-- Dòng Dữ liệu ghi gần nhất -->
+      <TextView
+        android:id="@+id/tvLastRecordedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Dữ liệu ghi Gần nhất —"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+      <!-- Tiêu đề trung tâm Mức Sức khỏe Pin -->
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Mức Sức khỏe Pin"
+        android:textColor="@color/text_primary"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+      <!-- Khung Viên Pin Lớn Nằm Ngang -->
+      <RelativeLayout
+        android:id="@+id/layoutBatteryGraphicContainer"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center">
+
+        <!-- Thân viên pin -->
+        <LinearLayout
+          android:id="@+id/batteryBody"
+          android:layout_width="match_parent"
+          android:layout_height="110dp"
+          android:layout_marginEnd="10dp"
+          android:background="@drawable/bg_battery_body"
+          android:gravity="center"
+          android:orientation="horizontal"
+          android:padding="6dp">
+
+          <!-- 5 vạch pin tượng trưng -->
+          <View
+            android:id="@+id/bar1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_battery_bar" />
+
+          <View
+            android:id="@+id/bar2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_battery_bar" />
+
+          <View
+            android:id="@+id/bar3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_battery_bar" />
+
+          <View
+            android:id="@+id/bar4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_battery_bar" />
+
+          <View
+            android:id="@+id/bar5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_battery_bar" />
+        </LinearLayout>
+
+        <!-- Cực dương pin bên phải -->
+        <View
+          android:layout_width="10dp"
+          android:layout_height="40dp"
+          android:layout_alignParentEnd="true"
+          android:layout_centerVertical="true"
+          android:background="@drawable/bg_battery_cap" />
+
+        <!-- Chữ hiển thị kết quả sức khỏe ở giữa viên pin -->
+        <TextView
+          android:id="@+id/tvHealthBigStatus"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginEnd="10dp"
+          android:shadowColor="#80000000"
+          android:shadowDx="1"
+          android:shadowDy="2"
+          android:shadowRadius="4"
+          android:text="Không có bản ghi"
+          android:textColor="@color/text_primary"
+          android:textSize="18sp"
+          android:textStyle="bold" />
+      </RelativeLayout>
+
+      <!-- Cảnh báo cắm sạc -->
+      <LinearLayout
+        android:id="@+id/layoutChargingPrompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+          android:id="@+id/tvChargingStatusPrompt"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:text=" Vui lòng cắm sạc trước khi kiểm tra"
+          android:textColor="@color/text_secondary"
+          android:textSize="13.5sp" />
+      </LinearLayout>
+
+      <!-- Lưới 4 Card Thông Tin (2 Hàng x 2 Cột) -->
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+
+        <!-- Hàng 1: Card 1 (Dung lượng thiết kế) & Card 2 (Dung lượng ước tính) -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          android:orientation="horizontal">
+
+          <!-- Card 1: Dung lượng (Giá trị xếp hạng) -->
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRatedCapacity"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="14dp">
+
+              <ImageView
+                android:id="@+id/icRated"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_battery_small"
+                app:tint="@color/primary" />
+
+              <ImageView
+                android:id="@+id/btnInfoRated"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_nav_shield"
+                app:tint="@color/text_secondary" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TextView
+                  android:id="@+id/tvRatedCapacity"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="6100 mAh"
+                  android:textColor="@color/text_primary"
+                  android:textSize="16sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Dung lượng (Giá trị xếp hạng)"
+                  android:textColor="@color/text_secondary"
+                  android:textSize="11sp" />
+              </LinearLayout>
+            </RelativeLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 2: Dung lượng Ước tính Hiện tại -->
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardEstimatedCapacity"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="14dp">
+
+              <ImageView
+                android:id="@+id/icEstimate"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_bolt_small"
+                app:tint="@color/primary" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TextView
+                  android:id="@+id/tvEstimatedCapacity"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Không có bản ghi"
+                  android:textColor="@color/text_primary"
+                  android:textSize="15sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Dung lượng Ước tính Hiện tại"
+                  android:textColor="@color/text_secondary"
+                  android:textSize="11sp" />
+              </LinearLayout>
+            </RelativeLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Hàng 2: Card 3 (Thời gian Sạc) & Card 4 (Thay đổi hiển thị mức pin) -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+          <!-- Card 3: Thời gian Sạc -->
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardChargingTime"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="14dp">
+
+              <ImageView
+                android:id="@+id/icTime"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_nav_tools"
+                app:tint="@color/primary" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TextView
+                  android:id="@+id/tvChargingTime"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Không có bản ghi"
+                  android:textColor="@color/text_primary"
+                  android:textSize="15sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Thời gian Sạc"
+                  android:textColor="@color/text_secondary"
+                  android:textSize="11sp" />
+              </LinearLayout>
+            </RelativeLayout>
+          </com.google.android.material.card.MaterialCardView>
+
+          <!-- Card 4: Thay Đổi Hiển Thị Mức Pin -->
+          <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBatteryDelta"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/card_bg"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="14dp">
+
+              <ImageView
+                android:id="@+id/icDelta"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_nav_system"
+                app:tint="@color/primary" />
+
+              <ImageView
+                android:id="@+id/btnInfoDelta"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_nav_shield"
+                app:tint="@color/text_secondary" />
+
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TextView
+                  android:id="@+id/tvBatteryDelta"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Không có bản ghi"
+                  android:textColor="@color/text_primary"
+                  android:textSize="15sp"
+                  android:textStyle="bold" />
+
+                <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="2dp"
+                  android:text="Thay Đổi Hiển Thị Mức Pin"
+                  android:textColor="@color/text_secondary"
+                  android:textSize="11sp" />
+              </LinearLayout>
+            </RelativeLayout>
+          </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+      </LinearLayout>
+
+      <!-- Card Dòng Sạc & Cảm Biến Phần Cứng Thời Gian Thực (Live Telemetry) -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLiveTelemetry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="14dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+              android:layout_width="18dp"
+              android:layout_height="18dp"
+              android:src="@drawable/ic_bolt_small"
+              app:tint="@color/primary" />
+
+            <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="6dp"
+              android:layout_weight="1"
+              android:text="Thông số cảm biến trực tiếp"
+              android:textColor="@color/text_primary"
+              android:textSize="13sp"
+              android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnOpenSensorChart"
+              style="@style/Widget.Material3.Button.TonalButton"
+              android:layout_width="wrap_content"
+              android:layout_height="32dp"
+              android:backgroundTint="@color/card_stroke"
+              android:insetTop="0dp"
+              android:insetBottom="0dp"
+              android:paddingHorizontal="10dp"
+              android:paddingVertical="0dp"
+              android:text="Biểu đồ"
+              android:textColor="@color/primary"
+              android:textSize="11.5sp"
+              android:textStyle="bold"
+              app:cornerRadius="16dp"
+              app:icon="@drawable/ic_tab_battery"
+              app:iconGravity="textStart"
+              app:iconPadding="4dp"
+              app:iconSize="13dp"
+              app:iconTint="@color/primary" />
+          </LinearLayout>
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical">
+
+              <TextView
+                android:id="@+id/tvLiveCurrent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 mA"
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Dòng nạp"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+            </LinearLayout>
+
+            <View
+              android:layout_width="1dp"
+              android:layout_height="24dp"
+              android:layout_gravity="center_vertical"
+              android:background="@color/card_stroke" />
+
+            <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical">
+
+              <TextView
+                android:id="@+id/tvLiveVoltage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0 V"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Điện thế"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+            </LinearLayout>
+
+            <View
+              android:layout_width="1dp"
+              android:layout_height="24dp"
+              android:layout_gravity="center_vertical"
+              android:background="@color/card_stroke" />
+
+            <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical">
+
+              <TextView
+                android:id="@+id/tvLivePower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0 W"
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Công suất"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+            </LinearLayout>
+
+            <View
+              android:layout_width="1dp"
+              android:layout_height="24dp"
+              android:layout_gravity="center_vertical"
+              android:background="@color/card_stroke" />
+
+            <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:orientation="vertical">
+
+              <TextView
+                android:id="@+id/tvLiveTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--°C"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Nhiệt độ"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+            </LinearLayout>
+          </LinearLayout>
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!-- Card Mẹo Đo Chai Pin Chuẩn 100% -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBatteryTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="14dp">
+
+          <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/badge_pill_bg"
+              android:paddingStart="8dp"
+              android:paddingTop="3dp"
+              android:paddingEnd="8dp"
+              android:paddingBottom="3dp"
+              android:text="MẸO ĐO CHUẨN 100%"
+              android:textColor="@color/accent_orange"
+              android:textSize="10.5sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:text="Bí Quyết Đo Độ Chai Pin Chính Xác"
+              android:textColor="@color/text_primary"
+              android:textSize="13.5sp"
+              android:textStyle="bold" />
+          </LinearLayout>
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="3.5dp"
+            android:text="• Khoảng sạc lý tưởng: Hãy cắm sạc khi pin còn khoảng 15% - 30% và để sạc liên tục lên trên 80% (tổng nạp ≥ 50% pin) để thuật toán tích phân Coulomb đạt độ chính xác cao nhất.\n• Tự động ngắt khi 100%: Ứng dụng sẽ tự động chốt kết quả và dừng đo ngay khi pin chạm mốc 100%, giúp kết quả không bị sai lệch nếu bạn ngâm sạc hoặc cắm qua đêm.\n• Ổn định nhiệt độ: Trong lúc sạc đo pin, nên hạn chế chơi game nặng hoặc tác vụ quá nóng để nhiệt độ pin ổn định, giúp chip đo đếm dung lượng phần cứng hoạt động chuẩn xác nhất."
+            android:textColor="@color/text_primary"
+            android:textIsSelectable="true"
+            android:textSize="12sp" />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!-- Card Banner Hướng Dẫn Không Hạn Chế Pin & Tự Khởi Chạy -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBatteryOptBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="12dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chạy ngầm khi tắt màn hình:"
+            android:textColor="@color/primary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Để đo dung lượng chính xác trong suốt quá trình cắm sạc (ngay cả khi bạn tắt màn hình), vui lòng cấp quyền Tự khởi chạy và chuyển Tiết kiệm pin sang Không hạn chế."
+            android:textColor="@color/text_secondary"
+            android:textSize="11.5sp"
+            android:lineSpacingExtra="2dp" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOpenBatteryOptFromHealth"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:minWidth="0dp"
+            android:minHeight="32dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Cài đặt Tiết kiệm pin "
+            android:textColor="@color/primary"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/button_capsule_bg"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp" />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!-- Card Giải Thích Độ Chuẩn Xác & So Sánh Với Hệ Thống Hãng -->
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardExplainDiff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="12dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Tại sao số đo lệch 1 - 2% so với Hệ điều hành hãng?"
+              android:textColor="@color/primary"
+              android:textSize="12sp"
+              android:textStyle="bold" />
+          </LinearLayout>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:lineSpacingExtra="2dp"
+            android:text="Ví dụ hệ thống hãng báo pin còn 93% nhưng App đo được 95% thì kết quả có chuẩn không? Xem so sánh nguyên lý đo lường giữa Xiaomi và App."
+            android:textColor="@color/text_secondary"
+            android:textSize="11.5sp" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExplainDiff"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:minWidth="0dp"
+            android:minHeight="32dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Xem giải thích chuẩn kỹ thuật "
+            android:textColor="@color/primary"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/button_capsule_bg"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp" />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!-- Nút Thao Tác Đo / Kiểm Tra Sạc -->
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStartMeasure"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Bắt đầu đo dung lượng pin thực tế"
+        android:textColor="@color/primary"
+        android:textSize="13.5sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/nav_active_indicator_pill"
+        app:cornerRadius="24dp"
+        app:strokeColor="@color/nav_active_indicator_stroke"
+        app:strokeWidth="1dp" />
+
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

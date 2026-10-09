@@ -1,0 +1,1098 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_margin="14dp"
+  app:cardBackgroundColor="@color/surface_dark"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Header: Flagship Gold/Orange HyperOS Style -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingStart="18dp"
+      android:paddingTop="16dp"
+      android:paddingEnd="16dp"
+      android:paddingBottom="14dp">
+
+      <!-- App Icon Badge -->
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:cardBackgroundColor="@color/button_capsule_bg"
+        app:cardCornerRadius="19dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <ImageView
+          android:id="@+id/ivFlagshipIcon"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType="centerCrop"
+          android:src="@drawable/app_icon" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHẾ ĐỘ NÂNG CAO"
+            android:textColor="@color/text_primary"
+            android:textSize="15.5sp"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/badge_pill_bg"
+            android:paddingStart="7dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="2dp"
+            android:text="FLAGSHIP"
+            android:textColor="@color/primary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Tối ưu chuyên sâu cho Flagship Xiaomi &amp; HyperOS 3 / 2"
+          android:textColor="@color/primary"
+          android:textSize="11.5sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+
+      <ImageView
+        android:id="@+id/btnCloseAdvancedDialog"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_theme_item_inactive"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="7dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:maxHeight="520dp"
+      android:overScrollMode="never"
+      android:descendantFocusability="blocksDescendants"
+      android:padding="16dp">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 1. BẢNG HƯỚNG DẪN DÀNH RIÊNG CHO DÒNG FLAGSHIP -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="14dp"
+          app:cardBackgroundColor="@color/glass_flagship_bg"
+          app:cardCornerRadius="18dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_flagship_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Hướng Dẫn Dành Riêng Cho Flagship"
+              android:textColor="@color/primary"
+              android:textSize="14sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:lineSpacingExtra="4dp"
+              android:text="• Áp dụng cho các dòng máy Flagship &amp; HyperOS 3 / 2 (Android 16 / 15):\n• Nguyên nhân đứt kết nối FCM (ERR_IO_FIN) sau 1 ngày: Khi chạy lệnh thông thường, thông báo chỉ giữ được 24 giờ rồi lại mất vì: (1) Trình quản lý pin PowerKeeper tự động kích hoạt lại cơ chế đóng băng Freezer và xóa danh sách trắng; (2) Google Phenotype Sync định kỳ tự đồng bộ và đè mất mốc Heartbeat 120s; (3) Lệnh dumpsys chỉ lưu trên RAM tạm thời nên bị quét sạch sau chu kỳ dọn dẹp hàng ngày; (4) App Standby Bucket tự hạ app xuống RESTRICTED hoặc RARE.\n• Bộ lệnh nâng cấp mới đặc trị chống mất sau 1 ngày: Vô hiệu hóa Freezer và Smart Power của PowerKeeper nhưng vẫn duy trì quyền đánh thức ngầm của hệ thống, chuyển 100% sang ghi cố định vào settings.db, deviceidle.xml và netpolicy.xml, ép bucket ACTIVE (10). Cấu hình duy trì bền bỉ từ 2–4 tuần đến hàng tháng!\n• Quy trình thực hiện tối ưu nhất:\n 1. Bấm 'Chạy tất cả 7 lệnh nâng cao' bên dưới (chỉ cần chạy 1 lần qua Shizuku).\n 2. Mở Shizuku bấm Dừng (Stop) > Tắt Gỡ lỗi không dây &amp; Tùy chọn nhà phát triển.\n 3. Khởi động lại máy (Restart): Máy nạp cấu hình vĩnh viễn, môi trường sạch 100% không bị app ngân hàng (BIDV, MB Bank) chặn!\n 4. Kiểm tra đường truyền: Mở bàn phím cuộc gọi bấm *#*#426#*#* để xác nhận Server: CONNECTED."
+              android:textColor="@color/text_primary"
+              android:textSize="12.5sp" />
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 2. SO SÁNH FLAGSHIP VS TẦM TRUNG -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="14dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="18dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="So Sánh Khác Biệt: Flagship vs Tầm Trung"
+              android:textColor="@color/primary"
+              android:textSize="14sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:lineSpacingExtra="4dp"
+              android:text="1. Khác biệt phần cứng &amp; Profile hiệu năng (Flagship vs Tầm trung): Các dòng máy Flagship tích hợp chip quản lý nguồn thông minh và cảm biến nhiệt độ dày đặc. HyperOS 3 mặc định kích hoạt chế độ giám sát Aurogon &amp; Greezer để tối đa hóa thời lượng On-Screen pin. Trong khi đó, các dòng máy tầm trung có profile hiệu năng cởi mở hơn, không bị Greezer siết socket nền.\n2. Khác biệt cơ chế bóp ngầm (Greezer &amp; PowerKeeper Freezer): Trên Flagship HyperOS 3, hệ thống liên tục quét và coi các kết nối socket TCP duy trì ngầm của Google Play Services là tiêu hao pin ẩn, tự động cưỡng bức ngắt socket (ERR_IO_FIN). Bộ lệnh Nâng cao này chính là chìa khóa mở chiếc 'vòng kim cô' đó để máy Flagship nhận thông báo tức thì như máy tầm trung."
+              android:textColor="@color/text_primary"
+              android:textSize="12sp" />
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 3. BẢNG GIẢI THÍCH CHI TIẾT TỪNG CÂU LỆNH NÂNG CAO -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="14dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="18dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Giải Thích Cơ Chế Từng Câu Lệnh Nâng Cao"
+              android:textColor="@color/primary"
+              android:textSize="14sp"
+              android:textStyle="bold" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:lineSpacingExtra="4dp"
+              android:text="• Lệnh NC 1 (Tắt Millet Traffic): Vô hiệu hóa tính năng ngắt mạng ngầm ở cả 3 bảng system, global, secure và tắt handshake của Xiaomi HyperOS 3 / 2, giữ cổng TCP 5228 thông suốt khi khóa máy.\n• Lệnh NC 2 (Chặn Phenotype Sync &amp; Tắt Phantom Killer): Chặn Google Play Services tự động ghi đè cấu hình mạng từ server, mở rộng tiến trình con lên tối đa, ngăn hệ điều hành diệt ngầm subprocesses.\n• Lệnh NC 3 (Ghi Vĩnh Viễn Doze &amp; NetPolicy Whitelist - ĐỘT PHÁ): Ghi trực tiếp vào deviceidle.xml và netpolicy.xml bằng lệnh cmd (thay thế dumpsys tạm thời trong RAM). Danh sách trắng tồn tại vĩnh viễn qua cả khởi động lại máy.\n• Lệnh NC 4 (Cấp Toàn Quyền AppOps GMS &amp; Google Push): Cấp WAKE_LOCK, chạy nền liên tục, tự khởi chạy (10008), cửa sổ ngầm (10021), báo thức chính xác và kích hoạt cơ chế đồng bộ Tickle cho toàn bộ dịch vụ Google.\n• Lệnh NC 5 (Làm Mới Socket FCM &amp; Cấp Quyền Nền App): Thiết lập cờ ping socket 120s, phát broadcast GTALK_HEARTBEAT để tái bắt tay lập tức với máy chủ mtalk.google.com.\n• Lệnh NC 6 (Khóa App Standby Bucket ACTIVE - Mức 10): Ép GMS, GSF và các ứng dụng nhận tin luôn nằm ở nhóm cao nhất ACTIVE (10), không bao giờ bị hệ thống tự hạ xuống RESTRICTED hoặc RARE.\n• Lệnh NC 7 (Vô Hiệu Hóa Freezer &amp; Smart Power Của PowerKeeper): Tắt bộ đóng băng ngầm miui_freezer_enable và chế độ tiết kiệm pin thông minh SPC, đồng thời mở toàn quyền chạy nền cho PowerKeeper để hệ thống luôn thức giấc đánh thức app khi có tin nhắn!"
+              android:textColor="@color/text_primary"
+              android:textSize="12sp" />
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TIÊU ĐỀ KHU VỰC THỰC THI -->
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="10dp"
+          android:text="Danh Sách 7 Câu Lệnh Nâng Cao"
+          android:textColor="@color/text_primary"
+          android:textSize="15sp"
+          android:textStyle="bold" />
+
+        <!-- LỆNH NC 1 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 1"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Tắt Đóng Băng Mạng Millet"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Box hiển thị câu lệnh -->
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="settings put system network_traffic_millet_enable 0 &amp;&amp; settings put global network_traffic_millet_enable 0 &amp;&amp; settings put secure network_traffic_millet_enable 0 &amp;&amp; setprop persist.sys.millet.handshake false"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <!-- Nút Thao tác Pill không bị cắt chữ -->
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv1"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv1"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 2 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 2"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Tắt Diệt Tiến Trình Con Phantom"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="device_config set_sync_disabled_for_tests persistent &amp;&amp; device_config put_sync_disabled_for_tests gms_network &amp;&amp; device_config put_sync_disabled_for_tests gms_network_phenotype &amp;&amp; device_config put_sync_disabled_for_tests activity_manager_deviceidle &amp;&amp; device_config put activity_manager max_phantom_processes 2147483647 &amp;&amp; settings put global settings_enable_monitor_phantom_procs false"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv2"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv2"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 3 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 3"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Khóa Greezer &amp; Bảo Vệ GMS / GSF"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="cmd deviceidle whitelist +[GMS, GSF &amp;amp; Các App] &amp;amp;&amp;amp; cmd deviceidle except-idle-whitelist +[GMS, GSF &amp;amp; Các App] &amp;amp;&amp;amp; cmd netpolicy add restrict-background-whitelist [GMS, GSF &amp;amp; Các App]"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv3"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv3"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 4 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 4"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Cưỡng Bức Đồng Bộ Google &amp; Gmail"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="cmd appops set com.google.android.gms WAKE_LOCK allow &amp;&amp; cmd appops set com.google.android.gms RUN_IN_BACKGROUND allow &amp;&amp; cmd appops set com.google.android.gms 10008 allow &amp;&amp; cmd appops set com.google.android.gms 10021 allow &amp;&amp; cmd appops set com.google.android.gms BOOT_COMPLETED allow &amp;&amp; cmd appops set com.google.android.gms SCHEDULE_EXACT_ALARM allow &amp;&amp; cmd appops set com.google.android.gms USE_EXACT_ALARM allow"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv4"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv4"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 5 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 5"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Làm mới lại FCM Server"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="settings put global gtalk_ping_interval_ms 120000 &amp;amp;&amp;amp; cmd appops set [Các App] WAKE_LOCK / START_FOREGROUND / 10020 / 10021 / 10022 allow &amp;amp;&amp;amp; am broadcast -a GTALK_HEARTBEAT"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv5"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv5"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 6 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 6"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Khóa Standby Bucket ACTIVE (10)"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="am set-standby-bucket [GMS, GSF &amp;amp; Các App] active &amp;amp;&amp;amp; settings put global adaptive_battery_management_enabled 0 &amp;amp;&amp;amp; settings put global app_standby_enabled 0"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv6"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv6"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- LỆNH NC 7 -->
+        <com.google.android.material.card.MaterialCardView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          app:cardBackgroundColor="@color/glass_card_bg"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="0dp"
+          app:strokeColor="@color/glass_card_stroke"
+          app:strokeWidth="1dp">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+              <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/badge_pill_bg"
+                android:paddingStart="7dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="7dp"
+                android:paddingBottom="2dp"
+                android:text="LỆNH NC 7"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Vô Hiệu Hóa PowerKeeper &amp; Freezer"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:background="@drawable/bg_code_box"
+              android:fontFamily="monospace"
+              android:padding="10dp"
+              android:text="settings put global miui_powerkeeper_smart_power_enabled 0 &amp;&amp; settings put global miui_freezer_enable 0 &amp;&amp; cmd appops set com.miui.powerkeeper RUN_IN_BACKGROUND ignore &amp;&amp; cmd appops set com.miui.powerkeeper RUN_ANY_IN_BACKGROUND ignore &amp;&amp; cmd appops set com.miui.powerkeeper WAKE_LOCK ignore &amp;&amp; pm disable-user --user 0 com.miui.powerkeeper/com.miui.powerkeeper.statemachine.PowerStateMachineService"
+              android:textColor="@color/primary"
+              android:textSize="11sp" />
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:gravity="end"
+              android:orientation="horizontal">
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCopyAdv7"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_content_copy"
+                app:iconSize="18dp"
+                app:iconTint="@color/text_primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/button_capsule_bg"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/glass_card_stroke"
+                app:strokeWidth="1dp" />
+
+              <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRunAdv7"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:padding="0dp"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconSize="18dp"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:backgroundTint="@color/nav_active_indicator_pill"
+                app:cornerRadius="18dp"
+                app:strokeColor="@color/nav_active_indicator_stroke"
+                app:strokeWidth="1dp" />
+            </LinearLayout>
+          </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Footer Actions -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingStart="16dp"
+      android:paddingTop="12dp"
+      android:paddingEnd="16dp"
+      android:paddingBottom="14dp">
+
+      <!-- Nút Chạy Tất Cả 7 Lệnh Nâng Cao -->
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRunAllAdvanced"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:minHeight="50dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:backgroundTint="@null"
+        android:background="@drawable/bg_btn_gradient_orange"
+        android:text="Chạy tất cả 7 lệnh nâng cao"
+        android:textColor="@color/on_primary"
+        android:textSize="14.5sp"
+        android:textStyle="bold"
+        app:cornerRadius="25dp"
+        app:elevation="3dp"
+        app:icon="@drawable/ic_play_arrow"
+        app:iconSize="18dp"
+        app:iconTint="@color/on_primary"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp" />
+
+      <!-- Nút Đóng Pill trung tính -->
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDismissAdvanced"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:minHeight="40dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Đóng bảng nâng cao"
+        android:textColor="@color/text_secondary"
+        android:textSize="12.5sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/button_capsule_bg"
+        app:cornerRadius="20dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp" />
+    </LinearLayout>
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

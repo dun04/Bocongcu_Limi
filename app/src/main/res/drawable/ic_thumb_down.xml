@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Morphicons / Lucide ThumbsDown Icon -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M17,14V2" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9,18.12 10,14H4.17a2,2 0 0,1 -1.92,-2.56l2.33,-8A2,2 0 0,1 6.5,2H20a2,2 0 0,1 2,2v8a2,2 0 0,1 -2,2h-3l-5,7a2,2 0 0,1 -3,-2.88z" />
+</vector>

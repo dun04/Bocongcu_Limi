@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardDialogResetConfirmRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="22dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Header: Icon, Tiêu đề & Nút đóng -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:cardBackgroundColor="#26E53935"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#50E53935"
+        app:strokeWidth="1dp">
+
+        <ImageView
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_reset_clock"
+          app:tint="@color/accent_red" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khôi phục mặc định?"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/badge_pill_bg"
+            android:backgroundTint="#26E53935"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="1.5dp"
+            android:text="15 LỆNH"
+            android:textColor="@color/accent_red"
+            android:textSize="9.5sp"
+            android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Xác nhận hoàn nguyên toàn bộ hệ thống"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDialogResetConfirmClose"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/ic_close_white"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="12dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Box mô tả chi tiết các lệnh sẽ hoàn nguyên -->
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:maxHeight="220dp"
+      android:fadeScrollbars="false"
+      android:overScrollMode="never">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_code_box"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Thao tác này sẽ thực hiện tuần tự 15 câu lệnh hoàn nguyên toàn diện về xuất xưởng:"
+          android:textColor="@color/text_primary"
+          android:textSize="12sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:lineSpacingExtra="3.5dp"
+          android:text="• Fix hệ thống: Bật lại Doze, Standby, Wi-Fi Power Save, Greezer, xóa danh sách trắng Millet.\n• Flagship nâng cao: Bật lại Millet Traffic Freeze, đặt lại giới hạn Phantom Killer (32), hoàn nguyên Aurogon GMS/GSF, bật lại AI Pin thích ứng và PowerKeeper/Freezer.\n• Định vị GPS: Xóa NTP Việt Nam tùy biến, hoàn nguyên quyền GPS Google Services, gỡ Fused Location khỏi Doze, tắt quét Wi-Fi/Bluetooth ngầm.\n• DeviceConfig: Xóa sạch toàn bộ hằng số tùy biến trong DeviceConfig về xuất xưởng."
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
+    </ScrollView>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:gravity="center"
+      android:text="Bạn có chắc chắn muốn chạy qua Shizuku không?"
+      android:textColor="@color/text_primary"
+      android:textSize="12.5sp"
+      android:textStyle="bold" />
+
+    <!-- Nút 1: Khôi phục Full lệnh qua Shizuku -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnConfirmRunResetShizuku"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="46dp"
+      android:layout_marginTop="12dp"
+      android:minHeight="46dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Khôi phục Full lệnh (Shizuku)"
+      android:textColor="@color/accent_red"
+      android:textSize="13.5sp"
+      android:textStyle="bold"
+      app:icon="@drawable/ic_refresh"
+      app:iconGravity="textStart"
+      app:iconPadding="8dp"
+      app:iconSize="18dp"
+      app:iconTint="@color/accent_red"
+      app:backgroundTint="#26E53935"
+      app:cornerRadius="23dp"
+      app:strokeColor="#50E53935"
+      app:strokeWidth="1.2dp" />
+
+    <!-- Nút 2: Hủy -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnCancelResetConfirm"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="10dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Hủy bỏ"
+      android:textColor="@color/text_secondary"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/button_capsule_bg"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp" />
+
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
