@@ -1,241 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardDialogSplashRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardDialogSplashRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="20dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="20dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:padding="20dp">
 
+    <!-- Header: Icon, Tiêu đề & Nút đóng -->
     <LinearLayout
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:cardBackgroundColor="#15FFFFFF"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#25FFFFFF"
+        app:strokeWidth="1dp">
+
+        <ImageView
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_sparkles"
+          app:tint="#FFFFFF" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Header: Icon, Tiêu đề & Nút đóng -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                app:cardBackgroundColor="#15FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#25FFFFFF"
-                app:strokeWidth="1dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_sparkles"
-                    app:tint="#FFFFFF" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hoạt ảnh ứng dụng"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16.5sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Tùy biến video khởi động app"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDialogSplashClose"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:padding="0dp"
-                app:icon="@drawable/ic_close_white"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="20dp"
-                app:iconTint="@color/text_secondary" />
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/card_stroke" />
-
-        <!-- Hàng Switch 1: Bật/Tắt Video Splash -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_code_box"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="14dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bật video khi mở app"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Phát video khoidong.mp4 (tối đa 10s)"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11.5sp" />
-            </LinearLayout>
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchDialogEnableSplash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                app:thumbTint="@color/switch_thumb_selector"
-                app:trackDecorationTint="@null"
-                app:trackTint="@color/switch_track_selector" />
-        </LinearLayout>
-
-        <!-- Hàng Switch 2: Bật/Tắt Hiệu ứng Dynamic màu nền Aurora -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_code_box"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="14dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hiệu ứng Dynamic màu nền"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Dải màu Aurora chuyển động mượt mà"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11.5sp" />
-            </LinearLayout>
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchDialogEnableDynamicBg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                app:thumbTint="@color/switch_thumb_selector"
-                app:trackDecorationTint="@null"
-                app:trackTint="@color/switch_track_selector" />
-        </LinearLayout>
-
-        <!-- Nút 1: Xem thử video khởi động -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDialogPreviewSplash"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="12dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Xem thử video khởi động"
-            android:textColor="@color/text_primary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_filmstrip"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/primary"
-            app:backgroundTint="@color/button_capsule_bg"
-            app:cornerRadius="22dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp" />
-
-        <!-- Nút 2: Nhập video từ thiết bị -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDialogImportCustomVideo"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Nhập video từ thiết bị (tối đa 10s)"
-            android:textColor="@color/text_nav_active"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_tray_upload"
-            app:iconGravity="textStart"
-            app:iconPadding="10dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/primary"
-            app:backgroundTint="@color/nav_active_indicator_pill"
-            app:cornerRadius="22dp"
-            app:strokeColor="@color/nav_active_indicator_stroke"
-            app:strokeWidth="1dp" />
-
-        <!-- Nút Khôi phục video mặc định -->
         <TextView
-            android:id="@+id/btnDialogResetSplashVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:padding="6dp"
-            android:text="Khôi phục video mặc định (khoidong.mp4)"
-            android:textColor="@color/text_secondary"
-            android:textSize="11.5sp"
-            android:visibility="gone" />
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Hoạt ảnh ứng dụng"
+          android:textColor="@color/text_primary"
+          android:textSize="16.5sp"
+          android:textStyle="bold" />
 
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Tùy biến video khởi động app"
+          android:textColor="@color/text_secondary"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDialogSplashClose"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/ic_close_white"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/text_secondary" />
     </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="16dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Hàng Switch 1: Bật/Tắt Video Splash -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/bg_code_box"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:padding="14dp">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Bật video khi mở app"
+          android:textColor="@color/text_primary"
+          android:textSize="14sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Phát video khoidong.mp4 (tối đa 10s)"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
+
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchDialogEnableSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        app:thumbTint="@color/switch_thumb_selector"
+        app:trackDecorationTint="@null"
+        app:trackTint="@color/switch_track_selector" />
+    </LinearLayout>
+
+    <!-- Hàng Switch 2: Bật/Tắt Hiệu ứng Dynamic màu nền Aurora -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/bg_code_box"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:padding="14dp">
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Hiệu ứng Dynamic màu nền"
+          android:textColor="@color/text_primary"
+          android:textSize="14sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Dải màu Aurora chuyển động mượt mà"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
+
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchDialogEnableDynamicBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        app:thumbTint="@color/switch_thumb_selector"
+        app:trackDecorationTint="@null"
+        app:trackTint="@color/switch_track_selector" />
+    </LinearLayout>
+
+    <!-- Nút 1: Xem thử video khởi động -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnDialogPreviewSplash"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="12dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Xem thử video khởi động"
+      android:textColor="@color/text_primary"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:icon="@drawable/ic_filmstrip"
+      app:iconGravity="textStart"
+      app:iconPadding="10dp"
+      app:iconSize="18dp"
+      app:iconTint="@color/primary"
+      app:backgroundTint="@color/button_capsule_bg"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp" />
+
+    <!-- Nút 2: Nhập video từ thiết bị -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnDialogImportCustomVideo"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="10dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Nhập video từ thiết bị (tối đa 10s)"
+      android:textColor="@color/text_nav_active"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:icon="@drawable/ic_tray_upload"
+      app:iconGravity="textStart"
+      app:iconPadding="10dp"
+      app:iconSize="18dp"
+      app:iconTint="@color/primary"
+      app:backgroundTint="@color/nav_active_indicator_pill"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/nav_active_indicator_stroke"
+      app:strokeWidth="1dp" />
+
+    <!-- Nút Khôi phục video mặc định -->
+    <TextView
+      android:id="@+id/btnDialogResetSplashVideo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="10dp"
+      android:padding="6dp"
+      android:text="Khôi phục video mặc định (khoidong.mp4)"
+      android:textColor="@color/text_secondary"
+      android:textSize="11.5sp"
+      android:visibility="gone" />
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

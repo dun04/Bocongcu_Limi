@@ -1,229 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_glass_card"
+  android:orientation="vertical"
+  android:padding="20dp">
+
+  <!-- Header: Icon & Title -->
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_glass_card"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginBottom="12dp">
 
-    <!-- Header: Icon & Title -->
+    <ImageView
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:src="@drawable/ic_edit_note"
+      app:tint="#38BDF8" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="10dp"
+      android:layout_weight="1"
+      android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@drawable/ic_edit_note"
-            app:tint="#38BDF8" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đóng Góp Dữ Liệu Cho Limi AI"
-                android:textColor="#FFFFFF"
-                android:textSize="15.5sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Huấn luyện AI trả lời chuẩn xác hơn"
-                android:textColor="#94A3B8"
-                android:textSize="11.5sp" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btnCloseFeedbackDialog"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:padding="2dp"
-            android:src="@drawable/ic_close_white"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="#94A3B8" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#1E293B"
-        android:layout_marginBottom="12dp" />
-
-    <!-- Card hiển thị câu hỏi đang cần sửa -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_code_box"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:layout_marginBottom="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="❓ Câu hỏi / Ngữ cảnh:"
-            android:textColor="#60A5FA"
-            android:textSize="11.5sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvFeedbackQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Câu hỏi của bạn..."
-            android:textColor="#E2E8F0"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- Ô nhập câu trả lời đúng -->
-    <TextView
+      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="✏️ Câu trả lời chính xác / Đóng góp của bạn:"
-        android:textColor="#38BDF8"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="6dp" />
+        android:text="Đóng Góp Dữ Liệu Cho Limi AI"
+        android:textColor="#FFFFFF"
+        android:textSize="15.5sp"
+        android:textStyle="bold" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+      <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
-        app:boxBackgroundColor="#0D1322"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxStrokeColor="#38BDF8"
-        app:boxStrokeWidth="1dp"
-        app:hintEnabled="false">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etFeedbackCorrectionAnswer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|start"
-            android:hint="Nhập câu trả lời chính xác, thông số hoặc hướng dẫn chuẩn..."
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:maxLines="8"
-            android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#64748B"
-            android:textSize="13sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Mục Đính Kèm Ảnh Minh Họa Chuẩn (Tối đa 5 ảnh) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginBottom="6dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="🖼️ Ảnh minh họa đúng (Tùy chọn, tối đa 5 ảnh):"
-            android:textColor="#38BDF8"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvFeedbackImageCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0/5"
-            android:textColor="#94A3B8"
-            android:textSize="11.5sp" />
+        android:layout_marginTop="2dp"
+        android:text="Huấn luyện AI trả lời chuẩn xác hơn"
+        android:textColor="#94A3B8"
+        android:textSize="11.5sp" />
     </LinearLayout>
 
-    <!-- Nút Chọn Thêm Ảnh từ máy -->
+    <ImageView
+      android:id="@+id/btnCloseFeedbackDialog"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:padding="2dp"
+      android:src="@drawable/ic_close_white"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      app:tint="#94A3B8" />
+  </LinearLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#1E293B"
+    android:layout_marginBottom="12dp" />
+
+  <!-- Card hiển thị câu hỏi đang cần sửa -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_code_box"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Câu hỏi / Ngữ cảnh:"
+      android:textColor="#60A5FA"
+      android:textSize="11.5sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/tvFeedbackQuestion"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="Câu hỏi của bạn..."
+      android:textColor="#E2E8F0"
+      android:textSize="13sp" />
+  </LinearLayout>
+
+  <!-- Ô nhập câu trả lời đúng -->
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Câu trả lời chính xác / Đóng góp của bạn:"
+    android:textColor="#38BDF8"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="6dp" />
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    app:boxBackgroundColor="#0D1322"
+    app:boxCornerRadiusBottomEnd="12dp"
+    app:boxCornerRadiusBottomStart="12dp"
+    app:boxCornerRadiusTopEnd="12dp"
+    app:boxCornerRadiusTopStart="12dp"
+    app:boxStrokeColor="#38BDF8"
+    app:boxStrokeWidth="1dp"
+    app:hintEnabled="false">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/etFeedbackCorrectionAnswer"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="top|start"
+      android:hint="Nhập câu trả lời chính xác, thông số hoặc hướng dẫn chuẩn..."
+      android:inputType="textMultiLine"
+      android:minLines="3"
+      android:maxLines="8"
+      android:padding="12dp"
+      android:textColor="#FFFFFF"
+      android:textColorHint="#64748B"
+      android:textSize="13sp" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- Mục Đính Kèm Ảnh Minh Họa Chuẩn (Tối đa 5 ảnh) -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginBottom="6dp">
+
+    <TextView
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="Ảnh minh họa đúng (Tùy chọn, tối đa 5 ảnh):"
+      android:textColor="#38BDF8"
+      android:textSize="12sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:id="@+id/tvFeedbackImageCount"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="0/5"
+      android:textColor="#94A3B8"
+      android:textSize="11.5sp" />
+  </LinearLayout>
+
+  <!-- Nút Chọn Thêm Ảnh từ máy -->
+  <LinearLayout
+    android:id="@+id/layoutPickFeedbackImage"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/bg_code_box"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginBottom="10dp">
+
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:src="@drawable/ic_tab_camera"
+      app:tint="#38BDF8" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="Chọn thêm ảnh từ thư viện máy"
+      android:textColor="#94A3B8"
+      android:textSize="12.5sp" />
+  </LinearLayout>
+
+  <!-- Khung xem trước danh sách nhiều ảnh đã chọn -->
+  <HorizontalScrollView
+    android:id="@+id/scrollFeedbackImages"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    android:scrollbars="none"
+    android:layout_marginBottom="12dp">
+
     <LinearLayout
-        android:id="@+id/layoutPickFeedbackImage"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_code_box"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginBottom="10dp">
+      android:id="@+id/layoutFeedbackMultiImagesContainer"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:gravity="center_vertical" />
+  </HorizontalScrollView>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_tab_camera"
-            app:tint="#38BDF8" />
+  <!-- Nút Gửi Đóng Góp -->
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="➕ Chọn thêm ảnh từ thư viện máy"
-            android:textColor="#94A3B8"
-            android:textSize="12.5sp" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnCancelFeedback"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="wrap_content"
+      android:layout_height="38dp"
+      android:layout_marginEnd="8dp"
+      android:text="Hủy"
+      android:textColor="#94A3B8"
+      android:textSize="12.5sp"
+      android:textAllCaps="false" />
 
-    <!-- Khung xem trước danh sách nhiều ảnh đã chọn -->
-    <HorizontalScrollView
-        android:id="@+id/scrollFeedbackImages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:scrollbars="none"
-        android:layout_marginBottom="12dp">
-
-        <LinearLayout
-            android:id="@+id/layoutFeedbackMultiImagesContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical" />
-    </HorizontalScrollView>
-
-    <!-- Nút Gửi Đóng Góp -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelFeedback"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginEnd="8dp"
-            android:text="Hủy"
-            android:textColor="#94A3B8"
-            android:textSize="12.5sp"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmitFeedbackCorrection"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:backgroundTint="#2563EB"
-            android:text="🚀 Gửi Đóng Góp"
-            android:textColor="#FFFFFF"
-            android:textSize="12.5sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            app:cornerRadius="10dp" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnSubmitFeedbackCorrection"
+      android:layout_width="wrap_content"
+      android:layout_height="38dp"
+      android:backgroundTint="#2563EB"
+      android:text="Gửi Đóng Góp"
+      android:textColor="#FFFFFF"
+      android:textSize="12.5sp"
+      android:textStyle="bold"
+      android:textAllCaps="false"
+      app:cornerRadius="10dp" />
+  </LinearLayout>
 </LinearLayout>

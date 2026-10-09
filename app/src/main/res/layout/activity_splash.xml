@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splashRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/splashRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#000000">
+
+  <!-- Video phát khởi động -->
+  <VideoView
+    android:id="@+id/videoViewSplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:layout_centerInParent="true" />
 
-    <!-- Video phát khởi động -->
-    <VideoView
-        android:id="@+id/videoViewSplash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+  <!-- Nút Bỏ qua dạng Icon trong suốt góc trên bên phải -->
+  <FrameLayout
+    android:id="@+id/btnSkipSplash"
+    android:layout_width="44dp"
+    android:layout_height="44dp"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="14dp"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"
+    android:contentDescription="Bỏ qua">
 
-    <!-- Nút Bỏ qua dạng Icon trong suốt góc trên bên phải -->
-    <FrameLayout
-        android:id="@+id/btnSkipSplash"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="14dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:contentDescription="Bỏ qua">
+    <ImageView
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:layout_gravity="center"
+      android:src="@drawable/ic_skip_next_white"
+      app:tint="#FFFFFF" />
+  </FrameLayout>
 
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_skip_next_white"
-            app:tint="#FFFFFF" />
-    </FrameLayout>
+  <!-- Thanh tiến trình nhỏ dưới đáy -->
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="32dp"
+    android:gravity="center"
+    android:orientation="horizontal">
 
-    <!-- Thanh tiến trình nhỏ dưới đáy -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+    <ProgressBar
+      android:layout_width="16dp"
+      android:layout_height="16dp"
+      android:indeterminateTint="@color/primary" />
 
-        <ProgressBar
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:indeterminateTint="@color/primary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Đang khởi động..."
-            android:textColor="#A0FFFFFF"
-            android:textSize="12sp" />
-    </LinearLayout>
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="Đang khởi động..."
+      android:textColor="#A0FFFFFF"
+      android:textSize="12sp" />
+  </LinearLayout>
 
 </RelativeLayout>

@@ -466,7 +466,7 @@ class MyDeviceActivity : AppCompatActivity() {
             } else "N/A"
 
             val details = """
-                🧭 Thông số kỹ thuật cảm biến:
+                 Thông số kỹ thuật cảm biến:
                 • Tên cảm biến: ${sensor.name}
                 • Nhà sản xuất (Vendor): ${sensor.vendor}
                 • Phiên bản phần cứng: v${sensor.version}
@@ -482,7 +482,7 @@ class MyDeviceActivity : AppCompatActivity() {
 
             showHyperOSDetailDialog(sensor.name, R.drawable.ic_tab_sensors, details, anchorView)
         } else {
-            val details = "🧭 Cảm biến: $sensorName\n• Trạng thái: Cảm biến phần cứng/hệ thống đang được kích hoạt và hoạt động trên thiết bị Xiaomi HyperOS."
+            val details = "Cảm biến: $sensorName\n• Trạng thái: Cảm biến phần cứng/hệ thống đang được kích hoạt và hoạt động trên thiết bị Xiaomi HyperOS."
             showHyperOSDetailDialog(sensorName, R.drawable.ic_tab_sensors, details, anchorView)
         }
     }
@@ -684,7 +684,7 @@ class MyDeviceActivity : AppCompatActivity() {
             else -> "Đang dùng Pin"
         }
         val statusStr = when (status) {
-            BatteryManager.BATTERY_STATUS_CHARGING -> "Đang nạp sạc ⚡"
+            BatteryManager.BATTERY_STATUS_CHARGING -> "Đang nạp sạc "
             BatteryManager.BATTERY_STATUS_FULL -> "Pin đầy (100%)"
             BatteryManager.BATTERY_STATUS_NOT_CHARGING -> "Đang ngừng sạc"
             else -> "Đang xả"
@@ -741,7 +741,7 @@ class MyDeviceActivity : AppCompatActivity() {
             val typeFile = File(zone, "type")
             val tempFile = File(zone, "temp")
             if (typeFile.exists() && tempFile.exists()) {
-                val rawType = try { typeFile.readText().trim() } catch (_: Throwable) { "" }
+                val rawType = try { typeFile.readText().trim() } catch (_: Throwable) { ""}
                 val rawTemp = DeviceInfoUtils.readIntFromFile(tempFile, 0)
                 if (rawType.isNotEmpty() && rawTemp > 0) {
                     val tempC = when {

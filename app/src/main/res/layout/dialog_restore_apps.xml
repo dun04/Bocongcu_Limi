@@ -1,268 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardRestoreAppsRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cardRestoreAppsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="20dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="20dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:padding="18dp">
 
+    <!-- Header: Tiêu đề + Icon + Nút đóng -->
     <LinearLayout
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <FrameLayout
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/badge_pill_bg"
+        android:backgroundTint="#2634D399">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text=""
+          android:textSize="18sp" />
+      </FrameLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="18dp">
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Header: Tiêu đề + Icon + Nút đóng -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Khôi phục ứng dụng đã xóa"
+          android:textColor="@color/text_primary"
+          android:textSize="16sp"
+          android:textStyle="bold" />
 
-            <FrameLayout
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:background="@drawable/badge_pill_bg"
-                android:backgroundTint="#2634D399">
+        <TextView
+          android:id="@+id/tvRestoreSubtitle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Đang tìm kiếm app đã gỡ bỏ..."
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="🔄"
-                    android:textSize="18sp" />
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Khôi phục ứng dụng đã xóa"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvRestoreSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Đang tìm kiếm app đã gỡ bỏ..."
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11.5sp" />
-            </LinearLayout>
-
-            <!-- Nút đóng X bo tròn -->
-            <ImageView
-                android:id="@+id/btnCloseRestoreDialog"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:background="@drawable/bg_theme_item_inactive"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="7dp"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:tint="@color/text_secondary" />
-        </LinearLayout>
-
-        <!-- Ô Tìm kiếm app -->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:boxBackgroundColor="@color/button_capsule_bg"
-            app:boxCornerRadiusBottomEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxStrokeColor="@color/card_stroke"
-            app:hintEnabled="false"
-            app:startIconDrawable="@android:drawable/ic_menu_search"
-            app:startIconTint="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etSearchRestoreApp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Tìm tên app hoặc package..."
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:singleLine="true"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="13sp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Hàng Chọn tất cả -->
-        <LinearLayout
-            android:id="@+id/layoutRestoreHeaderControls"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/cbSelectAllRestore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:text="Chọn tất cả"
-                android:textColor="@color/text_primary"
-                android:textSize="12.5sp"
-                app:buttonTint="#34D399" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/tvRestoreCountStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_secondary"
-                android:textSize="11.5sp"
-                tools:text="0 đã chọn" />
-        </LinearLayout>
-
-        <!-- Loading spinner -->
-        <LinearLayout
-            android:id="@+id/layoutRestoreLoading"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:indeterminateTint="#34D399" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Đang quét các ứng dụng đã gỡ..."
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Empty State -->
-        <LinearLayout
-            android:id="@+id/layoutRestoreEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="✨"
-                android:textSize="32sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="Không tìm thấy ứng dụng đã gỡ bỏ nào"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Bạn có thể nhập Package Name thủ công để cài lại"
-                android:textColor="@color/text_secondary"
-                android:textSize="11.5sp" />
-        </LinearLayout>
-
-        <!-- Danh sách RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRestoreApps"
-            android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
-
-        <!-- Divider mờ -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/card_stroke" />
-
-        <!-- Bottom Action Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCustomPackageRestore"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="Nhập Package..."
-                android:textColor="@color/primary"
-                android:textSize="12sp"
-                app:cornerRadius="14dp"
-                app:icon="@drawable/ic_bolt_small"
-                app:iconGravity="textStart"
-                app:iconPadding="4dp"
-                app:iconSize="16dp"
-                app:iconTint="@color/primary" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPerformBatchRestore"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:backgroundTint="#34D399"
-                android:text="Khôi phục (0)"
-                android:textColor="#000000"
-                android:textSize="12.5sp"
-                android:textStyle="bold"
-                app:cornerRadius="14dp" />
-        </LinearLayout>
-
+      <!-- Nút đóng X bo tròn -->
+      <ImageView
+        android:id="@+id/btnCloseRestoreDialog"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_theme_item_inactive"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="7dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:tint="@color/text_secondary" />
     </LinearLayout>
+
+    <!-- Ô Tìm kiếm app -->
+    <com.google.android.material.textfield.TextInputLayout
+      style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      app:boxBackgroundColor="@color/button_capsule_bg"
+      app:boxCornerRadiusBottomEnd="16dp"
+      app:boxCornerRadiusBottomStart="16dp"
+      app:boxCornerRadiusTopEnd="16dp"
+      app:boxCornerRadiusTopStart="16dp"
+      app:boxStrokeColor="@color/card_stroke"
+      app:hintEnabled="false"
+      app:startIconDrawable="@android:drawable/ic_menu_search"
+      app:startIconTint="@color/text_secondary">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etSearchRestoreApp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Tìm tên app hoặc package..."
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:singleLine="true"
+        android:textColor="@color/text_primary"
+        android:textColorHint="@color/text_secondary"
+        android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Hàng Chọn tất cả -->
+    <LinearLayout
+      android:id="@+id/layoutRestoreHeaderControls"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="4dp"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/cbSelectAllRestore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="Chọn tất cả"
+        android:textColor="@color/text_primary"
+        android:textSize="12.5sp"
+        app:buttonTint="#34D399" />
+
+      <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+      <TextView
+        android:id="@+id/tvRestoreCountStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="11.5sp"
+        tools:text="0 đã chọn" />
+    </LinearLayout>
+
+    <!-- Loading spinner -->
+    <LinearLayout
+      android:id="@+id/layoutRestoreLoading"
+      android:layout_width="match_parent"
+      android:layout_height="140dp"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+      <ProgressBar
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:indeterminateTint="#34D399" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Đang quét các ứng dụng đã gỡ..."
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Empty State -->
+    <LinearLayout
+      android:id="@+id/layoutRestoreEmpty"
+      android:layout_width="match_parent"
+      android:layout_height="140dp"
+      android:gravity="center"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="32sp" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Không tìm thấy ứng dụng đã gỡ bỏ nào"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Bạn có thể nhập Package Name thủ công để cài lại"
+        android:textColor="@color/text_secondary"
+        android:textSize="11.5sp" />
+    </LinearLayout>
+
+    <!-- Danh sách RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvRestoreApps"
+      android:layout_width="match_parent"
+      android:layout_height="340dp"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingTop="4dp"
+      android:paddingBottom="4dp" />
+
+    <!-- Divider mờ -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="12dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Bottom Action Buttons -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCustomPackageRestore"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="Nhập Package..."
+        android:textColor="@color/primary"
+        android:textSize="12sp"
+        app:cornerRadius="14dp"
+        app:icon="@drawable/ic_bolt_small"
+        app:iconGravity="textStart"
+        app:iconPadding="4dp"
+        app:iconSize="16dp"
+        app:iconTint="@color/primary" />
+
+      <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPerformBatchRestore"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:backgroundTint="#34D399"
+        android:text="Khôi phục (0)"
+        android:textColor="#000000"
+        android:textSize="12.5sp"
+        android:textStyle="bold"
+        app:cornerRadius="14dp" />
+    </LinearLayout>
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

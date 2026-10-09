@@ -251,8 +251,29 @@ object FixCommands {
     }
 
     fun getCmd4(packagesString: String): String {
-        val cleanPackages = parsePackages(packagesString).joinToString(",")
-        return "settings put system MILLET_NO_RESTRICT_APP \"$cleanPackages\"; am broadcast -a com.google.android.c2dm.intent.REGISTER; am broadcast -a com.google.android.intent.action.GTALK_HEARTBEAT; true"
+        val userList = parsePackages(packagesString)
+        val combinedList = (userList + listOf("com.google.android.gms", "com.google.android.gsf")).distinct()
+
+        val sb = StringBuilder()
+        sb.append("dumpsys greezer IM GMS disable")
+        sb.append("; dumpsys greezer LM add com.google.android.gms")
+        sb.append("; dumpsys greezer LM add com.google.android.gsf")
+        sb.append("; dumpsys greezer LM add com.google.android.gms.persistent")
+        for (pkg in combinedList) {
+            sb.append("; dumpsys deviceidle whitelist +$pkg")
+            sb.append("; cmd deviceidle whitelist +$pkg")
+            sb.append("; cmd deviceidle except-idle-whitelist +$pkg")
+            sb.append("; (cmd netpolicy add restrict-background-whitelist $pkg 2>/dev/null || true)")
+            sb.append("; cmd appops set $pkg RUN_IN_BACKGROUND allow")
+            sb.append("; cmd appops set $pkg RUN_ANY_IN_BACKGROUND allow")
+            sb.append("; cmd appops set $pkg WAKE_LOCK allow")
+            sb.append("; cmd appops set $pkg 10008 allow")
+            sb.append("; cmd appops set $pkg BOOT_COMPLETED allow")
+        }
+        val cleanPackages = combinedList.joinToString(",")
+        sb.append("; settings put system MILLET_NO_RESTRICT_APP \"$cleanPackages\"")
+        sb.append("; true")
+        return sb.toString()
     }
 
     /**
@@ -314,11 +335,19 @@ object FixCommands {
             list.add("cmd appops set $cleanPkg AUTO_START allow 2>/dev/null")
         }
 
-        // Không hạn chế pin (Doze whitelist + Run in background)
+        // 7. Quyền đánh thức CPU & Khởi chạy Foreground Service
+        list.add("cmd appops set $cleanPkg WAKE_LOCK allow")
+        list.add("cmd appops set $cleanPkg START_FOREGROUND allow 2>/dev/null")
+
+        // 8. Không hạn chế pin (Doze whitelist vĩnh viễn + Except-idle whitelist + Netpolicy vĩnh viễn + Standby Bucket ACTIVE + Run in background)
         if (enableBatteryWhitelist) {
-            list.add("dumpsys deviceidle whitelist +$cleanPkg")
+            list.add("cmd deviceidle whitelist +$cleanPkg")
+            list.add("cmd deviceidle except-idle-whitelist +$cleanPkg")
+            list.add("(for u in \$(pm list packages -U $cleanPkg 2>/dev/null | grep -o 'uid:[0-9]*' | cut -d: -f2); do cmd netpolicy add restrict-background-whitelist \$u 2>/dev/null; done || true)")
+            list.add("am set-standby-bucket $cleanPkg active")
             list.add("cmd appops set $cleanPkg RUN_IN_BACKGROUND allow")
             list.add("cmd appops set $cleanPkg RUN_ANY_IN_BACKGROUND allow")
+            list.add("cmd appops set $cleanPkg DATA_SAVER_EXEMPT allow")
         }
 
         return list

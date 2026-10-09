@@ -41,7 +41,7 @@ class HudGaugeView @JvmOverloads constructor(
     private var textY = 0f
 
     init {
-        val strokeW = 2.2f * resources.displayMetrics.density
+        val strokeW = 1.6f * resources.displayMetrics.density
         trackPaint.strokeWidth = strokeW
         progressPaint.strokeWidth = strokeW
     }
@@ -60,17 +60,16 @@ class HudGaugeView @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
         if (w <= 0 || h <= 0) return
         val strokeW = trackPaint.strokeWidth
-        val pad = strokeW / 2f + 1f
+        val pad = strokeW / 2f + 0.6f
         arcBounds.set(pad, pad, w - pad, h - pad)
-        textPaint.textSize = w * 0.32f
-        textY = (h / 2f) - ((textPaint.descent() + textPaint.ascent()) / 2f)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val w = width.toFloat()
-        if (w <= 0f || height <= 0) return
+        val h = height.toFloat()
+        if (w <= 0f || h <= 0f) return
 
         // 1. Vẽ vòng tròn nền mờ
         canvas.drawOval(arcBounds, trackPaint)
@@ -82,6 +81,9 @@ class HudGaugeView @JvmOverloads constructor(
         }
 
         // 3. Vẽ số % ở chính giữa biểu đồ tròn
-        canvas.drawText("${percent}%", w / 2f, textY, textPaint)
+        val textToDraw = if (percent >= 100) "100" else "${percent}%"
+        textPaint.textSize = if (percent >= 100) w * 0.31f else w * 0.36f
+        textY = (h / 2f) - ((textPaint.descent() + textPaint.ascent()) / 2f)
+        canvas.drawText(textToDraw, w / 2f, textY, textPaint)
     }
 }

@@ -148,38 +148,119 @@ object ViewAnimationExtensions {
     }
 
     /**
-     * Gắn hiệu ứng đàn hồi lò xo Morphicons (Micro-Spring Touch Feedback chuẩn https://www.morphicons.com/)
-     * Khi ấn ngón tay xuống (DOWN): Co nén 0.88x với góc nghiêng nhẹ đón lực
-     * Khi nhả ngón tay ra (UP): Bung nảy đàn hồi (Spring Bounce Overshoot 2.8f) về trạng thái cân bằng 1.0x
+     * Gắn hiệu ứng vật lý 3D đàn hồi theo vị trí chạm thực tế (3D Corner-Tilt Physics Touch Feedback):
+     * - Khi ấn vào góc nào của nút, nút sẽ chìm/chúi sâu về đúng góc đó (3D rotationX + rotationY).
+     *   + Ấn góc dưới bên phải: Chúi về góc dưới bên phải (rotX âm, rotY dương)
+     *   + Ấn góc dưới bên trái: Chúi về góc dưới bên trái (rotX âm, rotY âm)
+     *   + Ấn góc trên bên phải: Chúi về góc trên bên phải (rotX dương, rotY dương)
+     *   + Ấn góc trên bên trái: Chúi về góc trên bên trái (rotX dương, rotY âm)
+     *   + Ấn chính giữa: Chúi nén đều toàn bộ nút
+     * - Khi nhả ngón tay ra (UP): Bung nảy đàn hồi lò xo (Spring Bounce Overshoot 2.4f) về trạng thái cân bằng phẳng 0 độ, scale 1.0x.
      */
     @SuppressLint("ClickableViewAccessibility")
     fun applySpringTouch(view: View) {
+        val density = view.resources.displayMetrics.density
+        view.cameraDistance = 9000f * density
+
         view.setOnTouchListener { v, event ->
-            when (event.action) {
+            when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    v.animate()
-                        .scaleX(0.88f)
-                        .scaleY(0.88f)
-                        .rotation(-2.5f)
-                        .setDuration(90)
-                        .setInterpolator(DecelerateInterpolator())
-                        .start()
+                    val w = v.width.toFloat()
+                    val h = v.height.toFloat()
+                    if (w > 0f && h > 0f) {
+                        val centerX = w / 2f
+                        val centerY = h / 2f
+
+                        // Chuẩn hoá toạ độ chạm từ -1.0f (trái/trên) đến +1.0f (phải/dưới)
+                        val dx = ((event.x - centerX) / centerX).coerceIn(-1.0f, 1.0f)
+                        val dy = ((event.y - centerY) / centerY).coerceIn(-1.0f, 1.0f)
+
+                        // 3D Tilt vật lý theo chuẩn trục toạ độ không gian Android:
+                        // - Ấn dưới (dy > 0): rotX âm để góc dưới chìm sâu vào màn hình
+                        // - Ấn trên (dy < 0): rotX dương để góc trên chìm sâu vào màn hình
+                        // - Ấn phải (dx > 0): rotY dương để góc phải chìm sâu vào màn hình
+                        // - Ấn trái (dx < 0): rotY âm để góc trái chìm sâu vào màn hình
+                        val maxAngle = 7.5f
+                        val targetRotX = -dy * maxAngle
+                        val targetRotY = dx * maxAngle
+
+                        // Dịch chuyển nhẹ theo phương lực ấn
+                        val shift = 2.0f * density
+                        val targetTransX = dx * shift
+                        val targetTransY = dy * shift
+
+                        v.animate()
+                            .scaleX(0.94f)
+                            .scaleY(0.94f)
+                            .rotationX(targetRotX)
+                            .rotationY(targetRotY)
+                            .rotation(0f)
+                            .translationX(targetTransX)
+                            .translationY(targetTransY)
+                            .setDuration(90L)
+                            .setInterpolator(DecelerateInterpolator())
+                            .start()
+                    } else {
+                        v.animate()
+                            .scaleX(0.94f)
+                            .scaleY(0.94f)
+                            .setDuration(90L)
+                            .setInterpolator(DecelerateInterpolator())
+                            .start()
+                    }
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val w = v.width.toFloat()
+                    val h = v.height.toFloat()
+                    if (w > 0f && h > 0f) {
+                        if (event.x in 0f..w && event.y in 0f..h) {
+                            val centerX = w / 2f
+                            val centerY = h / 2f
+                            val dx = ((event.x - centerX) / centerX).coerceIn(-1.0f, 1.0f)
+                            val dy = ((event.y - centerY) / centerY).coerceIn(-1.0f, 1.0f)
+
+                            val maxAngle = 7.5f
+                            val targetRotX = -dy * maxAngle
+                            val targetRotY = dx * maxAngle
+
+                            val shift = 2.0f * density
+                            val targetTransX = dx * shift
+                            val targetTransY = dy * shift
+
+                            v.animate()
+                                .rotationX(targetRotX)
+                                .rotationY(targetRotY)
+                                .translationX(targetTransX)
+                                .translationY(targetTransY)
+                                .setDuration(35L)
+                                .setInterpolator(DecelerateInterpolator())
+                                .start()
+                        }
+                    }
                 }
                 MotionEvent.ACTION_UP -> {
                     v.animate()
                         .scaleX(1.0f)
                         .scaleY(1.0f)
+                        .rotationX(0f)
+                        .rotationY(0f)
                         .rotation(0f)
-                        .setDuration(280)
-                        .setInterpolator(OvershootInterpolator(2.8f))
+                        .translationX(0f)
+                        .translationY(0f)
+                        .setDuration(280L)
+                        .setInterpolator(OvershootInterpolator(2.4f))
                         .start()
                 }
                 MotionEvent.ACTION_CANCEL -> {
                     v.animate()
                         .scaleX(1.0f)
                         .scaleY(1.0f)
+                        .rotationX(0f)
+                        .rotationY(0f)
                         .rotation(0f)
-                        .setDuration(160)
+                        .translationX(0f)
+                        .translationY(0f)
+                        .setDuration(160L)
                         .setInterpolator(DecelerateInterpolator())
                         .start()
                 }
@@ -251,8 +332,8 @@ object ViewAnimationExtensions {
      */
     fun animateBounce(view: View, onEnd: (() -> Unit)? = null) {
         view.animate()
-            .scaleX(0.90f)
-            .scaleY(0.90f)
+            .scaleX(0.92f)
+            .scaleY(0.92f)
             .setDuration(90)
             .setInterpolator(DecelerateInterpolator())
             .withEndAction {
@@ -260,7 +341,7 @@ object ViewAnimationExtensions {
                     .scaleX(1.0f)
                     .scaleY(1.0f)
                     .setDuration(260)
-                    .setInterpolator(OvershootInterpolator(2.8f))
+                    .setInterpolator(OvershootInterpolator(2.4f))
                     .withEndAction {
                         onEnd?.invoke()
                     }

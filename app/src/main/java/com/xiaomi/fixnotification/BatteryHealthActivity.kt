@@ -142,7 +142,8 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
         ViewAnimationExtensions.applySpringTouch(binding.btnInfoRated)
         ViewAnimationExtensions.applySpringTouch(binding.btnInfoDelta)
 
-        binding.tvRatedCapacity.text = "$designCapacityMah mAh"
+        updateCapacityUI()
+        setupRatedCapacityTouch()
 
         binding.btnOpenSensorChart.setOnClickListener { anchor ->
             ViewAnimationExtensions.animateBounce(anchor)
@@ -158,16 +159,6 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
         binding.btnOpenBatteryOptFromHealth.setOnClickListener { anchor ->
             ViewAnimationExtensions.animateBounce(anchor)
             openAppDetails()
-        }
-
-        binding.btnInfoRated.setOnClickListener { anchor ->
-            ViewAnimationExtensions.animateBounce(anchor)
-            showHyperOSBatteryDetailDialog(
-                "Dung lượng xếp hạng (Design Capacity)",
-                R.drawable.ic_tab_battery,
-                "Đây là dung lượng danh định ban đầu do nhà sản xuất công bố lúc xuất xưởng ($designCapacityMah mAh).",
-                anchor
-            )
         }
 
         binding.btnInfoDelta.setOnClickListener { anchor ->
@@ -186,7 +177,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
         val showExplainAction = { anchor: View ->
             ViewAnimationExtensions.animateBounce(anchor)
             val explainContent = """
-                📌 TẠI SAO SỐ ĐO CỦA APP CÓ THỂ LỆCH 1 - 2% SO VỚI HỆ THỐNG HÃNG?
+                 TẠI SAO SỐ ĐO CỦA APP CÓ THỂ LỆCH 1 - 2% SO VỚI HỆ THỐNG HÃNG?
                 (Ví dụ: Hệ thống báo 93%, App đo được 95%)
 
                 1. Thuật toán Hệ thống Xiaomi (Tính toán bảo thủ & Trừ hao an toàn):
@@ -195,7 +186,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
 
                 2. Thuật toán App (Đo dòng nạp thực tế Coulomb Counting):
                 • App liên tục lấy mẫu và đo điện lượng thực tế (mAh nạp vào) qua cảm biến chip nguồn Xiaomi Surge / Qualcomm PMIC trong suốt phiên cắm sạc.
-                • Khi sạc ở nhiệt độ mát mẻ (dưới 38°C), hiệu suất tiếp nhận ion của cell pin Silicon-Carbon đạt tối đa, lượng mAh nạp vào tối ưu hơn ➔ App ghi nhận khả năng tích điện thực tế của phiên là 95%.
+                • Khi sạc ở nhiệt độ mát mẻ (dưới 38°C), hiệu suất tiếp nhận ion của cell pin Silicon-Carbon đạt tối đa, lượng mAh nạp vào tối ưu hơn  App ghi nhận khả năng tích điện thực tế của phiên là 95%.
 
                 3. Tiêu chuẩn ngành Quốc tế (IEC 61960):
                 • Trong kỹ thuật đo lường pin hóa học, dung sai giữa mô hình BMS và phép đo dòng nạp thực tế trong phạm vi ±3% (tương đương ~100 - 150 mAh) là hoàn toàn chuẩn xác và tin cậy tuyệt đối!
@@ -223,7 +214,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
                 )
             } else {
                 BatteryTrackerService.startTracking(this)
-                Toast.makeText(this, "⚡ Đang chạy tiến trình đo dòng sạc ngầm...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Đang chạy tiến trình đo dòng sạc ngầm...", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -259,11 +250,11 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
         if (!isPluggedIn) {
             binding.tvChargingStatusPrompt.text = "ⓘ Đang dùng pin ($currentPct%) · Tự động đo khi cắm sạc"
             binding.tvChargingStatusPrompt.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
-            binding.btnStartMeasure.text = "⚡ Đã bật tự động đo khi cắm sạc"
+            binding.btnStartMeasure.text = "Đã bật tự động đo khi cắm sạc"
         } else {
-            binding.tvChargingStatusPrompt.text = "⚡ Đang cắm sạc ($currentPct%) · Tiến trình đo ngầm đang hoạt động"
+            binding.tvChargingStatusPrompt.text = "Đang cắm sạc ($currentPct%) · Tiến trình đo ngầm đang hoạt động"
             binding.tvChargingStatusPrompt.setTextColor(ContextCompat.getColor(this, R.color.primary))
-            binding.btnStartMeasure.text = "⚡ Đang đo tự động (Chạy ngầm liên tục)"
+            binding.btnStartMeasure.text = "Đang đo tự động (Chạy ngầm liên tục)"
         }
     }
 
@@ -297,7 +288,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
             binding.tvChargingTime.text = timeStr
 
             val deltaMahInt = session.accumulatedCoulombMah.toInt()
-            binding.tvBatteryDelta.text = "+${session.deltaLevel}% (+${deltaMahInt} mAh)"
+            binding.tvBatteryDelta.text = " +${session.deltaLevel}% (+${deltaMahInt} mAh)"
 
             if (session.estimatedHealthPct > 0) {
                 binding.tvHealthBigStatus.text = "${session.estimatedHealthPct}% (${session.estimatedCapacityMah} mAh)"
@@ -305,9 +296,9 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
                 updateBatteryBars(session.estimatedHealthPct)
 
                 val accuracy = if (session.deltaLevel >= 15) "Rất cao" else "Đang tích lũy"
-                binding.tvChargingStatusPrompt.text = "⚡ Đang nạp: Dòng ${session.currentMa.toInt()} mA · ${String.format(Locale.US, "%.1f", session.powerWatts)}W · Độ chính xác: $accuracy"
+                binding.tvChargingStatusPrompt.text = "Đang nạp: Dòng ${session.currentMa.toInt()} mA · ${String.format(Locale.US, "%.1f", session.powerWatts)}W · Độ chính xác: $accuracy"
             } else {
-                binding.tvChargingStatusPrompt.text = "⚡ Đang nạp: Dòng ${session.currentMa.toInt()} mA · Nạp +${session.deltaLevel}% (Cần nạp ≥2% để tính toán)"
+                binding.tvChargingStatusPrompt.text = "Đang nạp: Dòng ${session.currentMa.toInt()} mA · Nạp +${session.deltaLevel}% (Cần nạp ≥2% để tính toán)"
             }
         }
     }
@@ -316,7 +307,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
         runOnUiThread {
             liveChartUpdater?.invoke()
             loadLatestHealthData()
-            Toast.makeText(this, "⚡ Đã hoàn tất và lưu phiên đo: $healthPct% ($estimatedMah mAh)!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Đã hoàn tất và lưu phiên đo: $healthPct% ($estimatedMah mAh)!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -451,7 +442,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
                     BatteryHealthManager.synthesizeTelemetryPoints(rec.startLevel, rec.endLevel, rec.chargingTime)
                 }
 
-                tvLiveBadge.text = "📅 PHIÊN: ${rec.date}"
+                tvLiveBadge.text = "PHIÊN: ${rec.date}"
                 tvLiveBadge.setTextColor(ContextCompat.getColor(this, R.color.accent_cyan))
             }
 
@@ -534,7 +525,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
             val maxTempC = if (history.isNotEmpty()) history.maxOfOrNull { it.tempC } ?: 0.0 else 0.0
 
             val content = """
-                📊 THÔNG SỐ CẢM BIẾN SẠC PIN (${if (sessionRecord != null) "Phiên ${sessionRecord.date}" else "Trực tiếp"})
+                 THÔNG SỐ CẢM BIẾN SẠC PIN (${if (sessionRecord != null) "Phiên ${sessionRecord.date}" else "Trực tiếp"})
                 • Tổng số mẫu: $totalSamples điểm đo
                 • Dòng nạp TB: $avgCurrentMa mA (Đỉnh: $maxCurrentMa mA · Đáy: $minCurrentMa mA)
                 • Điện thế TB: ${String.format(Locale.US, "%.2f", avgVoltageV)} V
@@ -609,7 +600,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
             val bmsText = if (bmsSoh > 0) "$bmsSoh%" else "Chưa hỗ trợ trực tiếp"
             val cycleText = if (cycles > 0) "$cycles lần" else "Chưa phát hiện"
 
-            val content = "Chưa có bản ghi chu kỳ sạc nào được lưu.\n\n• Cảm biến BMS Phần cứng: $bmsText\n• Chu kỳ sạc đã ghi nhận: $cycleText\n\n💡 Ứng dụng sẽ TỰ ĐỘNG GHI LỊCH SỬ mỗi lần bạn cắm sạc từ 10% đến 100% (ngay cả khi tắt màn hình)."
+            val content = "Chưa có bản ghi chu kỳ sạc nào được lưu.\n\n• Cảm biến BMS Phần cứng: $bmsText\n• Chu kỳ sạc đã ghi nhận: $cycleText\n\n Ứng dụng sẽ TỰ ĐỘNG GHI LỊCH SỬ mỗi lần bạn cắm sạc từ 10% đến 100% (ngay cả khi tắt màn hình)."
 
             showHyperOSBatteryDetailDialog(
                 "Lịch sử kiểm tra pin",
@@ -674,7 +665,7 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
             tvDelta.text = rec.delta
             
             if (rec.startLevel >= 0 && rec.endLevel >= 0) {
-                tvLevelRange.text = "${rec.startLevel}% ➔ ${rec.endLevel}%"
+                tvLevelRange.text = "${rec.startLevel}%  ${rec.endLevel}%"
             } else {
                 tvLevelRange.text = "Theo chu kỳ nạp"
             }
@@ -688,8 +679,8 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
             }
 
             btnCopyStats.setOnClickListener {
-                val startEnd = if (rec.startLevel >= 0 && rec.endLevel >= 0) " (${rec.startLevel}% ➔ ${rec.endLevel}%)" else ""
-                val textToCopy = "📅 ${rec.date}\n• Sức khỏe pin: ${rec.healthPct}% (${rec.estimatedMah} / ${rec.designMah} mAh)\n• Nạp thêm: ${rec.delta}$startEnd\n• Thời gian sạc: ${rec.chargingTime}\n• Nguồn: ${rec.source}"
+                val startEnd = if (rec.startLevel >= 0 && rec.endLevel >= 0) "(${rec.startLevel}%  ${rec.endLevel}%)" else ""
+                val textToCopy = "${rec.date}\n• Sức khỏe pin: ${rec.healthPct}% (${rec.estimatedMah} / ${rec.designMah} mAh)\n• Nạp thêm: ${rec.delta}$startEnd\n• Thời gian sạc: ${rec.chargingTime}\n• Nguồn: ${rec.source}"
                 val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                 val clip = android.content.ClipData.newPlainText("Phiên đo pin ${rec.date}", textToCopy)
                 clipboard.setPrimaryClip(clip)
@@ -718,6 +709,145 @@ class BatteryHealthActivity : AppCompatActivity(), BatteryTrackingListener {
                 }
                 .setNegativeButton("Hủy", null)
                 .show()
+        }
+
+        dialog.show()
+        ViewAnimationExtensions.revealDialog(dialogView, anchorView)
+    }
+
+    private fun updateCapacityUI() {
+        designCapacityMah = BatteryHealthManager.getDesignCapacity(this)
+        val hasCustom = BatteryHealthManager.hasCustomDesignCapacity(this)
+        binding.tvRatedCapacity.text = if (hasCustom) {
+            "$designCapacityMah mAh (Độ)"
+        } else {
+            "$designCapacityMah mAh"
+        }
+    }
+
+    private fun setupRatedCapacityTouch() {
+        val longPressHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        var is2sTriggered = false
+
+        val longPressRunnable = Runnable {
+            is2sTriggered = true
+            binding.cardRatedCapacity.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+            showCustomCapacityDialog(binding.cardRatedCapacity)
+        }
+
+        val touchListener = View.OnTouchListener { v, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    is2sTriggered = false
+                    v.animate().scaleX(0.96f).scaleY(0.96f).setDuration(150).start()
+                    longPressHandler.postDelayed(longPressRunnable, 2000L) // Giữ đúng 2 giây (2000ms)
+                    true
+                }
+                android.view.MotionEvent.ACTION_UP -> {
+                    longPressHandler.removeCallbacks(longPressRunnable)
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                    if (!is2sTriggered) {
+                        // Nhấn chạm ngắn dưới 2 giây -> hiển thị dialog thông tin chi tiết
+                        val orig = BatteryHealthManager.getOriginalDesignCapacity(this)
+                        val curr = BatteryHealthManager.getDesignCapacity(this)
+                        val isCustom = BatteryHealthManager.hasCustomDesignCapacity(this)
+                        val hintText = if (isCustom) {
+                            "\n\n(Đang áp dụng dung lượng pin tùy chỉnh: $curr mAh · Gốc NSX: $orig mAh).\n\nMẹo: Ấn giữ mục này 2 giây để đổi lại dung lượng hoặc khôi phục về pin gốc."
+                        } else {
+                            "\n\nMẹo: Nếu bạn đã thay pin dung lượng cao, hãy ẤN GIỮ VÀO ĐÂY 2 GIÂY để nhập dung lượng pin mới!"
+                        }
+                        showHyperOSBatteryDetailDialog(
+                            "Dung lượng xếp hạng (Design Capacity)",
+                            R.drawable.ic_tab_battery,
+                            "Đây là dung lượng danh định ban đầu do nhà sản xuất công bố lúc xuất xưởng ($curr mAh).$hintText",
+                            v
+                        )
+                    }
+                    true
+                }
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    longPressHandler.removeCallbacks(longPressRunnable)
+                    v.animate().scaleX(1.0f).scaleY(1.0f).setDuration(150).start()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.cardRatedCapacity.setOnTouchListener(touchListener)
+        binding.btnInfoRated.setOnClickListener { anchor ->
+            showCustomCapacityDialog(anchor)
+        }
+    }
+
+    private fun showCustomCapacityDialog(anchorView: View? = null) {
+        if (isFinishing || isDestroyed) return
+
+        val originalCap = BatteryHealthManager.getOriginalDesignCapacity(this)
+        val currentCap = BatteryHealthManager.getDesignCapacity(this)
+        val hasCustom = BatteryHealthManager.hasCustomDesignCapacity(this)
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_custom_battery_capacity, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(Color.TRANSPARENT))
+
+        val btnCloseHeader = dialogView.findViewById<android.widget.ImageView>(R.id.btnCloseCustomCapacityHeader)
+        val tvInfo = dialogView.findViewById<TextView>(R.id.tvCustomCapacityInfo)
+        val etInput = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.etCustomCapacityInput)
+        val chip5500 = dialogView.findViewById<MaterialButton>(R.id.chipCap5500)
+        val chip6000 = dialogView.findViewById<MaterialButton>(R.id.chipCap6000)
+        val chip6500 = dialogView.findViewById<MaterialButton>(R.id.chipCap6500)
+        val btnReset = dialogView.findViewById<MaterialButton>(R.id.btnResetCustomCapacity)
+        val btnCancel = dialogView.findViewById<MaterialButton>(R.id.btnCancelCustomCapacity)
+        val btnSave = dialogView.findViewById<MaterialButton>(R.id.btnSaveCustomCapacity)
+
+        val buttons = listOf(btnCloseHeader, chip5500, chip6000, chip6500, btnReset, btnCancel, btnSave)
+        buttons.forEach { it?.let { v -> ViewAnimationExtensions.applySpringTouch(v) } }
+
+        tvInfo.text = "Dành cho người dùng thay pin nén dung lượng cao.\n\n• Dung lượng xuất xưởng gốc: $originalCap mAh\n• Dung lượng hiện đang áp dụng: $currentCap mAh"
+        etInput.setText(currentCap.toString())
+
+        chip5500.setOnClickListener { etInput.setText("5500"); etInput.setSelection(etInput.text?.length ?: 0) }
+        chip6000.setOnClickListener { etInput.setText("6000"); etInput.setSelection(etInput.text?.length ?: 0) }
+        chip6500.setOnClickListener { etInput.setText("6500"); etInput.setSelection(etInput.text?.length ?: 0) }
+
+        if (hasCustom) {
+            btnReset.visibility = View.VISIBLE
+            btnReset.setOnClickListener {
+                BatteryHealthManager.setCustomDesignCapacity(this, -1)
+                updateCapacityUI()
+                loadLatestHealthData()
+                Toast.makeText(this, "Đã khôi phục dung lượng gốc: $originalCap mAh", Toast.LENGTH_SHORT).show()
+                ViewAnimationExtensions.dismissDialog(dialogView, dialog, anchorView)
+            }
+        } else {
+            btnReset.visibility = View.GONE
+        }
+
+        btnCloseHeader.setOnClickListener {
+            ViewAnimationExtensions.dismissDialog(dialogView, dialog, anchorView)
+        }
+
+        btnCancel.setOnClickListener {
+            ViewAnimationExtensions.dismissDialog(dialogView, dialog, anchorView)
+        }
+
+        btnSave.setOnClickListener {
+            val str = etInput.text?.toString()?.trim() ?: ""
+            val newCap = str.toIntOrNull()
+            if (newCap != null && newCap in 1000..30000) {
+                BatteryHealthManager.setCustomDesignCapacity(this, newCap)
+                updateCapacityUI()
+                loadLatestHealthData()
+                Toast.makeText(this, "Đã áp dụng dung lượng pin mới: $newCap mAh", Toast.LENGTH_SHORT).show()
+                ViewAnimationExtensions.dismissDialog(dialogView, dialog, anchorView)
+            } else {
+                Toast.makeText(this, "Dung lượng không hợp lệ (Phải từ 1.000 đến 30.000 mAh)", Toast.LENGTH_LONG).show()
+            }
         }
 
         dialog.show()

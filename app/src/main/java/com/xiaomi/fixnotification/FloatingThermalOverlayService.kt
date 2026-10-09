@@ -1,6 +1,5 @@
 package com.xiaomi.fixnotification
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,33 +8,30 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.PixelFormat
-import android.os.BatteryManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import java.io.File
 import java.util.Locale
-import java.util.concurrent.Executors
 
 class FloatingThermalOverlayService : Service(), ThermalDataListener {
 
     private var windowManager: WindowManager? = null
-    private var floatingView: View? = null
-    private var params: WindowManager.LayoutParams? = null
 
+    // HUD 1: Nhiệt độ CPU, GPU, Pin
+    private var floatingView1: View? = null
+    private var params1: WindowManager.LayoutParams? = null
+    private var cardFloatingRoot: com.google.android.material.card.MaterialCardView? = null
     private var gaugeCpu: HudGaugeView? = null
     private var tvCpuTemp: TextView? = null
     private var gaugeGpu: HudGaugeView? = null
@@ -43,8 +39,23 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
     private var gaugeBat: HudGaugeView? = null
     private var tvBatTemp: TextView? = null
 
-    private var lastTapTime = 0L
+    // HUD 2: Đo FPS và W sử dụng của Chip
+    private var floatingView2: View? = null
+    private var params2: WindowManager.LayoutParams? = null
+    private var cardFloatingFpsRoot: com.google.android.material.card.MaterialCardView? = null
+    private var tvFloatingFps: TextView? = null
+    private var tvFloatingPowerWatts: TextView? = null
+
+    // Bộ xử lý đa chạm (1 chạm: Đo/Vẽ biểu đồ, 2 chạm: Mở trang giám sát, 3 chạm: Đóng HUD)
+    private var tapCount = 0
     private val tapHandler = Handler(Looper.getMainLooper())
+    private val tapRunnable = Runnable {
+        when (tapCount) {
+            1 -> handleSingleTap()
+            2 -> handleDoubleTap()
+        }
+        tapCount = 0
+    }
 
     companion object {
         const val ACTION_START = "ACTION_START_FLOATING_THERMAL"
@@ -81,7 +92,7 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
             startForeground(NOTIFICATION_ID, notification)
         }
 
-        initFloatingWindow()
+        initFloatingWindows()
         ThermalTelemetryHub.register(this, this)
 
         return START_STICKY
@@ -91,10 +102,10 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Cửa Sổ Nổi Giám Sát Nhiệt Độ",
+                "Cửa Sổ Nổi Giám Sát Nhiệt Độ & FPS",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
-                description = "Hiển thị HUD nhiệt độ CPU, GPU và Pin nổi trên màn hình"
+                description = "Hiển thị HUD nhiệt độ CPU, GPU, Pin, FPS và Công suất Chip"
                 setShowBadge(false)
             }
             val manager = getSystemService(NotificationManager::class.java)
@@ -120,24 +131,24 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Màn Hình Giám Sát Nhiệt Độ Đang Nổi")
-            .setContentText("Chạm để mở toàn màn hình · Chạm đúp 2 lần để tắt HUD")
+            .setContentTitle("Bộ 2 Cửa Sổ Nổi Giám Sát (Nhiệt Độ & FPS/W)")
+            .setContentText("1 chạm: Đo biểu đồ · 2 chạm: Mở trang giám sát · 3 chạm: Đóng HUD")
             .setSmallIcon(R.drawable.ic_popup_window)
             .setContentIntent(pendingOpen)
-            .addAction(R.drawable.ic_close_white, "Đóng Cửa Sổ Nổi", pendingStop)
+            .addAction(R.drawable.ic_close_white, "Đóng HUD", pendingStop)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
 
     @SuppressLint("InflateParams", "ClickableViewAccessibility")
-    private fun initFloatingWindow() {
-        if (floatingView != null) return
+    private fun initFloatingWindows() {
+        if (floatingView1 != null && floatingView2 != null) return
 
         try {
             windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
             val themedContext = android.view.ContextThemeWrapper(this, R.style.Theme_FixNotificationXiaomi)
-            floatingView = LayoutInflater.from(themedContext).inflate(R.layout.layout_floating_thermal_hud, null)
+            val inflater = LayoutInflater.from(themedContext)
 
             val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -147,117 +158,206 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
             }
 
             val density = resources.displayMetrics.density
-            params = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                layoutType,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                PixelFormat.TRANSLUCENT
-            ).apply {
-                gravity = Gravity.TOP or Gravity.START
-                x = (resources.displayMetrics.widthPixels - (190 * density).toInt()).coerceAtLeast(20)
-                y = (140 * density).toInt()
+            val defaultX = (resources.displayMetrics.widthPixels - (165 * density).toInt()).coerceAtLeast(20)
+
+            // ====== 1. KHỞI TẠO HUD 1: NHIỆT ĐỘ CPU / GPU / PIN ======
+            if (floatingView1 == null) {
+                floatingView1 = inflater.inflate(R.layout.layout_floating_thermal_hud, null)
+                params1 = WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    layoutType,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                    PixelFormat.TRANSLUCENT
+                ).apply {
+                    gravity = Gravity.TOP or Gravity.START
+                    x = defaultX
+                    y = (120 * density).toInt()
+                }
+
+                cardFloatingRoot = floatingView1?.findViewById(R.id.cardFloatingRoot)
+                gaugeCpu = floatingView1?.findViewById(R.id.gaugeFloatingCpu)
+                tvCpuTemp = floatingView1?.findViewById(R.id.tvFloatingCpuTemp)
+                gaugeGpu = floatingView1?.findViewById(R.id.gaugeFloatingGpu)
+                tvGpuTemp = floatingView1?.findViewById(R.id.tvFloatingGpuTemp)
+                gaugeBat = floatingView1?.findViewById(R.id.gaugeFloatingBat)
+                tvBatTemp = floatingView1?.findViewById(R.id.tvFloatingBatTemp)
+
+                attachDragAndTouchListener(floatingView1, params1)
+                windowManager?.addView(floatingView1, params1)
             }
 
-            gaugeCpu = floatingView?.findViewById(R.id.gaugeFloatingCpu)
-            tvCpuTemp = floatingView?.findViewById(R.id.tvFloatingCpuTemp)
-            gaugeGpu = floatingView?.findViewById(R.id.gaugeFloatingGpu)
-            tvGpuTemp = floatingView?.findViewById(R.id.tvFloatingGpuTemp)
-            gaugeBat = floatingView?.findViewById(R.id.gaugeFloatingBat)
-            tvBatTemp = floatingView?.findViewById(R.id.tvFloatingBatTemp)
-
-            // Logic kéo thả siêu mượt 1:1 trực tiếp theo chuyển động tay (không trễ frame)
-            val touchSlop = 4f * density
-
-            floatingView?.setOnTouchListener(object : View.OnTouchListener {
-                private var initialX = 0
-                private var initialY = 0
-                private var initialTouchX = 0f
-                private var initialTouchY = 0f
-                private var isDragging = false
-
-                override fun onTouch(v: View, event: MotionEvent): Boolean {
-                    val p = params ?: return false
-                    when (event.actionMasked) {
-                        MotionEvent.ACTION_DOWN -> {
-                            initialX = p.x
-                            initialY = p.y
-                            initialTouchX = event.rawX
-                            initialTouchY = event.rawY
-                            isDragging = false
-                            return true
-                        }
-                        MotionEvent.ACTION_MOVE -> {
-                            val dx = event.rawX - initialTouchX
-                            val dy = event.rawY - initialTouchY
-                            if (isDragging || Math.abs(dx) > touchSlop || Math.abs(dy) > touchSlop) {
-                                isDragging = true
-                                val screenW = resources.displayMetrics.widthPixels
-                                val screenH = resources.displayMetrics.heightPixels
-                                val hudW = floatingView?.width?.takeIf { it > 0 } ?: (180 * density).toInt()
-                                val hudH = floatingView?.height?.takeIf { it > 0 } ?: (45 * density).toInt()
-
-                                val maxX = (screenW - hudW).coerceAtLeast(0)
-                                val maxY = (screenH - hudH).coerceAtLeast(0)
-
-                                p.x = (initialX + dx).toInt().coerceIn(0, maxX)
-                                p.y = (initialY + dy).toInt().coerceIn(0, maxY)
-
-                                try {
-                                    windowManager?.updateViewLayout(floatingView, p)
-                                } catch (_: Throwable) {}
-                            }
-                            return true
-                        }
-                        MotionEvent.ACTION_UP -> {
-                            // Xử lý chạm 2 lần liên tục (Double Tap) để tắt HUD hoặc 1 lần mở toàn màn hình
-                            if (!isDragging) {
-                                val now = System.currentTimeMillis()
-                                if (now - lastTapTime < 350L) {
-                                    // Chạm 2 lần liên tục -> Tắt HUD
-                                    lastTapTime = 0L
-                                    tapHandler.removeCallbacksAndMessages(null)
-                                    android.widget.Toast.makeText(
-                                        this@FloatingThermalOverlayService,
-                                        "Đã đóng Cửa Sổ Nổi HUD",
-                                        android.widget.Toast.LENGTH_SHORT
-                                    ).show()
-                                    stopSelf()
-                                } else {
-                                    lastTapTime = now
-                                    // Chờ xem có đúp chạm lần 2 không, nếu không thì mở trang giám sát nhiệt độ
-                                    tapHandler.removeCallbacksAndMessages(null)
-                                    tapHandler.postDelayed({
-                                        val intent = Intent(this@FloatingThermalOverlayService, ThermalMonitorActivity::class.java).apply {
-                                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                        }
-                                        startActivity(intent)
-                                    }, 350L)
-                                }
-                            }
-                            isDragging = false
-                            return true
-                        }
-                        MotionEvent.ACTION_CANCEL -> {
-                            isDragging = false
-                            return true
-                        }
-                    }
-                    return false
+            // ====== 2. KHỞI TẠO HUD 2: ĐO FPS & W SỬ DỤNG CỦA CHIP ======
+            if (floatingView2 == null) {
+                floatingView2 = inflater.inflate(R.layout.layout_floating_fps_hud, null)
+                params2 = WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    layoutType,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                    PixelFormat.TRANSLUCENT
+                ).apply {
+                    gravity = Gravity.TOP or Gravity.START
+                    x = defaultX
+                    y = (162 * density).toInt() // Xếp ngay dưới HUD 1 gọn gàng
                 }
-            })
 
-            windowManager?.addView(floatingView, params)
+                cardFloatingFpsRoot = floatingView2?.findViewById(R.id.cardFloatingFpsRoot)
+                tvFloatingFps = floatingView2?.findViewById(R.id.tvFloatingFps)
+                tvFloatingPowerWatts = floatingView2?.findViewById(R.id.tvFloatingPowerWatts)
+
+                attachDragAndTouchListener(floatingView2, params2)
+                windowManager?.addView(floatingView2, params2)
+            }
+
         } catch (e: Throwable) {
             e.printStackTrace()
         }
     }
 
+    /**
+     * Gắn bộ lắng nghe kéo thả mượt mà và nhận diện 1 chạm, 2 chạm, 3 chạm dùng chung cho cả 2 HUD
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun attachDragAndTouchListener(view: View?, p: WindowManager.LayoutParams?) {
+        val targetView = view ?: return
+        val targetParams = p ?: return
+        val density = resources.displayMetrics.density
+        val touchSlop = 4f * density
+
+        targetView.setOnTouchListener(object : View.OnTouchListener {
+            private var initialX = 0
+            private var initialY = 0
+            private var initialTouchX = 0f
+            private var initialTouchY = 0f
+            private var isDragging = false
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                when (event.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        initialX = targetParams.x
+                        initialY = targetParams.y
+                        initialTouchX = event.rawX
+                        initialTouchY = event.rawY
+                        isDragging = false
+                        return true
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val dx = event.rawX - initialTouchX
+                        val dy = event.rawY - initialTouchY
+                        if (isDragging || Math.abs(dx) > touchSlop || Math.abs(dy) > touchSlop) {
+                            isDragging = true
+                            val screenW = resources.displayMetrics.widthPixels
+                            val screenH = resources.displayMetrics.heightPixels
+                            val hudW = targetView.width.takeIf { it > 0 } ?: (160 * density).toInt()
+                            val hudH = targetView.height.takeIf { it > 0 } ?: (40 * density).toInt()
+
+                            val maxX = (screenW - hudW).coerceAtLeast(0)
+                            val maxY = (screenH - hudH).coerceAtLeast(0)
+
+                            targetParams.x = (initialX + dx).toInt().coerceIn(0, maxX)
+                            targetParams.y = (initialY + dy).toInt().coerceIn(0, maxY)
+
+                            try {
+                                windowManager?.updateViewLayout(targetView, targetParams)
+                            } catch (_: Throwable) {}
+                        }
+                        return true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        if (!isDragging) {
+                            onHudTapAction()
+                        }
+                        isDragging = false
+                        return true
+                    }
+                    MotionEvent.ACTION_CANCEL -> {
+                        isDragging = false
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+    }
+
+    /**
+     * Nhận diện cử chỉ chạm: hoạt động đồng bộ trên cả hai HUD
+     */
+    private fun onHudTapAction() {
+        tapCount++
+        tapHandler.removeCallbacks(tapRunnable)
+        if (tapCount >= 3) {
+            // 3 chạm -> Đóng cả 2 HUD
+            tapCount = 0
+            handleTripleTap()
+        } else {
+            // Chờ 300ms để phân biệt 1 chạm và 2 chạm
+            tapHandler.postDelayed(tapRunnable, 300L)
+        }
+    }
+
+    /**
+     * 1 chạm: Bật / Tắt chức năng đo và vẽ biểu đồ hiển thị vào tab Biểu đồ ở trang Giám sát nhiệt độ
+     */
+    private fun handleSingleTap() {
+        val isRec = ThermalTelemetryHub.toggleRecording(this)
+        if (isRec) {
+            Toast.makeText(
+                this,
+                "Đã BẮT ĐẦU phiên đo (Ghi nhận CPU, GPU, Pin, FPS, W)",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                this,
+                "Đã KẾT THÚC phiên đo (Biểu đồ đã lưu vào trang Giám sát)",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        updateRecStatusUI(isRec)
+    }
+
+    /**
+     * 2 chạm: Mở trang giám sát nhiệt độ
+     */
+    private fun handleDoubleTap() {
+        val intent = Intent(this, ThermalMonitorActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra("KEY_ACTIVE_TAB", 3) // Tab FPS & Công suất
+        }
+        startActivity(intent)
+    }
+
+    /**
+     * 3 chạm: Đóng cả hai HUD
+     */
+    private fun handleTripleTap() {
+        Toast.makeText(this, "Đã đóng cả hai Cửa Sổ Nổi HUD", Toast.LENGTH_SHORT).show()
+        stopSelf()
+    }
+
+    private fun updateRecStatusUI(isRecording: Boolean) {
+        val density = resources.displayMetrics.density
+        // Khi ấn đo: 1 đường viền đỏ mỏng xung quanh khung HUD
+        val strokeColor = if (isRecording) Color.parseColor("#EF4444") else Color.parseColor("#20FFFFFF")
+        val strokeWidth = if (isRecording) (1.2f * density).toInt().coerceAtLeast(2) else (0.8f * density).toInt().coerceAtLeast(1)
+        cardFloatingRoot?.strokeColor = strokeColor
+        cardFloatingRoot?.strokeWidth = strokeWidth
+        cardFloatingFpsRoot?.strokeColor = strokeColor
+        cardFloatingFpsRoot?.strokeWidth = strokeWidth
+    }
+
     override fun onThermalDataUpdate(data: SharedThermalData) {
-        if (floatingView != null) {
-            // 1. CPU
+        // Cập nhật viền đỏ HUD theo trạng thái đo
+        updateRecStatusUI(data.isRecording)
+
+        // ====== CẬP NHẬT HUD 1: NHIỆT ĐỘ CPU / GPU / PIN ======
+        if (floatingView1 != null) {
             val cpuUsage = data.cpuUsagePercent
             gaugeCpu?.setProgress(cpuUsage, formatUsageColor(cpuUsage))
 
@@ -265,7 +365,6 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
             tvCpuTemp?.text = "${cpuTemp.toInt()}°C"
             tvCpuTemp?.setTextColor(formatTempColor(cpuTemp))
 
-            // 2. GPU
             val gpuUsage = data.gpuUsagePercent
             gaugeGpu?.setProgress(gpuUsage, formatUsageColor(gpuUsage))
 
@@ -273,7 +372,6 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
             tvGpuTemp?.text = "${gpuTemp.toInt()}°C"
             tvGpuTemp?.setTextColor(formatTempColor(gpuTemp))
 
-            // 3. Pin (Battery)
             val batPercent = data.batPercent
             gaugeBat?.setProgress(batPercent, formatBatPercentColor(batPercent))
 
@@ -281,48 +379,71 @@ class FloatingThermalOverlayService : Service(), ThermalDataListener {
             tvBatTemp?.text = "${String.format(Locale.US, "%.1f", batTemp)}°C"
             tvBatTemp?.setTextColor(formatBatTempColor(batTemp))
         }
+
+        // ====== CẬP NHẬT HUD 2: ĐO FPS VÀ W SỬ DỤNG CỦA CHIP ======
+        if (floatingView2 != null) {
+            // 1. FPS
+            tvFloatingFps?.text = "${data.fps.toInt()}"
+
+            // 2. Công suất W: TRÊN 10W CHỮ MÀU ĐỎ theo yêu cầu
+            val watts = data.powerWatts
+            tvFloatingPowerWatts?.text = "${String.format(Locale.US, "%.1f", watts)} W"
+            if (watts > 10.0f) {
+                tvFloatingPowerWatts?.setTextColor(Color.parseColor("#EF4444")) // Chữ màu đỏ
+            } else {
+                tvFloatingPowerWatts?.setTextColor(Color.parseColor("#00E5FF")) // Chữ màu xanh cyan
+            }
+        }
     }
 
     private fun formatUsageColor(usage: Int): Int {
         return when {
-            usage > 80 -> Color.parseColor("#EF4444") // Quá 80% đỏ
-            usage > 60 -> Color.parseColor("#F59E0B") // Quá 60% cam
-            else -> Color.parseColor("#00E5FF")       // Dưới 60% xanh lam
+            usage > 80 -> Color.parseColor("#EF4444")
+            usage > 60 -> Color.parseColor("#F59E0B")
+            else -> Color.parseColor("#00E5FF")
         }
     }
 
     private fun formatTempColor(temp: Float): Int {
         return if (temp >= 50f) {
-            Color.parseColor("#EF4444") // Trên 50 đỏ
+            Color.parseColor("#EF4444")
         } else {
-            Color.parseColor("#00E5FF") // Dưới 50 xanh lam
+            Color.parseColor("#00E5FF")
         }
     }
 
     private fun formatBatPercentColor(percent: Int): Int {
         return when {
-            percent <= 20 -> Color.parseColor("#EF4444") // Từ 20 trở xuống đỏ
-            percent <= 50 -> Color.parseColor("#F59E0B") // Dưới 50 cam
-            else -> Color.parseColor("#00E5FF")          // Trên 50 xanh lam
+            percent <= 20 -> Color.parseColor("#EF4444")
+            percent <= 50 -> Color.parseColor("#F59E0B")
+            else -> Color.parseColor("#00E5FF")
         }
     }
 
     private fun formatBatTempColor(batTemp: Float): Int {
         return when {
-            batTemp >= 45f -> Color.parseColor("#EF4444") // 45 đỏ
-            batTemp >= 40f -> Color.parseColor("#F59E0B") // Trên 40 cam
-            else -> Color.parseColor("#00E5FF")           // Dưới 40 xanh
+            batTemp >= 45f -> Color.parseColor("#EF4444")
+            batTemp >= 40f -> Color.parseColor("#F59E0B")
+            else -> Color.parseColor("#00E5FF")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         ThermalTelemetryHub.unregister(this)
-        if (floatingView != null) {
+
+        if (floatingView1 != null) {
             try {
-                windowManager?.removeView(floatingView)
+                windowManager?.removeView(floatingView1)
             } catch (_: Throwable) {}
-            floatingView = null
+            floatingView1 = null
+        }
+
+        if (floatingView2 != null) {
+            try {
+                windowManager?.removeView(floatingView2)
+            } catch (_: Throwable) {}
+            floatingView2 = null
         }
     }
 }

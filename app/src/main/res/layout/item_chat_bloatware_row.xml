@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:gravity="center_vertical"
+  android:orientation="horizontal"
+  android:paddingStart="8dp"
+  android:paddingEnd="6dp"
+  android:paddingTop="7dp"
+  android:paddingBottom="7dp"
+  android:layout_marginTop="2dp"
+  android:layout_marginBottom="2dp"
+  android:background="@drawable/bg_chat_bloat_item"
+  android:clickable="true"
+  android:focusable="false">
+
+  <!-- Icon App Bloatware -->
+  <ImageView
+    android:id="@+id/ivBloatItemIcon"
+    android:layout_width="34dp"
+    android:layout_height="34dp"
+    android:layout_marginEnd="9dp"
+    android:scaleType="fitCenter"
+    android:src="@drawable/ic_default_app_icon" />
+
+  <!-- Tên, Package, Miêu tả -->
+  <LinearLayout
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingStart="8dp"
-    android:paddingEnd="6dp"
-    android:paddingTop="7dp"
-    android:paddingBottom="7dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginBottom="2dp"
-    android:background="@drawable/bg_chat_bloat_item"
-    android:clickable="true"
-    android:focusable="false">
+    android:layout_weight="1"
+    android:orientation="vertical">
 
-    <!-- Icon App Bloatware -->
-    <ImageView
-        android:id="@+id/ivBloatItemIcon"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginEnd="9dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_default_app_icon" />
+    <TextView
+      android:id="@+id/tvBloatItemName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Tên Bloatware"
+      android:textColor="@color/text_primary"
+      android:textSize="12sp"
+      android:textStyle="bold"
+      android:maxLines="1"
+      android:ellipsize="end" />
 
-    <!-- Tên, Package, Miêu tả -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+    <TextView
+      android:id="@+id/tvBloatItemPackage"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="1dp"
+      android:text="com.miui.analytics"
+      android:textColor="@color/text_secondary"
+      android:textSize="10.5sp"
+      android:maxLines="1"
+      android:ellipsize="end" />
 
-        <TextView
-            android:id="@+id/tvBloatItemName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tên Bloatware"
-            android:textColor="@color/text_primary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end" />
+    <TextView
+      android:id="@+id/tvBloatItemDesc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="1dp"
+      android:text="Quảng cáo hệ thống"
+      android:textColor="#F59E0B"
+      android:textSize="10sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:visibility="gone" />
+  </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvBloatItemPackage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:text="com.miui.analytics"
-            android:textColor="@color/text_secondary"
-            android:textSize="10.5sp"
-            android:maxLines="1"
-            android:ellipsize="end" />
-
-        <TextView
-            android:id="@+id/tvBloatItemDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:text="Quảng cáo hệ thống"
-            android:textColor="#F59E0B"
-            android:textSize="10sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <!-- Checkbox tích chọn -->
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cbBloatItemSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:clickable="false"
-        android:focusable="false"
-        app:buttonTint="@color/primary"
-        android:checked="true" />
+  <!-- Checkbox tích chọn -->
+  <com.google.android.material.checkbox.MaterialCheckBox
+    android:id="@+id/cbBloatItemSelect"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="2dp"
+    android:clickable="false"
+    android:focusable="false"
+    app:buttonTint="@color/primary"
+    android:checked="true" />
 </LinearLayout>

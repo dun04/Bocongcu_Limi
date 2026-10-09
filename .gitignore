@@ -21,3 +21,10 @@ app/src/main/res/raw/
 *.log
 # Workspace internal
 .agents/
+*.apk
+AGENTS.md
+GEMINI.md
+*.txt
+xiaomi-*.md
+dingwen_readme.md
+temp_*.kt

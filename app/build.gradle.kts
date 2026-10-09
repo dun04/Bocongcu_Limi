@@ -11,8 +11,8 @@ android {
         applicationId = "com.app.limi"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1284
-        versionName = "1.2.8.4.ntd"
+        versionCode = 1332
+        versionName = "1.3.3.2.ntd"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,11 +49,11 @@ android {
                     if (apkFile.exists()) {
                         val targetDir = File("C:/Users/duyih/Downloads/Bộ công cụ LIMI")
                         if (!targetDir.exists()) targetDir.mkdirs()
-                        val vName = variant.versionName ?: "1.2.8.4.ntd"
+                        val vName = variant.versionName ?: "1.2.8.5.ntd"
                         val formattedName = if (vName.endsWith(".apk", ignoreCase = true)) vName else "$vName.apk"
                         val versionApkName = if (formattedName.startsWith("Limi-v", ignoreCase = true)) formattedName else "Limi-v$formattedName"
                         
-                        // Copy chính xác theo định dạng Limi-v<versionName>.apk (vd: Limi-v1.2.8.4.ntd.apk)
+                        // Copy chính xác theo định dạng Limi-v<versionName>.apk (vd: Limi-v1.2.8.5.ntd.apk)
                         apkFile.copyTo(File(targetDir, versionApkName), overwrite = true)
                         apkFile.copyTo(File(targetDir, "Limi_beta.apk"), overwrite = true)
                         apkFile.copyTo(File(project.rootDir, versionApkName), overwrite = true)

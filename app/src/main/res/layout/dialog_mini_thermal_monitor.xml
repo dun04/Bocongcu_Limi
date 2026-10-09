@@ -1,211 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardMiniThermalRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardMiniThermalRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="20dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="8dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="20dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="8dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:padding="18dp">
 
+    <!-- Header -->
     <LinearLayout
-        android:layout_width="match_parent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:cardBackgroundColor="#202979FF"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#402979FF"
+        app:strokeWidth="1dp">
+
+        <ImageView
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_popup_window"
+          app:tint="#2979FF" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="18dp">
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Header -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                app:cardBackgroundColor="#202979FF"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#402979FF"
-                app:strokeWidth="1dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_popup_window"
-                    app:tint="#2979FF" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Giám Sát Nhiệt Độ Mini"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15.5sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvMiniChipSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Snapdragon · Realtime 1s"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11.5sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/btnMiniClose"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="7dp"
-                android:src="@drawable/ic_close_white"
-                app:tint="@color/text_secondary" />
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/card_stroke" />
-
-        <!-- 2 Badge lớn: CPU & PIN -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Card CPU Mini -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@drawable/bg_code_box"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nhiệt độ CPU"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/tvMiniCpuTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="51°C"
-                        android:textColor="#FF8A00"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <com.xiaomi.fixnotification.ThermalChartView
-                        android:id="@+id/chartMiniCpu"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Card Pin Mini -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@drawable/bg_code_box"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeColor="@color/card_stroke"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nhiệt độ Pin"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/tvMiniBatTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="36.8°C"
-                        android:textColor="#26C6DA"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <com.xiaomi.fixnotification.ThermalChartView
-                        android:id="@+id/chartMiniBat"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
-        <!-- Xung nhịp các nhân chính -->
         <TextView
-            android:id="@+id/tvMiniCoresInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Lõi 7: 1840MHz · Lõi 6: 1200MHz · Lõi 0: 600MHz"
-            android:textColor="@color/text_secondary"
-            android:textSize="11.5sp" />
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Giám Sát Nhiệt Độ Mini"
+          android:textColor="@color/text_primary"
+          android:textSize="15.5sp"
+          android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnMiniFullscreen"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="14dp"
-            android:minHeight="42dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Đóng / Hoàn tất"
-            android:textColor="@color/text_primary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/button_capsule_bg"
-            app:cornerRadius="21dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp" />
+        <TextView
+          android:id="@+id/tvMiniChipSubtitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Snapdragon · Realtime 1s"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
 
+      <ImageView
+        android:id="@+id/btnMiniClose"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="7dp"
+        android:src="@drawable/ic_close_white"
+        app:tint="@color/text_secondary" />
     </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="12dp"
+      android:layout_marginBottom="12dp"
+      android:background="@color/card_stroke" />
+
+    <!-- 2 Badge lớn: CPU & PIN -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <!-- Card CPU Mini -->
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@drawable/bg_code_box"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="12dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhiệt độ CPU"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+          <TextView
+            android:id="@+id/tvMiniCpuTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="51°C"
+            android:textColor="#FF8A00"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+          <com.xiaomi.fixnotification.ThermalChartView
+            android:id="@+id/chartMiniCpu"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="6dp" />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+
+      <!-- Card Pin Mini -->
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1"
+        app:cardBackgroundColor="@drawable/bg_code_box"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/card_stroke"
+        app:strokeWidth="1dp">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:padding="12dp">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhiệt độ Pin"
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+
+          <TextView
+            android:id="@+id/tvMiniBatTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="36.8°C"
+            android:textColor="#26C6DA"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+          <com.xiaomi.fixnotification.ThermalChartView
+            android:id="@+id/chartMiniBat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="6dp" />
+        </LinearLayout>
+      </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Xung nhịp các nhân chính -->
+    <TextView
+      android:id="@+id/tvMiniCoresInfo"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:text="Lõi 7: 1840MHz · Lõi 6: 1200MHz · Lõi 0: 600MHz"
+      android:textColor="@color/text_secondary"
+      android:textSize="11.5sp" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnMiniFullscreen"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="42dp"
+      android:layout_marginTop="14dp"
+      android:minHeight="42dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Đóng / Hoàn tất"
+      android:textColor="@color/text_primary"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/button_capsule_bg"
+      app:cornerRadius="21dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp" />
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

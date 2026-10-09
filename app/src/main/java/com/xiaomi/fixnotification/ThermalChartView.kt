@@ -19,7 +19,7 @@ class ThermalChartView @JvmOverloads constructor(
 
     private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 2.5f * resources.displayMetrics.density
+        strokeWidth = 1.35f * resources.displayMetrics.density
         strokeCap = Paint.Cap.ROUND
         strokeJoin = Paint.Join.ROUND
     }
@@ -40,12 +40,13 @@ class ThermalChartView @JvmOverloads constructor(
     }
 
     private val dataPoints = mutableListOf<Float>()
-    private var maxCapacity = 40
+    private var maxCapacity = 180 // Mặc định 180 giây = chuẩn 3 phút đo
     private var minVal = 0f
     private var maxVal = 100f
     private var isCpuTheme = false
     private var showGridLabels = true
     private var customColor: Int? = null
+    private var unitStr: String = ""
 
     private val linePath = Path()
     private val fillPath = Path()
@@ -53,10 +54,11 @@ class ThermalChartView @JvmOverloads constructor(
     fun setChartConfig(
         min: Float = 0f,
         max: Float = 100f,
-        capacity: Int = 40,
+        capacity: Int = 180,
         isCpu: Boolean = false,
         showLabels: Boolean = true,
-        customColor: Int? = null
+        customColor: Int? = null,
+        unit: String = ""
     ) {
         this.minVal = min
         this.maxVal = max
@@ -64,6 +66,7 @@ class ThermalChartView @JvmOverloads constructor(
         this.isCpuTheme = isCpu
         this.showGridLabels = showLabels
         this.customColor = customColor
+        this.unitStr = unit
         invalidate()
     }
 
@@ -89,18 +92,19 @@ class ThermalChartView @JvmOverloads constructor(
         val h = height.toFloat()
         if (w <= 0f || h <= 0f) return
 
-        val paddingLeft = if (showGridLabels) 36f * resources.displayMetrics.density else 4f * resources.displayMetrics.density
-        val paddingRight = 8f * resources.displayMetrics.density
-        val paddingTop = 10f * resources.displayMetrics.density
-        val paddingBottom = if (showGridLabels) 18f * resources.displayMetrics.density else 4f * resources.displayMetrics.density
+        val density = resources.displayMetrics.density
+        val paddingLeft = if (showGridLabels) 36f * density else 4f * density
+        val paddingRight = 8f * density
+        val paddingTop = 10f * density
+        val paddingBottom = if (showGridLabels) 18f * density else 4f * density
 
         val plotWidth = w - paddingLeft - paddingRight
         val plotHeight = h - paddingTop - paddingBottom
 
         if (plotWidth <= 0f || plotHeight <= 0f) return
 
-        // 1. Vẽ đường lưới ngang (Grid Lines)
-        val gridLines = 3 // 0%, 50%, 100%
+        // 1. Vẽ đường lưới ngang (Horizontal Grid Lines: 0%, 50%, 100%)
+        val gridLines = 3
         for (i in 0..gridLines) {
             val ratio = i.toFloat() / gridLines
             val y = paddingTop + plotHeight * (1f - ratio)
@@ -108,17 +112,26 @@ class ThermalChartView @JvmOverloads constructor(
 
             if (showGridLabels) {
                 val labelVal = (minVal + (maxVal - minVal) * ratio).toInt()
-                val labelStr = if (maxVal <= 120f) "${labelVal}°C" else "$labelVal"
-                canvas.drawText(labelStr, 4f * resources.displayMetrics.density, y + 3.5f * resources.displayMetrics.density, textPaint)
+                val labelStr = if (unitStr.isNotEmpty()) "$labelVal$unitStr" else if (maxVal <= 120f) "${labelVal}°C" else "$labelVal"
+                canvas.drawText(labelStr, 4f * density, y + 3.5f * density, textPaint)
             }
         }
 
-        // 2. Vẽ nhãn trục thời gian dưới đáy
+        // 2. Vẽ đường lưới dọc & mốc thời gian đo chuẩn 3 phút (3 phút trước - 1.5 phút - Hiện tại)
         if (showGridLabels) {
-            canvas.drawText("3 minutes ago", paddingLeft, h - 3f * resources.displayMetrics.density, textPaint)
-            val rightLabel = "Current"
+            val midX = paddingLeft + plotWidth / 2f
+            // Lưới dọc ở mốc giữa (1.5 phút)
+            canvas.drawLine(midX, paddingTop, midX, paddingTop + plotHeight, gridPaint)
+
+            // Nhãn trục thời gian 3 phút
+            canvas.drawText("3 phút", paddingLeft, h - 3f * density, textPaint)
+            val midLabel = "1.5 phút"
+            val midW = textPaint.measureText(midLabel)
+            canvas.drawText(midLabel, midX - midW / 2f, h - 3f * density, textPaint)
+
+            val rightLabel = "Hiện tại"
             val textWidth = textPaint.measureText(rightLabel)
-            canvas.drawText(rightLabel, w - paddingRight - textWidth, h - 3f * resources.displayMetrics.density, textPaint)
+            canvas.drawText(rightLabel, w - paddingRight - textWidth, h - 3f * density, textPaint)
         }
 
         if (dataPoints.isEmpty()) return

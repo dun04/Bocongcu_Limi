@@ -1,171 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardFloatingRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardFloatingRoot"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:animateLayoutChanges="false"
+  app:cardBackgroundColor="#40050811"
+  app:cardCornerRadius="8dp"
+  app:cardElevation="0dp"
+  app:strokeColor="#20FFFFFF"
+  app:strokeWidth="0.8dp">
+
+  <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="false"
-    app:cardBackgroundColor="#26050811"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="0dp"
-    app:strokeColor="#20FFFFFF"
-    app:strokeWidth="0.8dp">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="5dp"
+    android:paddingTop="2.5dp"
+    android:paddingEnd="5dp"
+    android:paddingBottom="2.5dp">
 
+    <!-- 1. CPU Section -->
     <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+
+      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="CPU"
+        android:textColor="#CBD5E1"
+        android:textSize="7.5sp"
+        android:textStyle="bold" />
+
+      <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="7dp"
-        android:paddingTop="3dp"
-        android:paddingEnd="7dp"
-        android:paddingBottom="3dp">
+        android:orientation="horizontal">
 
-        <!-- 1. CPU Section -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <com.xiaomi.fixnotification.HudGaugeView
+          android:id="@+id/gaugeFloatingCpu"
+          android:layout_width="20dp"
+          android:layout_height="20dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CPU"
-                android:textColor="#CBD5E1"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-
-            <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.xiaomi.fixnotification.HudGaugeView
-                    android:id="@+id/gaugeFloatingCpu"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp" />
-
-                <TextView
-                    android:id="@+id/tvFloatingCpuTemp"
-                    android:layout_width="28dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFeatureSettings="tnum"
-                    android:gravity="start|center_vertical"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="48°C"
-                    android:textColor="#00E5FF"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Divider 1 -->
-        <View
-            android:layout_width="0.8dp"
-            android:layout_height="20dp"
-            android:layout_marginHorizontal="6dp"
-            android:background="#20FFFFFF" />
-
-        <!-- 2. GPU Section -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="GPU"
-                android:textColor="#CBD5E1"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-
-            <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.xiaomi.fixnotification.HudGaugeView
-                    android:id="@+id/gaugeFloatingGpu"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp" />
-
-                <TextView
-                    android:id="@+id/tvFloatingGpuTemp"
-                    android:layout_width="28dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFeatureSettings="tnum"
-                    android:gravity="start|center_vertical"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="45°C"
-                    android:textColor="#00E5FF"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Divider 2 -->
-        <View
-            android:layout_width="0.8dp"
-            android:layout_height="20dp"
-            android:layout_marginHorizontal="6dp"
-            android:background="#20FFFFFF" />
-
-        <!-- 3. Battery Section -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PIN"
-                android:textColor="#CBD5E1"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-
-            <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.xiaomi.fixnotification.HudGaugeView
-                    android:id="@+id/gaugeFloatingBat"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp" />
-
-                <TextView
-                    android:id="@+id/tvFloatingBatTemp"
-                    android:layout_width="38dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:fontFeatureSettings="tnum"
-                    android:gravity="start|center_vertical"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="36.8°C"
-                    android:textColor="#00E5FF"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
+        <TextView
+          android:id="@+id/tvFloatingCpuTemp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="2.5dp"
+          android:fontFeatureSettings="tnum"
+          android:gravity="start|center_vertical"
+          android:includeFontPadding="false"
+          android:maxLines="1"
+          android:minWidth="23dp"
+          android:singleLine="true"
+          android:text="48°C"
+          android:textColor="#00E5FF"
+          android:textSize="10sp"
+          android:textStyle="bold" />
+      </LinearLayout>
     </LinearLayout>
+
+    <!-- Divider 1 -->
+    <View
+      android:layout_width="0.8dp"
+      android:layout_height="16dp"
+      android:layout_marginHorizontal="3.5dp"
+      android:background="#20FFFFFF" />
+
+    <!-- 2. GPU Section -->
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="GPU"
+        android:textColor="#CBD5E1"
+        android:textSize="7.5sp"
+        android:textStyle="bold" />
+
+      <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xiaomi.fixnotification.HudGaugeView
+          android:id="@+id/gaugeFloatingGpu"
+          android:layout_width="20dp"
+          android:layout_height="20dp" />
+
+        <TextView
+          android:id="@+id/tvFloatingGpuTemp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="2.5dp"
+          android:fontFeatureSettings="tnum"
+          android:gravity="start|center_vertical"
+          android:includeFontPadding="false"
+          android:maxLines="1"
+          android:minWidth="23dp"
+          android:singleLine="true"
+          android:text="45°C"
+          android:textColor="#00E5FF"
+          android:textSize="10sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+    </LinearLayout>
+
+    <!-- Divider 2 -->
+    <View
+      android:layout_width="0.8dp"
+      android:layout_height="16dp"
+      android:layout_marginHorizontal="3.5dp"
+      android:background="#20FFFFFF" />
+
+    <!-- 3. Battery Section -->
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="PIN"
+        android:textColor="#CBD5E1"
+        android:textSize="7.5sp"
+        android:textStyle="bold" />
+
+      <!-- Hàng ngang: Biểu đồ tròn % trước rồi Nhiệt độ (chiều rộng cố định, không co giãn khung HUD) -->
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.xiaomi.fixnotification.HudGaugeView
+          android:id="@+id/gaugeFloatingBat"
+          android:layout_width="20dp"
+          android:layout_height="20dp" />
+
+        <TextView
+          android:id="@+id/tvFloatingBatTemp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="2.5dp"
+          android:fontFeatureSettings="tnum"
+          android:gravity="start|center_vertical"
+          android:includeFontPadding="false"
+          android:maxLines="1"
+          android:minWidth="31dp"
+          android:singleLine="true"
+          android:text="36.8°C"
+          android:textColor="#00E5FF"
+          android:textSize="10sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+    </LinearLayout>
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

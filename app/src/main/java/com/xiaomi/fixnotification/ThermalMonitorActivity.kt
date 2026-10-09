@@ -44,11 +44,39 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
     // Dữ liệu lịch sử tích lũy cho biểu đồ theo bản ghi
     private val batteryHistoryPoints = mutableListOf<Float>()
     private val batteryLevelHistoryPoints = mutableListOf<Float>()
+    private val realtimeFpsPoints = mutableListOf<Float>()
+    private val realtimePowerPoints = mutableListOf<Float>()
+
+    // Quản lý các phiên đo biểu đồ tách riêng (Thermal Sessions)
+    private var selectedSessionId: String? = null // null: Chế độ trực tiếp / đang ghi
+    private var selectedChartMode: ThermalChartMode = ThermalChartMode.FPS_POWER
+    private val realtimeSamples = mutableListOf<ThermalSample>()
+    private var lastObservedRecording: Boolean? = null
+
+    // Tối ưu hóa độ mượt khi cuộn trang (120 FPS)
+    private var isUserScrolling = false
+    private val scrollDebounceHandler = Handler(Looper.getMainLooper())
+    private val scrollDebounceRunnable = Runnable {
+        isUserScrolling = false
+        if (activeTab == TAB_FPS && !isFinishing && !isDestroyed) {
+            updateSessionChartsAndStats()
+        }
+    }
+
+    // Cache View tóm tắt nhân CPU để không bao giờ trigger requestLayout liên tục
+    private class CoreSummaryRowHolder(
+        val rowView: View,
+        val tvTitle: TextView,
+        val tvStats: TextView,
+        val progressBar: android.widget.ProgressBar
+    )
+    private val coreSummaryHolders = mutableListOf<CoreSummaryRowHolder>()
 
     companion object {
-        private const val TAB_BATTERY = 0
-        private const val TAB_CPU = 1
-        private const val TAB_GPU = 2
+        const val TAB_BATTERY = 0
+        const val TAB_CPU = 1
+        const val TAB_GPU = 2
+        const val TAB_FPS = 3
     }
 
     private class CoreViewHolder(
@@ -87,9 +115,51 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
             insets
         }
 
+        ThermalSessionManager.init(this)
         initHeaderAndTabs()
         initCharts()
+        setupSessionTabsAndControls()
         setupCpuCoreCards()
+
+        binding.btnConnectShizuku.setOnClickListener {
+            ViewAnimationExtensions.animateBounce(it)
+            if (ShizukuUtils.isShizukuAvailable()) {
+                ShizukuUtils.requestShizukuPermission()
+            } else {
+                try {
+                    val intent = packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")
+                    if (intent != null) {
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this, "Vui lòng cài đặt và khởi chạy ứng dụng Shizuku trên máy!", Toast.LENGTH_LONG).show()
+                    }
+                } catch (_: Throwable) {
+                    Toast.makeText(this, "Không thể mở ứng dụng Shizuku", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        // Tối ưu hóa 120 FPS khi cuộn màn hình
+        binding.scrollThermalContent.setOnScrollChangeListener { _, _, _, _, _ ->
+            isUserScrolling = true
+            scrollDebounceHandler.removeCallbacks(scrollDebounceRunnable)
+            scrollDebounceHandler.postDelayed(scrollDebounceRunnable, 350L)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        val requestedTab = intent?.getIntExtra("KEY_ACTIVE_TAB", -1) ?: -1
+        if (requestedTab != -1) {
+            val tabs = listOf(
+                Triple(binding.tabBattery, binding.layoutTabBatteryContent, TAB_BATTERY),
+                Triple(binding.tabCpu, binding.layoutTabCpuContent, TAB_CPU),
+                Triple(binding.tabGpu, binding.layoutTabGpuContent, TAB_GPU),
+                Triple(binding.tabFps, binding.layoutTabFpsContent, TAB_FPS)
+            )
+            switchTab(requestedTab, tabs, animated = true)
+        }
     }
 
     private fun initHeaderAndTabs() {
@@ -107,7 +177,8 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
         val tabs = listOf(
             Triple(binding.tabBattery, binding.layoutTabBatteryContent, TAB_BATTERY),
             Triple(binding.tabCpu, binding.layoutTabCpuContent, TAB_CPU),
-            Triple(binding.tabGpu, binding.layoutTabGpuContent, TAB_GPU)
+            Triple(binding.tabGpu, binding.layoutTabGpuContent, TAB_GPU),
+            Triple(binding.tabFps, binding.layoutTabFpsContent, TAB_FPS)
         )
 
         for ((tabView, _, index) in tabs) {
@@ -117,8 +188,9 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
             }
         }
 
+        val initialTab = intent?.getIntExtra("KEY_ACTIVE_TAB", TAB_BATTERY) ?: TAB_BATTERY
         binding.scrollThermalTabs.post {
-            switchTab(TAB_BATTERY, tabs, animated = false)
+            switchTab(initialTab, tabs, animated = false)
         }
     }
 
@@ -140,6 +212,14 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
             tabView.setTextColor(if (isSelected) primaryColor else secondaryTextColor)
             tabView.setTypeface(null, if (isSelected) Typeface.BOLD else Typeface.NORMAL)
             layoutView.visibility = if (isSelected) View.VISIBLE else View.GONE
+        }
+
+        // Cập nhật biểu đồ theo chuỗi thời gian đo 3 phút ngay khi chuyển tab
+        when (selectedIndex) {
+            TAB_BATTERY -> refreshBatteryCharts()
+            TAB_CPU -> refreshCpuCharts()
+            TAB_GPU -> refreshGpuCharts()
+            TAB_FPS -> updateSessionChartsAndStats()
         }
 
         // Animate fluid jelly pill
@@ -198,7 +278,7 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
             } else {
                 startService(serviceIntent)
             }
-            Toast.makeText(this, "✅ Đã kích hoạt Cửa Sổ Nổi giám sát nhiệt độ!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Đã kích hoạt 2 Cửa Sổ Nổi (Nhiệt Độ & FPS/W)!", Toast.LENGTH_SHORT).show()
         } catch (e: Throwable) {
             Toast.makeText(this, "Lỗi khi bật cửa sổ nổi: ${e.message}", Toast.LENGTH_SHORT).show()
         }
@@ -241,11 +321,11 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
 
                 mainHandler.post {
                     if (r1.exitCode == 0) {
-                        Toast.makeText(this@ThermalMonitorActivity, "✅ Đã tự động cấp quyền Cửa Sổ Nổi thành công qua Shizuku!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@ThermalMonitorActivity, "Đã tự động cấp quyền Cửa Sổ Nổi thành công qua Shizuku!", Toast.LENGTH_LONG).show()
                         dialog.dismiss()
                         startFloatingThermalHUD()
                     } else {
-                        Toast.makeText(this@ThermalMonitorActivity, "⚠️ Không thể cấp quyền tự động: ${r1.stderr}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ThermalMonitorActivity, "Không thể cấp quyền tự động: ${r1.stderr}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -284,71 +364,529 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
     }
 
     private fun initCharts() {
-        // Biểu đồ Pin Realtime: 0 - 100°C
+        // Biểu đồ Pin Realtime: 0 - 100°C (Cửa sổ đo 3 phút = 180 giây)
         binding.chartBatteryRealtime.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = false,
-            showLabels = true
+            showLabels = true,
+            unit = "°C"
         )
 
-        // Biểu đồ Pin Bản Ghi: 0 - 100°C
+        // Biểu đồ Pin Bản Ghi: 0 - 100°C (Cửa sổ đo 3 phút = 180 giây)
         binding.chartBatteryHistory.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = false,
-            showLabels = true
+            showLabels = true,
+            unit = "°C"
         )
 
-        // Biểu đồ Mức Pin: 0 - 100%
+        // Biểu đồ Mức Pin: 0 - 100% (Cửa sổ đo 3 phút = 180 giây)
         binding.chartBatteryLevelHistory.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = false,
-            showLabels = true
+            showLabels = true,
+            unit = "%"
         )
 
-        // Biểu đồ CPU Realtime: 0 - 100°C
+        // Biểu đồ CPU Realtime: 0 - 100°C (Cửa sổ đo 3 phút = 180 giây)
         binding.chartCpuRealtime.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = true,
-            showLabels = true
+            showLabels = true,
+            unit = "°C"
         )
 
-        // Biểu đồ GPU Nhiệt độ Realtime: 0 - 100°C
+        // Biểu đồ GPU Nhiệt độ Realtime: 0 - 100°C (Cửa sổ đo 3 phút = 180 giây)
         binding.chartGpuTempRealtime.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = false,
             showLabels = true,
-            customColor = Color.parseColor("#2979FF")
+            customColor = Color.parseColor("#2979FF"),
+            unit = "°C"
         )
 
-        // Biểu đồ GPU Xung nhịp Realtime: 0 - 1200MHz
+        // Biểu đồ GPU Xung nhịp Realtime: 0 - Max MHz (Cửa sổ đo 3 phút = 180 giây)
+        val maxGpu = DeviceInfoUtils.getGpuMaxFrequencyMHz().coerceAtLeast(950)
         binding.chartGpuFreqRealtime.setChartConfig(
             min = 0f,
-            max = 1200f,
-            capacity = 45,
+            max = (maxGpu + 50).toFloat(),
+            capacity = 180,
             isCpu = false,
             showLabels = true,
-            customColor = Color.parseColor("#00E5FF")
+            customColor = Color.parseColor("#00E5FF"),
+            unit = "Mhz"
         )
 
-        // Biểu đồ GPU Mức sử dụng Realtime: 0 - 100%
+        // Biểu đồ GPU Mức sử dụng Realtime: 0 - 100% (Cửa sổ đo 3 phút = 180 giây)
         binding.chartGpuUsageRealtime.setChartConfig(
             min = 0f,
             max = 100f,
-            capacity = 45,
+            capacity = 180,
             isCpu = false,
             showLabels = true,
-            customColor = Color.parseColor("#F59E0B")
+            customColor = Color.parseColor("#F59E0B"),
+            unit = "%"
         )
+    }
+
+    private fun setupSessionTabsAndControls() {
+        // Cài đặt chuyển đổi Metric Tab của biểu đồ phiên
+        val activeBg = ContextCompat.getColor(this, R.color.primary)
+        val inactiveBg = ContextCompat.getColor(this, R.color.card_stroke)
+        val activeText = ContextCompat.getColor(this, R.color.on_primary)
+        val inactiveText = ContextCompat.getColor(this, R.color.text_primary)
+
+        val updateTabButtonsUI = { mode: ThermalChartMode ->
+            selectedChartMode = mode
+            val isFps = mode == ThermalChartMode.FPS_POWER
+            val isTemp = mode == ThermalChartMode.TEMPERATURE
+            val isUsage = mode == ThermalChartMode.USAGE
+            val isCores = mode == ThermalChartMode.CORES
+
+            binding.tabMetricFpsPower.backgroundTintList = android.content.res.ColorStateList.valueOf(if (isFps) activeBg else inactiveBg)
+            binding.tabMetricFpsPower.setTextColor(if (isFps) activeText else inactiveText)
+
+            binding.tabMetricTemp.backgroundTintList = android.content.res.ColorStateList.valueOf(if (isTemp) activeBg else inactiveBg)
+            binding.tabMetricTemp.setTextColor(if (isTemp) activeText else inactiveText)
+
+            binding.tabMetricUsage.backgroundTintList = android.content.res.ColorStateList.valueOf(if (isUsage) activeBg else inactiveBg)
+            binding.tabMetricUsage.setTextColor(if (isUsage) activeText else inactiveText)
+
+            binding.tabMetricCores.backgroundTintList = android.content.res.ColorStateList.valueOf(if (isCores) activeBg else inactiveBg)
+            binding.tabMetricCores.setTextColor(if (isCores) activeText else inactiveText)
+
+            updateSessionChartsAndStats()
+        }
+
+        binding.tabMetricFpsPower.setOnClickListener { updateTabButtonsUI(ThermalChartMode.FPS_POWER) }
+        binding.tabMetricTemp.setOnClickListener { updateTabButtonsUI(ThermalChartMode.TEMPERATURE) }
+        binding.tabMetricUsage.setOnClickListener { updateTabButtonsUI(ThermalChartMode.USAGE) }
+        binding.tabMetricCores.setOnClickListener { updateTabButtonsUI(ThermalChartMode.CORES) }
+
+        updateTabButtonsUI(ThermalChartMode.FPS_POWER)
+
+        // Nút Bắt đầu đo / Dừng đo
+        binding.btnToggleRecording.setOnClickListener {
+            val isRec = ThermalTelemetryHub.toggleRecording(this)
+            lastObservedRecording = isRec
+            updateRecordingButtonState(isRec)
+            if (isRec) {
+                selectedSessionId = null
+                Toast.makeText(this, "Bắt đầu đo phiên mới", Toast.LENGTH_SHORT).show()
+            } else {
+                val latest = ThermalSessionManager.getSavedSessions().firstOrNull()
+                selectedSessionId = latest?.id // Chọn ngay phiên vừa lưu!
+                Toast.makeText(this, "Đã dừng & lưu phiên đo vào danh sách", Toast.LENGTH_SHORT).show()
+            }
+            renderSessionChips()
+            updateSessionChartsAndStats()
+            binding.scrollThermalSessions.smoothScrollTo(0, 0)
+        }
+
+        // Nút Kết thúc & Lưu phiên / Làm mới
+        binding.btnClearRecordedData.setOnClickListener {
+            if (ThermalTelemetryHub.isRecording) {
+                ThermalTelemetryHub.toggleRecording(this)
+                lastObservedRecording = false
+                updateRecordingButtonState(false)
+                val latest = ThermalSessionManager.getSavedSessions().firstOrNull()
+                selectedSessionId = latest?.id // Chọn ngay phiên vừa lưu!
+                Toast.makeText(this, "Đã kết thúc & lưu phiên đo vào danh sách!", Toast.LENGTH_SHORT).show()
+                binding.scrollThermalSessions.smoothScrollTo(0, 0)
+            } else {
+                realtimeSamples.clear()
+                Toast.makeText(this, "Đã làm mới dữ liệu biểu đồ trực tiếp", Toast.LENGTH_SHORT).show()
+            }
+            renderSessionChips()
+            updateSessionChartsAndStats()
+        }
+
+        // Nút xóa tất cả các phiên đo đã lưu
+        binding.btnDeleteAllSessions.setOnClickListener {
+            val count = ThermalSessionManager.getSavedSessions().size
+            if (count == 0) {
+                Toast.makeText(this, "Không có phiên đo nào trong lịch sử", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            AlertDialog.Builder(this)
+                .setTitle("Xóa lịch sử phiên đo")
+                .setMessage("Bạn có chắc chắn muốn xóa toàn bộ $count phiên đo đã lưu không?")
+                .setPositiveButton("Xóa tất cả") { _, _ ->
+                    ThermalSessionManager.clearAll(this)
+                    selectedSessionId = null
+                    renderSessionChips()
+                    updateSessionChartsAndStats()
+                    Toast.makeText(this, "Đã xóa toàn bộ các phiên đo đã lưu", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Hủy", null)
+                .show()
+        }
+
+        renderSessionChips()
+    }
+
+    private fun renderSessionChips() {
+        val container = binding.layoutThermalSessionChips
+        container.removeAllViews()
+        val density = resources.displayMetrics.density
+
+        val activeColor = ContextCompat.getColor(this, R.color.primary)
+        val inactiveBg = ContextCompat.getColor(this, R.color.card_stroke)
+        val inactiveText = ContextCompat.getColor(this, R.color.text_primary)
+
+        // 1. Chip "Trực tiếp / Đang đo"
+        val isLiveSelected = selectedSessionId == null
+        val liveChip = TextView(this).apply {
+            text = if (ThermalTelemetryHub.isRecording) "Đang đo" else "Trực tiếp"
+            textSize = 11.5f
+            setTypeface(null, if (isLiveSelected) Typeface.BOLD else Typeface.NORMAL)
+            setPadding((12 * density).toInt(), (6 * density).toInt(), (12 * density).toInt(), (6 * density).toInt())
+            setBackgroundResource(R.drawable.badge_pill_bg)
+            if (isLiveSelected) {
+                backgroundTintList = android.content.res.ColorStateList.valueOf(activeColor)
+                setTextColor(Color.WHITE)
+            } else {
+                backgroundTintList = android.content.res.ColorStateList.valueOf(inactiveBg)
+                setTextColor(inactiveText)
+            }
+            setOnClickListener {
+                selectedSessionId = null
+                renderSessionChips()
+                updateSessionChartsAndStats()
+            }
+        }
+        val lpLive = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            marginEnd = (8 * density).toInt()
+        }
+        container.addView(liveChip, lpLive)
+
+        // 2. Các chip phiên đo đã lưu
+        val savedSessions = ThermalSessionManager.getSavedSessions()
+        for (session in savedSessions) {
+            val isSelected = selectedSessionId == session.id
+            val chip = TextView(this).apply {
+                text = session.title
+                textSize = 11.5f
+                setTypeface(null, if (isSelected) Typeface.BOLD else Typeface.NORMAL)
+                setPadding((12 * density).toInt(), (6 * density).toInt(), (12 * density).toInt(), (6 * density).toInt())
+                setBackgroundResource(R.drawable.badge_pill_bg)
+                if (isSelected) {
+                    backgroundTintList = android.content.res.ColorStateList.valueOf(activeColor)
+                    setTextColor(Color.WHITE)
+                } else {
+                    backgroundTintList = android.content.res.ColorStateList.valueOf(inactiveBg)
+                    setTextColor(inactiveText)
+                }
+                setOnClickListener {
+                    selectedSessionId = session.id
+                    renderSessionChips()
+                    updateSessionChartsAndStats()
+                }
+            }
+            val lp = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginEnd = (8 * density).toInt()
+            }
+            container.addView(chip, lp)
+        }
+    }
+
+    private fun updateSessionChartsAndStats() {
+        val currentSamples: List<ThermalSample>
+        if (selectedSessionId == null) {
+            // Chế độ Trực tiếp / Đang đo
+            val activeRecSession = ThermalSessionManager.getCurrentSession()
+            currentSamples = if (activeRecSession != null && activeRecSession.samples.isNotEmpty()) {
+                activeRecSession.samples.toList()
+            } else {
+                realtimeSamples.toList()
+            }
+            binding.tvActiveSessionInfo.text = if (ThermalTelemetryHub.isRecording) "Đang đo" else "Trực tiếp"
+            binding.tvActiveSessionInfo.setTextColor(if (ThermalTelemetryHub.isRecording) Color.parseColor("#EF4444") else Color.parseColor("#10B981"))
+        } else {
+            // Chế độ xem phiên đo đã lưu
+            val session = ThermalSessionManager.getSavedSessions().find { it.id == selectedSessionId }
+            currentSamples = session?.samples ?: emptyList()
+            binding.tvActiveSessionInfo.text = session?.formattedDate ?: "Đã lưu"
+            binding.tvActiveSessionInfo.setTextColor(Color.parseColor("#06B6D4"))
+        }
+
+        // Cập nhật biểu đồ đa metric
+        binding.chartThermalSession.setChartData(currentSamples, selectedChartMode)
+
+        // Cập nhật Legend màu sắc
+        when (selectedChartMode) {
+            ThermalChartMode.FPS_POWER -> {
+                binding.tvLegendItem1.visibility = View.VISIBLE
+                binding.tvLegendItem1.text = "■ FPS"
+                binding.tvLegendItem1.setTextColor(Color.parseColor("#C084FC"))
+
+                binding.tvLegendItem2.visibility = View.VISIBLE
+                binding.tvLegendItem2.text = "■ Công suất Chip (W)"
+                binding.tvLegendItem2.setTextColor(Color.parseColor("#00E5FF"))
+
+                binding.tvLegendItem3.visibility = View.GONE
+            }
+            ThermalChartMode.TEMPERATURE -> {
+                binding.tvLegendItem1.visibility = View.VISIBLE
+                binding.tvLegendItem1.text = "■ CPU (°C)"
+                binding.tvLegendItem1.setTextColor(Color.parseColor("#EF4444"))
+
+                binding.tvLegendItem2.visibility = View.VISIBLE
+                binding.tvLegendItem2.text = "■ GPU (°C)"
+                binding.tvLegendItem2.setTextColor(Color.parseColor("#06B6D4"))
+
+                binding.tvLegendItem3.visibility = View.VISIBLE
+                binding.tvLegendItem3.text = "■ Pin (°C)"
+                binding.tvLegendItem3.setTextColor(Color.parseColor("#F59E0B"))
+            }
+            ThermalChartMode.USAGE -> {
+                binding.tvLegendItem1.visibility = View.VISIBLE
+                binding.tvLegendItem1.text = "■ CPU Tải (%)"
+                binding.tvLegendItem1.setTextColor(Color.parseColor("#EF4444"))
+
+                binding.tvLegendItem2.visibility = View.VISIBLE
+                binding.tvLegendItem2.text = "■ GPU Tải (%)"
+                binding.tvLegendItem2.setTextColor(Color.parseColor("#06B6D4"))
+
+                binding.tvLegendItem3.visibility = View.GONE
+            }
+            ThermalChartMode.CORES -> {
+                binding.tvLegendItem1.visibility = View.VISIBLE
+                binding.tvLegendItem1.text = "■ C0..C3 (Little)"
+                binding.tvLegendItem1.setTextColor(Color.parseColor("#60A5FA"))
+
+                binding.tvLegendItem2.visibility = View.VISIBLE
+                binding.tvLegendItem2.text = "■ C4..C6 (Big)"
+                binding.tvLegendItem2.setTextColor(Color.parseColor("#A78BFA"))
+
+                binding.tvLegendItem3.visibility = View.VISIBLE
+                binding.tvLegendItem3.text = "■ C7 (Prime)"
+                binding.tvLegendItem3.setTextColor(Color.parseColor("#FB923C"))
+            }
+        }
+
+        // Cập nhật thống kê chi tiết của phiên (Siêu chi tiết toàn diện)
+        if (currentSamples.isNotEmpty()) {
+            val durationSec = (currentSamples.last().elapsedSec - currentSamples.first().elapsedSec).coerceAtLeast(currentSamples.size.toLong())
+            val m = durationSec / 60
+            val s = durationSec % 60
+            val durStr = if (m > 0) "${m}m ${s}s" else "${s}s"
+            binding.tvSessionDurationSamples.text = "$durStr · ${currentSamples.size} mẫu"
+
+            val startBat = currentSamples.first().batPercent
+            val endBat = currentSamples.last().batPercent
+            val diffBat = endBat - startBat
+            val diffStr = if (diffBat <= 0) "$diffBat%" else "+$diffBat%"
+            binding.tvSessionBatteryDrain.text = "Mức pin: $startBat% → $endBat% ($diffStr)"
+
+            val maxFpsForStab = currentSamples.maxOf { it.fps }.coerceAtLeast(30f)
+            val stableCount = currentSamples.count { it.fps >= (maxFpsForStab * 0.85f) }
+            val stabilityPct = ((stableCount.toFloat() / currentSamples.size) * 100).toInt()
+
+            val validFps = currentSamples.map { it.fps }.filter { it > 0f }
+            val fps1Low = if (validFps.isNotEmpty()) {
+                val sorted = validFps.sorted()
+                val count = kotlin.math.round((sorted.size * 0.01).coerceAtLeast(1.0)).toInt()
+                sorted.take(count).average().toFloat()
+            } else 0f
+            binding.tvSessionFpsStability.text = if (fps1Low > 0f) {
+                "Độ ổn định: $stabilityPct% · 1% Low: ${String.format(Locale.US, "%.0f", fps1Low)}"
+            } else {
+                "Độ ổn định: $stabilityPct%"
+            }
+
+            val avgFps = currentSamples.map { it.fps }.average().toFloat()
+            val minFps = currentSamples.minOf { it.fps }
+            val maxFps = currentSamples.maxOf { it.fps }
+            binding.tvFpsAvg.text = "${String.format(Locale.US, "%.1f", avgFps)} FPS"
+            binding.tvFpsMinMax.text = "${String.format(Locale.US, "%.0f", minFps)} / ${String.format(Locale.US, "%.0f", maxFps)}"
+
+            // Thống kê Giật lag chuẩn PerfDog
+            val totalFrames = currentSamples.sumOf { it.frameCount }
+            val totalJank = currentSamples.sumOf { it.jankCount }
+            val totalBigJank = currentSamples.sumOf { it.bigJankCount }
+            val frameActiveSec = currentSamples.sumOf { it.avgFrameTimeMs.toDouble() * it.frameCount } / 1000.0
+            val jankRate = if (frameActiveSec > 0.0) (totalJank * 600.0 / frameActiveSec).toFloat() else 0f
+            val avgFrameTime = if (totalFrames > 0) (frameActiveSec * 1000.0 / totalFrames).toFloat() else 0f
+            val maxFrameTime = currentSamples.maxOfOrNull { it.maxFrameTimeMs } ?: 0f
+
+            binding.tvSessionJankCount.text = "$totalJank / $totalBigJank"
+            binding.tvSessionJankRate.text = String.format(Locale.US, "%.1f", jankRate)
+            binding.tvSessionFrameTime.text = if (totalFrames > 0) {
+                "${String.format(Locale.US, "%.1f", avgFrameTime)} / ${String.format(Locale.US, "%.1f", maxFrameTime)} ms"
+            } else {
+                "-- / -- ms"
+            }
+
+            val avgPower = currentSamples.map { it.powerWatts }.average().toFloat()
+            val maxPower = currentSamples.maxOf { it.powerWatts }
+            binding.tvPowerMax.text = "${String.format(Locale.US, "%.1f", avgPower)}W / ${String.format(Locale.US, "%.1f", maxPower)}W"
+
+            val avgCpu = currentSamples.map { it.cpuTempC }.average().toInt()
+            val maxCpu = currentSamples.maxOf { it.cpuTempC }.toInt()
+            binding.tvSessionMaxCpuTemp.text = "TB $avgCpu°C\nĐỉnh $maxCpu°C"
+
+            val avgGpu = currentSamples.map { it.gpuTempC }.average().toInt()
+            val maxGpu = currentSamples.maxOf { it.gpuTempC }.toInt()
+            binding.tvSessionMaxGpuTemp.text = "TB $avgGpu°C\nĐỉnh $maxGpu°C"
+
+            val avgBat = currentSamples.map { it.batTempC }.average()
+            val maxBat = currentSamples.maxOf { it.batTempC }
+            binding.tvSessionMaxBatTemp.text = "TB ${String.format(Locale.US, "%.1f", avgBat)}°C\nĐỉnh ${String.format(Locale.US, "%.1f", maxBat)}°C"
+
+            val avgCpuU = currentSamples.map { it.cpuUsagePercent }.average().toInt()
+            val maxCpuU = currentSamples.maxOf { it.cpuUsagePercent }
+            binding.tvSessionCpuUsageStats.text = "TB $avgCpuU% · Đỉnh $maxCpuU%"
+
+            val avgGpuU = currentSamples.map { it.gpuUsagePercent }.average().toInt()
+            val maxGpuU = currentSamples.maxOf { it.gpuUsagePercent }
+            binding.tvSessionGpuUsageStats.text = "TB $avgGpuU% · Đỉnh $maxGpuU%"
+
+            updateSessionCoresSummary(currentSamples)
+        } else {
+            binding.tvSessionDurationSamples.text = "0s · 0 mẫu"
+            binding.tvSessionBatteryDrain.text = "Mức pin: -- → -- (-0%)"
+            binding.tvSessionFpsStability.text = "Độ ổn định: --%"
+            binding.tvFpsAvg.text = "-- FPS"
+            binding.tvFpsMinMax.text = "-- / --"
+            binding.tvSessionJankCount.text = "0 / 0"
+            binding.tvSessionJankRate.text = "0.0"
+            binding.tvSessionFrameTime.text = "-- / -- ms"
+            binding.tvPowerMax.text = "-- W"
+            binding.tvSessionMaxCpuTemp.text = "--°C"
+            binding.tvSessionMaxGpuTemp.text = "--°C"
+            binding.tvSessionMaxBatTemp.text = "--°C"
+            binding.tvSessionCpuUsageStats.text = "--% / --%"
+            binding.tvSessionGpuUsageStats.text = "--% / --%"
+            binding.layoutSessionCoresSummary.removeAllViews()
+            coreSummaryHolders.clear()
+        }
+    }
+
+    private fun updateSessionCoresSummary(samples: List<ThermalSample>) {
+        if (samples.isEmpty()) return
+        val container = binding.layoutSessionCoresSummary
+        val density = resources.displayMetrics.density
+        val coreCount = samples.first().coreFreqs.size
+
+        // Nếu số lượng View cache chưa khớp thì mới dựng View 1 lần duy nhất
+        if (coreSummaryHolders.size != coreCount) {
+            container.removeAllViews()
+            coreSummaryHolders.clear()
+
+            for (coreIdx in 0 until coreCount) {
+                val row = LinearLayout(this).apply {
+                    orientation = LinearLayout.VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        bottomMargin = (8 * density).toInt()
+                    }
+                }
+
+                val rowHeader = LinearLayout(this).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    gravity = android.view.Gravity.CENTER_VERTICAL
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    )
+                }
+
+                val tvTitle = TextView(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                    setTextColor(ContextCompat.getColor(this@ThermalMonitorActivity, R.color.text_secondary))
+                    textSize = 11.5f
+                }
+
+                val tvStats = TextView(this).apply {
+                    layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                    setTextColor(ContextCompat.getColor(this@ThermalMonitorActivity, R.color.text_primary))
+                    textSize = 11.5f
+                    setTypeface(null, Typeface.BOLD)
+                }
+
+                rowHeader.addView(tvTitle)
+                rowHeader.addView(tvStats)
+
+                val progressBar = android.widget.ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        (4.5f * density).toInt()
+                    ).apply {
+                        topMargin = (3 * density).toInt()
+                    }
+                    max = 100
+                }
+
+                row.addView(rowHeader)
+                row.addView(progressBar)
+                container.addView(row)
+
+                coreSummaryHolders.add(CoreSummaryRowHolder(row, tvTitle, tvStats, progressBar))
+            }
+        }
+
+        // Cập nhật dữ liệu vào các View đã cache (Không gây requestLayout tốn FPS)
+        val coreColors = intArrayOf(
+            Color.parseColor("#60A5FA"), Color.parseColor("#34D399"), Color.parseColor("#FBBF24"),
+            Color.parseColor("#F87171"), Color.parseColor("#A78BFA"), Color.parseColor("#F472B6"),
+            Color.parseColor("#38BDF8"), Color.parseColor("#FB923C")
+        )
+
+        for (coreIdx in 0 until coreCount) {
+            val holder = coreSummaryHolders.getOrNull(coreIdx) ?: continue
+            val freqs = samples.mapNotNull { it.coreFreqs[coreIdx] }
+            if (freqs.isEmpty()) continue
+
+            val maxFreqFile = File("/sys/devices/system/cpu/cpu$coreIdx/cpufreq/cpuinfo_max_freq")
+            val maxFreqKHz = DeviceInfoUtils.readIntFromFile(maxFreqFile, 0)
+            val coreHardwareMaxMHz = if (maxFreqKHz > 0) {
+                (maxFreqKHz / 1000)
+            } else {
+                val scalingMaxFile = File("/sys/devices/system/cpu/cpu$coreIdx/cpufreq/scaling_max_freq")
+                val sKHz = DeviceInfoUtils.readIntFromFile(scalingMaxFile, 0)
+                if (sKHz > 0) (sKHz / 1000) else (freqs.maxOrNull() ?: 2400)
+            }
+
+            val avgFreq = freqs.average().toInt()
+            val maxCeil = coreHardwareMaxMHz.coerceAtLeast(1800)
+            val avgPct = ((avgFreq.toFloat() / maxCeil) * 100).toInt().coerceIn(0, 100)
+
+            holder.tvTitle.text = "• Nhân $coreIdx:"
+            holder.tvStats.text = "TB: $avgPct% (${avgFreq}MHz) · Max: ${coreHardwareMaxMHz}MHz"
+            holder.progressBar.progress = avgPct
+            holder.progressBar.progressTintList = android.content.res.ColorStateList.valueOf(coreColors[coreIdx % coreColors.size])
+        }
+    }
+
+    private fun updateRecordingButtonState(isRecording: Boolean) {
+        if (isRecording) {
+            binding.btnToggleRecording.text = "Dừng đo"
+            binding.btnToggleRecording.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#4B5563"))
+            binding.btnClearRecordedData.text = "Lưu phiên đo"
+        } else {
+            binding.btnToggleRecording.text = "Bắt đầu đo"
+            binding.btnToggleRecording.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#EF4444"))
+            binding.btnClearRecordedData.text = "Làm mới"
+        }
     }
 
     private fun setupCpuCoreCards() {
@@ -360,10 +898,14 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
         val socName = mainInfo.socName
         val coreCount = Runtime.getRuntime().availableProcessors().coerceIn(1, 16)
 
-        // Đặt thông tin tổng quan CPU
+        // Đặt thông tin tổng quan CPU & GPU
         binding.tvCpuChipName.text = socName
         binding.tvCpuSpeedRange.text = mainInfo.cpuFreqRange
         binding.tvCpuCoreCount.text = "$coreCount"
+
+        val minGpu = DeviceInfoUtils.getGpuMinFrequencyMHz()
+        val maxGpu = DeviceInfoUtils.getGpuMaxFrequencyMHz()
+        binding.tvGpuClockRange.text = "Tối thiểu: ${minGpu}Mhz - Tối đa: ${maxGpu}Mhz"
 
         val coreArchMap = resolveCoreArchMap(socName, coreCount)
 
@@ -410,9 +952,10 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
             chart.setChartConfig(
                 min = 0f,
                 max = maxFreqMHz.toFloat(),
-                capacity = 30,
+                capacity = 180,
                 isCpu = true,
-                showLabels = false
+                showLabels = false,
+                unit = "Mhz"
             )
 
             coreViews.add(
@@ -597,6 +1140,29 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
         } catch (_: Throwable) {}
     }
 
+    private fun refreshCpuCharts() {
+        if (realtimeSamples.isEmpty()) return
+        binding.chartCpuRealtime.setDataPoints(realtimeSamples.map { it.cpuTempC })
+        for (holder in coreViews) {
+            val series = realtimeSamples.map { it.coreFreqs[holder.coreIndex]?.toFloat() ?: 0f }
+            holder.chart.setDataPoints(series)
+        }
+    }
+
+    private fun refreshGpuCharts() {
+        if (realtimeSamples.isEmpty()) return
+        binding.chartGpuTempRealtime.setDataPoints(realtimeSamples.map { it.gpuTempC })
+        binding.chartGpuFreqRealtime.setDataPoints(realtimeSamples.map { it.gpuFreqMHz.toFloat() })
+        binding.chartGpuUsageRealtime.setDataPoints(realtimeSamples.map { it.gpuUsagePercent.toFloat() })
+    }
+
+    private fun refreshBatteryCharts() {
+        if (realtimeSamples.isEmpty()) return
+        binding.chartBatteryRealtime.setDataPoints(realtimeSamples.map { it.batTempC })
+        binding.chartBatteryHistory.setDataPoints(realtimeSamples.map { it.batTempC })
+        binding.chartBatteryLevelHistory.setDataPoints(realtimeSamples.map { it.batPercent.toFloat() })
+    }
+
     override fun onThermalDataUpdate(data: SharedThermalData) {
         if (isFinishing || isDestroyed) return
 
@@ -607,29 +1173,14 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
         binding.tvBatteryHealthStatus.text = data.batHealthStr
         binding.tvBatteryVoltageLive.text = "${String.format(Locale.US, "%.2f", data.batVoltageV)} V · ${data.batCurrentMA} mA"
         binding.tvBatteryChartCurrentTemp.text = "Hiện tại: ${tempFormatted}°C"
-        binding.chartBatteryRealtime.addDataPoint(data.batTempC)
-
-        // Tích lũy biểu đồ bản ghi
-        if (batteryHistoryPoints.size < 40) {
-            batteryHistoryPoints.add(data.batTempC)
-            batteryLevelHistoryPoints.add(data.batPercent.toFloat())
-            binding.chartBatteryHistory.setDataPoints(batteryHistoryPoints)
-            binding.chartBatteryLevelHistory.setDataPoints(batteryLevelHistoryPoints)
-        } else {
-            binding.chartBatteryHistory.addDataPoint(data.batTempC)
-            binding.chartBatteryLevelHistory.addDataPoint(data.batPercent.toFloat())
-        }
 
         // 2. Cập nhật CPU
         val cpuTempInt = data.cpuTempC.toInt()
         binding.cpuChipGraphicView.setCpuTemperature(cpuTempInt)
         binding.tvCpuChartCurrentTemp.text = "Hiện tại: ${cpuTempInt}°C"
-        binding.chartCpuRealtime.addDataPoint(data.cpuTempC)
-
         for (holder in coreViews) {
             val curMHz = data.coreFreqs[holder.coreIndex] ?: 1000
             holder.tvFreq.text = "Xung nhịp: ${curMHz}Mhz"
-            holder.chart.addDataPoint(curMHz.toFloat())
         }
 
         // 3. Cập nhật GPU
@@ -637,15 +1188,86 @@ class ThermalMonitorActivity : AppCompatActivity(), ThermalDataListener {
         binding.gpuChipGraphicView.setGpuData(gpuTempInt, data.gpuUsagePercent)
         binding.tvGpuModelName.text = data.gpuModelName
         binding.tvGpuClockLive.text = "${data.gpuFreqMHz}Mhz"
+        binding.tvGpuClockRange.text = "Tối thiểu: ${data.gpuMinFreqMHz}Mhz - Tối đa: ${data.gpuMaxFreqMHz}Mhz"
         binding.tvGpuTempLive.text = "${gpuTempInt}°C"
         binding.tvGpuUsageLive.text = "${data.gpuUsagePercent}%"
 
         binding.tvGpuChartCurrentTemp.text = "Hiện tại: ${gpuTempInt}°C"
-        binding.tvGpuChartCurrentFreq.text = "Hiện tại: ${data.gpuFreqMHz}Mhz"
+        binding.tvGpuChartCurrentFreq.text = "Hiện tại: ${data.gpuFreqMHz}Mhz (Tối thiểu: ${data.gpuMinFreqMHz}Mhz - Tối đa: ${data.gpuMaxFreqMHz}Mhz)"
         binding.tvGpuChartCurrentUsage.text = "Hiện tại: ${data.gpuUsagePercent}%"
 
-        binding.chartGpuTempRealtime.addDataPoint(data.gpuTempC)
-        binding.chartGpuFreqRealtime.addDataPoint(data.gpuFreqMHz.toFloat())
-        binding.chartGpuUsageRealtime.addDataPoint(data.gpuUsagePercent.toFloat())
+        // 4. Cập nhật Tab Biểu Đồ & Các Phiên Đo
+        val hasShizuku = data.isShizukuActive || ShizukuUtils.hasShizukuPermission()
+        if (hasShizuku) {
+            binding.tvFpsEngineModeBadge.text = "● Shizuku Chuẩn 100%"
+            binding.tvFpsEngineModeBadge.setTextColor(Color.parseColor("#10B981"))
+            binding.tvFpsEngineDescription.text = "Đã kích hoạt đọc tầng đồ họa SurfaceFlinger: bắt trọn từng khung hình Render của Game và drop FPS."
+            binding.btnConnectShizuku.visibility = View.GONE
+        } else {
+            binding.tvFpsEngineModeBadge.text = "○ Chưa cấp Shizuku"
+            binding.tvFpsEngineModeBadge.setTextColor(Color.parseColor("#F59E0B"))
+            binding.tvFpsEngineDescription.text = "Đang đo tần số quét hiển thị màn hình (Refresh Rate). Hãy cấp quyền Shizuku để đo Render FPS thực tế trong Game!"
+            binding.btnConnectShizuku.visibility = View.VISIBLE
+        }
+
+        val wasRec = lastObservedRecording ?: data.isRecording
+        lastObservedRecording = data.isRecording
+        updateRecordingButtonState(data.isRecording)
+
+        if (wasRec && !data.isRecording) {
+            // Vừa kết thúc đo từ HUD bên ngoài!
+            val latest = ThermalSessionManager.getSavedSessions().firstOrNull()
+            selectedSessionId = latest?.id // Chọn ngay phiên vừa lưu!
+            renderSessionChips()
+            if (activeTab == TAB_FPS) {
+                updateSessionChartsAndStats()
+                binding.scrollThermalSessions.smoothScrollTo(0, 0)
+            }
+        } else if (!wasRec && data.isRecording) {
+            // Vừa bắt đầu đo từ bên ngoài!
+            selectedSessionId = null
+            renderSessionChips()
+            if (activeTab == TAB_FPS) {
+                updateSessionChartsAndStats()
+            }
+        }
+
+        // 5. Thu thập mẫu ThermalSample theo chuỗi thời gian chuẩn 3 phút (180 giây = 180 mẫu)
+        val nowSec = (realtimeSamples.size + 1).toLong()
+        val curSample = ThermalSample(
+            timestampMs = System.currentTimeMillis(),
+            elapsedSec = nowSec,
+            fps = data.fps,
+            powerWatts = data.powerWatts,
+            cpuTempC = data.cpuTempC,
+            cpuUsagePercent = data.cpuUsagePercent,
+            gpuTempC = data.gpuTempC,
+            gpuUsagePercent = data.gpuUsagePercent,
+            batTempC = data.batTempC,
+            batPercent = data.batPercent,
+            coreFreqs = HashMap(data.coreFreqs),
+            gpuFreqMHz = data.gpuFreqMHz,
+            frameCount = data.frameCount,
+            jankCount = data.jankCount,
+            bigJankCount = data.bigJankCount,
+            avgFrameTimeMs = data.avgFrameTimeMs,
+            maxFrameTimeMs = data.maxFrameTimeMs
+        )
+        realtimeSamples.add(curSample)
+        if (realtimeSamples.size > 180) {
+            realtimeSamples.removeAt(0)
+        }
+
+        // Cập nhật biểu đồ theo cấu trúc chuỗi thời gian 3 phút cho Tab đang mở
+        when (activeTab) {
+            TAB_BATTERY -> refreshBatteryCharts()
+            TAB_CPU -> refreshCpuCharts()
+            TAB_GPU -> refreshGpuCharts()
+            TAB_FPS -> {
+                if (!isUserScrolling) {
+                    updateSessionChartsAndStats()
+                }
+            }
+        }
     }
 }

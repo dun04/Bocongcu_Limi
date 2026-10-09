@@ -1,280 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardDialogFixCheckRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardDialogFixCheckRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="18dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="18dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:padding="20dp">
 
+    <!-- Header: Icon, Tiêu đề & Nút đóng -->
     <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:cardBackgroundColor="#15FFFFFF"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#25FFFFFF"
+        app:strokeWidth="1dp">
+
+        <ImageView
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_fix_check"
+          app:tint="#FFFFFF" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Tiến độ Fix hệ thống"
+          android:textColor="@color/text_primary"
+          android:textSize="16.5sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Đo lường mức độ hoàn thiện lệnh app"
+          android:textColor="@color/text_secondary"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDialogFixCheckClose"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/ic_close_white"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="14dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Card Báo cáo % Tiến độ Lớn -->
+    <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:cardBackgroundColor="@color/terminal_bg"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="0dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp">
+
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-        <!-- Header: Icon, Tiêu đề & Nút đóng -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                app:cardBackgroundColor="#15FFFFFF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#25FFFFFF"
-                app:strokeWidth="1dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_fix_check"
-                    app:tint="#FFFFFF" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tiến độ Fix hệ thống"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16.5sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Đo lường mức độ hoàn thiện lệnh app"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDialogFixCheckClose"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:padding="0dp"
-                app:icon="@drawable/ic_close_white"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="20dp"
-                app:iconTint="@color/text_secondary" />
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="14dp"
-            android:background="@color/card_stroke" />
-
-        <!-- Card Báo cáo % Tiến độ Lớn -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/terminal_bg"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvFixPercentNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"
-                        android:textColor="@color/primary"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvFixStatusTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Đang phân tích hệ thống..."
-                            android:textColor="@color/text_primary"
-                            android:textSize="13.5sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvFixCountDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="0/15 mục đã tối ưu"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11.5sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Thanh Tiến độ hoàn thành -->
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progressFixPercent"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:layout_marginTop="12dp"
-                    android:max="100"
-                    android:progress="0"
-                    app:indicatorColor="@color/primary"
-                    app:trackColor="#25FFFFFF"
-                    app:trackCornerRadius="4dp"
-                    app:trackThickness="8dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Danh sách chi tiết từng mục cuộn dọc -->
-        <TextView
+          <TextView
+            android:id="@+id/tvFixPercentNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="8dp"
-            android:text="Chi tiết từng hạng mục:"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
+            android:text="0%"
+            android:textColor="@color/primary"
+            android:textSize="32sp"
             android:textStyle="bold" />
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:maxHeight="220dp"
-            android:overScrollMode="never"
-            android:scrollbars="vertical">
-
-            <LinearLayout
-                android:id="@+id/layoutFixItemsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <!-- Các item trạng thái được add linh hoạt tại runtime -->
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <!-- Card Lưu Ý Cấp Quyền Thông Báo & Tự Khởi Chạy -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardFixProgressPermNotice"
-            android:layout_width="match_parent"
+          <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="#18FFA040"
-            app:cardCornerRadius="14dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#35FFA040"
-            app:strokeWidth="1dp">
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
+            <TextView
+              android:id="@+id/tvFixStatusTitle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Đang phân tích hệ thống..."
+              android:textColor="@color/text_primary"
+              android:textSize="13.5sp"
+              android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_nav_shield"
-                    app:tint="#FFA040" />
+            <TextView
+              android:id="@+id/tvFixCountDetail"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="2dp"
+              android:text="0/15 mục đã tối ưu"
+              android:textColor="@color/text_secondary"
+              android:textSize="11.5sp" />
+          </LinearLayout>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+        <!-- Thanh Tiến độ hoàn thành -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+          android:id="@+id/progressFixPercent"
+          android:layout_width="match_parent"
+          android:layout_height="8dp"
+          android:layout_marginTop="12dp"
+          android:max="100"
+          android:progress="0"
+          app:indicatorColor="@color/primary"
+          app:trackColor="#25FFFFFF"
+          app:trackCornerRadius="4dp"
+          app:trackThickness="8dp" />
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="LƯU Ý QUAN TRỌNG:"
-                        android:textColor="#FFA040"
-                        android:textSize="11.5sp"
-                        android:textStyle="bold" />
+    <!-- Danh sách chi tiết từng mục cuộn dọc -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="8dp"
+      android:text="Chi tiết từng hạng mục:"
+      android:textColor="@color/text_secondary"
+      android:textSize="12sp"
+      android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:lineSpacingExtra="1.5dp"
-                        android:text="Để thông báo nổ tức thì 100%, bạn cần cấp đủ Quyền thông báo, Tự khởi chạy và Pin không giới hạn cho app nhắn tin ở tab Cấp Quyền."
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:maxHeight="220dp"
+      android:overScrollMode="never"
+      android:scrollbars="vertical">
 
-                <TextView
-                    android:id="@+id/btnFixProgressGoToPerm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_glass_pill_orange"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:text="Cấp ngay"
-                    android:textColor="#FFA040"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+      <LinearLayout
+        android:id="@+id/layoutFixItemsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- Các item trạng thái được add linh hoạt tại runtime -->
+      </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- Nút Tối ưu ngay & Quét lại -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoToFixTab"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="12dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="🚀  Chạy tối ưu ngay (Tab Fix hệ thống)"
-            android:textColor="@color/text_nav_active"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/nav_active_indicator_pill"
-            app:cornerRadius="22dp"
-            app:strokeColor="@color/nav_active_indicator_stroke"
-            app:strokeWidth="1dp" />
+    <!-- Card Lưu Ý Cấp Quyền Thông Báo & Tự Khởi Chạy -->
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/cardFixProgressPermNotice"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      app:cardBackgroundColor="#18FFA040"
+      app:cardCornerRadius="14dp"
+      app:cardElevation="0dp"
+      app:strokeColor="#35FFA040"
+      app:strokeWidth="1dp">
 
-    </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+          android:layout_width="22dp"
+          android:layout_height="22dp"
+          android:src="@drawable/ic_nav_shield"
+          app:tint="#FFA040" />
+
+        <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_weight="1"
+          android:orientation="vertical">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LƯU Ý QUAN TRỌNG:"
+            android:textColor="#FFA040"
+            android:textSize="11.5sp"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lineSpacingExtra="1.5dp"
+            android:text="Để thông báo nổ tức thì 100%, bạn cần cấp đủ Quyền thông báo, Tự khởi chạy và Pin không giới hạn cho app nhắn tin ở tab Cấp Quyền."
+            android:textColor="@color/text_secondary"
+            android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+          android:id="@+id/btnFixProgressGoToPerm"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="6dp"
+          android:background="@drawable/bg_glass_pill_orange"
+          android:paddingHorizontal="10dp"
+          android:paddingVertical="5dp"
+          android:text="Cấp ngay"
+          android:textColor="#FFA040"
+          android:textSize="11sp"
+          android:textStyle="bold" />
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Nút Tối ưu ngay & Quét lại -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnGoToFixTab"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="12dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Chạy tối ưu ngay (Tab Fix hệ thống)"
+      android:textColor="@color/text_nav_active"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/nav_active_indicator_pill"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/nav_active_indicator_stroke"
+      app:strokeWidth="1dp" />
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

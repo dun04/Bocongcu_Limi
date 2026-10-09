@@ -1,120 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardDialogRebootRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardDialogRebootRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="24dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="24dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="22dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="22dp">
+    <!-- Header Icon Cờ Việt Nam -->
+    <com.google.android.material.card.MaterialCardView
+      android:layout_width="54dp"
+      android:layout_height="54dp"
+      app:cardBackgroundColor="#1AFFFFFF"
+      app:cardCornerRadius="18dp"
+      app:cardElevation="0dp"
+      app:strokeColor="#30FFFFFF"
+      app:strokeWidth="1dp">
 
-        <!-- Header Icon Cờ Việt Nam -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            app:cardBackgroundColor="#1AFFFFFF"
-            app:cardCornerRadius="18dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#30FFFFFF"
-            app:strokeWidth="1dp">
+      <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_flag_vietnam" />
+    </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_flag_vietnam" />
-        </com.google.android.material.card.MaterialCardView>
+    <!-- Tiêu đề -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+      android:gravity="center"
+      android:text="Đã chuyển sang Tiếng Việt"
+      android:textColor="@color/text_primary"
+      android:textSize="17sp"
+      android:textStyle="bold" />
 
-        <!-- Tiêu đề -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:gravity="center"
-            android:text="Đã chuyển sang Tiếng Việt"
-            android:textColor="@color/text_primary"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+    <!-- Badge trạng thái -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:background="@drawable/badge_pill_bg"
+      android:backgroundTint="#2634D399"
+      android:paddingHorizontal="8dp"
+      android:paddingVertical="2dp"
+      android:text="system_locales = vi-VN"
+      android:textColor="#34D399"
+      android:textSize="11sp"
+      android:fontFamily="monospace"
+      android:textStyle="bold" />
 
-        <!-- Badge trạng thái -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/badge_pill_bg"
-            android:backgroundTint="#2634D399"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="2dp"
-            android:text="system_locales = vi-VN"
-            android:textColor="#34D399"
-            android:textSize="11sp"
-            android:fontFamily="monospace"
-            android:textStyle="bold" />
+    <!-- Mô tả nội dung -->
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:gravity="center"
+      android:lineSpacingExtra="3dp"
+      android:text="Cấu hình ngôn ngữ SetEdit đã được thiết lập thành công. Vui lòng khởi động lại máy để hệ thống áp dụng đầy đủ Tiếng Việt cho toàn bộ giao diện."
+      android:textColor="@color/text_secondary"
+      android:textSize="12.5sp" />
 
-        <!-- Mô tả nội dung -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:lineSpacingExtra="3dp"
-            android:text="Cấu hình ngôn ngữ SetEdit đã được thiết lập thành công. Vui lòng khởi động lại máy để hệ thống áp dụng đầy đủ Tiếng Việt cho toàn bộ giao diện."
-            android:textColor="@color/text_secondary"
-            android:textSize="12.5sp" />
+    <!-- Nút Khởi động lại ngay -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnRebootNow"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="46dp"
+      android:layout_marginTop="18dp"
+      android:minHeight="46dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Khởi động lại ngay"
+      android:textColor="@color/text_nav_active"
+      android:textSize="13.5sp"
+      android:textStyle="bold"
+      app:icon="@drawable/ic_refresh"
+      app:iconGravity="textStart"
+      app:iconPadding="8dp"
+      app:iconSize="18dp"
+      app:iconTint="@color/primary"
+      app:backgroundTint="@color/nav_active_indicator_pill"
+      app:cornerRadius="23dp"
+      app:strokeColor="@color/nav_active_indicator_stroke"
+      app:strokeWidth="1dp" />
 
-        <!-- Nút Khởi động lại ngay -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRebootNow"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="18dp"
-            android:minHeight="46dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Khởi động lại ngay"
-            android:textColor="@color/text_nav_active"
-            android:textSize="13.5sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_refresh"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconSize="18dp"
-            app:iconTint="@color/primary"
-            app:backgroundTint="@color/nav_active_indicator_pill"
-            app:cornerRadius="23dp"
-            app:strokeColor="@color/nav_active_indicator_stroke"
-            app:strokeWidth="1dp" />
+    <!-- Nút Để sau -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnRebootLater"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="10dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Để sau / Đóng"
+      android:textColor="@color/text_secondary"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/button_capsule_bg"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp" />
 
-        <!-- Nút Để sau -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRebootLater"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Để sau / Đóng"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/button_capsule_bg"
-            app:cornerRadius="22dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp" />
-
-    </LinearLayout>
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

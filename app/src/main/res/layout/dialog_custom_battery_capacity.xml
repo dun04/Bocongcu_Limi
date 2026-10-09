@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardCustomCapacityRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="20dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Header: Icon, Tiêu đề & Nút đóng -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_theme_item_active">
+
+        <ImageView
+          android:id="@+id/ivCustomCapacityIcon"
+          android:layout_width="22dp"
+          android:layout_height="22dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_tab_battery"
+          app:tint="@color/primary" />
+      </FrameLayout>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/tvCustomCapacityTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif-medium"
+          android:text="Dung lượng pin thiết kế"
+          android:textColor="@color/text_primary"
+          android:textSize="17sp"
+          android:textStyle="bold" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Tùy chỉnh cho pin độ dung lượng cao"
+          android:textColor="@color/text_secondary"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <ImageView
+        android:id="@+id/btnCloseCustomCapacityHeader"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        android:src="@drawable/ic_close_white"
+        app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="14dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Card Thông tin & Hướng dẫn -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/bg_theme_item_inactive"
+      android:orientation="vertical"
+      android:padding="14dp">
+
+      <TextView
+        android:id="@+id/tvCustomCapacityInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3.5dp"
+        android:text="Dành cho người dùng thay pin nén dung lượng cao.\n\n• Dung lượng xuất xưởng gốc: 5000 mAh\n• Dung lượng đang áp dụng: 5000 mAh"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Ô nhập liệu dung lượng mới -->
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/inputLayoutCapacity"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:hint="Dung lượng pin mới (mAh)"
+      app:boxCornerRadiusBottomEnd="16dp"
+      app:boxCornerRadiusBottomStart="16dp"
+      app:boxCornerRadiusTopEnd="16dp"
+      app:boxCornerRadiusTopStart="16dp"
+      app:boxStrokeColor="@color/primary"
+      app:hintTextColor="@color/primary">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etCustomCapacityInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Gợi ý nhanh các mốc pin phổ biến -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mốc gợi ý: "
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/chipCap5500"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="0dp"
+        android:text="5500"
+        android:textColor="@color/text_primary"
+        android:textSize="11sp"
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/card_stroke" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/chipCap6000"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="6dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="0dp"
+        android:text="6000"
+        android:textColor="@color/text_primary"
+        android:textSize="11sp"
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/card_stroke" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/chipCap6500"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="6dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="0dp"
+        android:text="6500"
+        android:textColor="@color/text_primary"
+        android:textSize="11sp"
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/card_stroke" />
+    </LinearLayout>
+
+    <!-- Footer Actions -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="20dp"
+      android:gravity="end|center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnResetCustomCapacity"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:text="Khôi phục gốc"
+        android:textColor="@color/accent_orange"
+        android:textSize="12.5sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+      <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancelCustomCapacity"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginEnd="10dp"
+        android:text="Hủy"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/card_stroke" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveCustomCapacity"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:backgroundTint="@color/primary"
+        android:text="Lưu dung lượng"
+        android:textColor="@color/on_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp" />
+    </LinearLayout>
+  </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

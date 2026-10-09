@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -50,6 +51,33 @@ object AppUpdateManager {
     )
 
     private var pendingInstallApk: File? = null
+    var cachedUpdateInfo: UpdateInfo? = null
+    var onUpdateBadgeListener: ((hasUpdate: Boolean) -> Unit)? = null
+
+    /**
+     * Tự động quét cập nhật trong nền khi mở ứng dụng (không hiện popup)
+     */
+    fun checkUpdateSilently(activity: Activity, onResult: ((hasUpdate: Boolean, info: UpdateInfo?) -> Unit)? = null) {
+        executor.execute {
+            try {
+                val currentVersion = getCurrentVersionName(activity)
+                val result = fetchLatestRelease(currentVersion)
+                cachedUpdateInfo = result
+                mainHandler.post {
+                    if (!activity.isFinishing && !activity.isDestroyed) {
+                        onUpdateBadgeListener?.invoke(result.hasUpdate)
+                        onResult?.invoke(result.hasUpdate, result)
+                    }
+                }
+            } catch (_: Throwable) {
+                mainHandler.post {
+                    if (!activity.isFinishing && !activity.isDestroyed) {
+                        onResult?.invoke(false, null)
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Kiểm tra cập nhật và hiển thị hộp thoại giao diện HyperOS Frosted Glass
@@ -79,8 +107,17 @@ object AppUpdateManager {
         val tvCurrentVersionLabel = dialogView.findViewById<TextView>(R.id.tvCurrentVersionLabel)
         val tvApkFileSize = dialogView.findViewById<TextView>(R.id.tvApkFileSize)
         val tvChangelog = dialogView.findViewById<TextView>(R.id.tvChangelog)
+        val layoutChangelogImages = dialogView.findViewById<LinearLayout>(R.id.layoutChangelogImages)
+        val scrollChangelog = dialogView.findViewById<androidx.core.widget.NestedScrollView>(R.id.scrollChangelog)
         val btnUpdateLater = dialogView.findViewById<MaterialButton>(R.id.btnUpdateLater)
         val btnUpdateDownload = dialogView.findViewById<MaterialButton>(R.id.btnUpdateDownload)
+
+        // Tối ưu chiều cao popup cập nhật dài hơn để hiển thị trọn vẹn và nhiều nội dung mô tả
+        val displayMetrics = activity.resources.displayMetrics
+        val targetScrollHeight = (displayMetrics.heightPixels * 0.48f).toInt()
+            .coerceAtLeast((360 * displayMetrics.density).toInt())
+            .coerceAtMost((displayMetrics.heightPixels * 0.58f).toInt())
+        scrollChangelog?.layoutParams?.height = targetScrollHeight
 
         val tvDownloadStatusTitle = dialogView.findViewById<TextView>(R.id.tvDownloadStatusTitle)
         val tvDownloadPercent = dialogView.findViewById<TextView>(R.id.tvDownloadPercent)
@@ -111,55 +148,82 @@ object AppUpdateManager {
             stateView.visibility = View.VISIBLE
         }
 
+        fun applyUpdateInfo(result: UpdateInfo, currentVersion: String) {
+            cachedUpdateInfo = result
+            onUpdateBadgeListener?.invoke(result.hasUpdate)
+            if (!result.hasUpdate) {
+                showState(layoutUpToDate)
+                tvUpToDateInfo.text = "Phiên bản hiện tại: v$currentVersion\nỨng dụng của bạn đang là phiên bản mới nhất."
+            } else {
+                showState(layoutUpdateAvailable)
+                tvNewVersionTag.text = result.tagName
+                tvCurrentVersionLabel.text = "Đang dùng: v$currentVersion"
+                tvApkFileSize.text = if (result.apkSize > 0) formatFileSize(result.apkSize) else "Gói APK chính thức"
+
+                // Phân tích changelog: tách chữ và hình ảnh đính kèm
+                val (cleanText, imageUrls) = parseChangelog(result.changelog)
+
+                tvChangelog.text = if (cleanText.isNotBlank()) {
+                    cleanText
+                } else if (imageUrls.isNotEmpty()) {
+                    "Xem hình ảnh minh họa tính năng mới bên dưới:"
+                } else {
+                    "• Tối ưu hóa hiệu năng và độ ổn định hệ thống.\n• Cập nhật các bản sửa lỗi mới nhất."
+                }
+
+                // Render hình ảnh đính kèm trong changelog
+                layoutChangelogImages.removeAllViews()
+                if (imageUrls.isNotEmpty()) {
+                    layoutChangelogImages.visibility = View.VISIBLE
+                    for (imageUrl in imageUrls) {
+                        addImageItem(activity, layoutChangelogImages, imageUrl)
+                    }
+                } else {
+                    layoutChangelogImages.visibility = View.GONE
+                }
+
+                btnUpdateDownload.setOnClickListener {
+                    showState(layoutDownloading)
+                    startDownloadAndInstall(
+                        activity = activity,
+                        downloadUrl = result.downloadUrl,
+                        expectedSize = result.apkSize,
+                        isCancelled = isDownloadCancelled,
+                        dialog = dialog,
+                        progressView = progressDownload,
+                        tvPercent = tvDownloadPercent,
+                        tvBytes = tvDownloadBytes,
+                        tvSpeed = tvDownloadSpeed,
+                        tvStatusTitle = tvDownloadStatusTitle,
+                        btnCancel = btnCancelDownload
+                    )
+                }
+            }
+        }
+
         fun performCheck() {
+            val cached = cachedUpdateInfo
+            val currentVersion = getCurrentVersionName(activity)
+            if (cached != null && cached.hasUpdate) {
+                applyUpdateInfo(cached, currentVersion)
+                return
+            }
+
             showState(layoutChecking)
 
             executor.execute {
                 try {
-                    val currentVersion = getCurrentVersionName(activity)
                     val result = fetchLatestRelease(currentVersion)
-
                     mainHandler.post {
                         if (activity.isFinishing || activity.isDestroyed) return@post
-
-                        if (!result.hasUpdate) {
-                            showState(layoutUpToDate)
-                            tvUpToDateInfo.text = "Phiên bản hiện tại: v$currentVersion\nỨng dụng của bạn đang là phiên bản mới nhất."
-                        } else {
-                            showState(layoutUpdateAvailable)
-                            tvNewVersionTag.text = result.tagName
-                            tvCurrentVersionLabel.text = "Đang dùng: v$currentVersion"
-                            tvApkFileSize.text = if (result.apkSize > 0) formatFileSize(result.apkSize) else "Gói APK chính thức"
-                            tvChangelog.text = if (result.changelog.isNotBlank()) {
-                                result.changelog.trim()
-                            } else {
-                                "• Tối ưu hóa hiệu năng và độ ổn định hệ thống.\n• Cập nhật các bản sửa lỗi mới nhất."
-                            }
-
-                            btnUpdateDownload.setOnClickListener {
-                                showState(layoutDownloading)
-                                startDownloadAndInstall(
-                                    activity = activity,
-                                    downloadUrl = result.downloadUrl,
-                                    expectedSize = result.apkSize,
-                                    isCancelled = isDownloadCancelled,
-                                    dialog = dialog,
-                                    progressView = progressDownload,
-                                    tvPercent = tvDownloadPercent,
-                                    tvBytes = tvDownloadBytes,
-                                    tvSpeed = tvDownloadSpeed,
-                                    tvStatusTitle = tvDownloadStatusTitle,
-                                    btnCancel = btnCancelDownload
-                                )
-                            }
-                        }
+                        applyUpdateInfo(result, currentVersion)
                     }
                 } catch (e: Throwable) {
                     mainHandler.post {
                         if (activity.isFinishing || activity.isDestroyed) return@post
                         showState(layoutError)
                         tvErrorTitle.text = "Không thể kiểm tra"
-                        tvErrorMessage.text = "Lỗi kết nối: ${e.message ?: "Chưa thể kết nối tới GitHub Releases"}\nVui lòng kiểm tra lại mạng hoặc thử lại sau."
+                        tvErrorMessage.text = "Lỗi kết nối: ${e.message ?: "Chưa thể kết nối tới máy chủ cập nhật"}\nVui lòng kiểm tra lại kết nối mạng hoặc thử lại sau."
                         btnErrorRetry.setOnClickListener { performCheck() }
                     }
                 }
@@ -171,7 +235,237 @@ object AppUpdateManager {
         }
 
         dialog.show()
+        dialog.window?.let { window ->
+            val screenWidth = activity.resources.displayMetrics.widthPixels
+            val targetWidth = (screenWidth * 0.92f).toInt().coerceAtMost((480 * activity.resources.displayMetrics.density).toInt())
+            window.setLayout(targetWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
         performCheck()
+    }
+
+    /**
+     * Tách nội dung văn bản và trích xuất danh sách link hình ảnh từ Markdown hoặc HTML của GitHub Release
+     */
+    private fun parseChangelog(rawText: String): Pair<String, List<String>> {
+        val imageUrls = LinkedHashSet<String>()
+
+        // 1. Thẻ HTML <img ... src="..."... />
+        val imgTagRegex = Regex("""<img\s+[^>]*?src=["']([^"']+)["'][^>]*?>""", RegexOption.IGNORE_CASE)
+        imgTagRegex.findAll(rawText).forEach { match ->
+            match.groupValues.getOrNull(1)?.trim()?.let { url ->
+                if (url.isNotBlank()) imageUrls.add(url)
+            }
+        }
+
+        // 2. Cú pháp Markdown ![alt](url)
+        val markdownImgRegex = Regex("""!\[([^\]]*)\]\((https?://[^\s)]+)\)""")
+        markdownImgRegex.findAll(rawText).forEach { match ->
+            match.groupValues.getOrNull(2)?.trim()?.let { url ->
+                if (url.isNotBlank()) imageUrls.add(url)
+            }
+        }
+
+        // Xóa các thẻ HTML img và Markdown img khỏi văn bản hiển thị
+        var clean = rawText
+            .replace(imgTagRegex, "")
+            .replace(markdownImgRegex, "")
+
+        // 3. Link ảnh trực tiếp kết thúc bằng đuôi ảnh hoặc link assets GitHub đứng riêng dòng
+        val rawLineRegex = Regex("""(?m)^https?://(?:github\.com/user-attachments/assets/[^\s]+|[^\s]+\.(?:png|jpg|jpeg|webp|gif))\S*$""", RegexOption.IGNORE_CASE)
+        rawLineRegex.findAll(clean).forEach { match ->
+            val url = match.value.trim()
+            if (url.isNotBlank()) imageUrls.add(url)
+        }
+        clean = clean.replace(rawLineRegex, "")
+
+        // Làm sạch khoảng trắng và dòng trống liên tiếp
+        val cleanedLines = mutableListOf<String>()
+        var lastWasBlank = false
+        clean.lines().forEach { line ->
+            val trimmed = line.trim()
+            if (trimmed.isEmpty()) {
+                if (!lastWasBlank && cleanedLines.isNotEmpty()) {
+                    cleanedLines.add("")
+                    lastWasBlank = true
+                }
+            } else {
+                cleanedLines.add(line.trimEnd())
+                lastWasBlank = false
+            }
+        }
+
+        return Pair(cleanedLines.joinToString("\n").trim(), imageUrls.toList())
+    }
+
+    /**
+     * Thêm view hình ảnh minh họa tính năng vào Changelog (Thu gọn nhỏ gọn, xem chi tiết qua LimiImageViewerHelper)
+     */
+    private fun addImageItem(activity: Activity, container: LinearLayout, imageUrl: String) {
+        val density = activity.resources.displayMetrics.density
+
+        val cardView = com.google.android.material.card.MaterialCardView(activity).apply {
+            radius = 12f * density
+            strokeWidth = (1 * density).toInt()
+            setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#33FFFFFF")))
+            setCardBackgroundColor(Color.parseColor("#15FFFFFF"))
+            cardElevation = 0f
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (135 * density).toInt()
+            ).apply {
+                bottomMargin = (10 * density).toInt()
+            }
+        }
+
+        val frameLayout = android.widget.FrameLayout(activity).apply {
+            layoutParams = android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        val progressBar = ProgressBar(activity).apply {
+            layoutParams = android.widget.FrameLayout.LayoutParams(
+                (28 * density).toInt(),
+                (28 * density).toInt(),
+                android.view.Gravity.CENTER
+            )
+            isIndeterminate = true
+            indeterminateTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#38BDF8"))
+        }
+
+        val imageView = ImageView(activity).apply {
+            layoutParams = android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = View.GONE
+        }
+
+        // Nhãn tag gợi ý chạm xem ảnh phóng to
+        val tvHint = TextView(activity).apply {
+            layoutParams = android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.view.Gravity.BOTTOM or android.view.Gravity.END
+            ).apply {
+                setMargins(0, 0, (8 * density).toInt(), (8 * density).toInt())
+            }
+            text = "🔍 Chạm để xem chi tiết"
+            textSize = 10f
+            setTextColor(Color.WHITE)
+            val pillBg = android.graphics.drawable.GradientDrawable().apply {
+                shape = android.graphics.drawable.GradientDrawable.RECTANGLE
+                cornerRadius = 10 * density
+                setColor(Color.parseColor("#99000000"))
+            }
+            background = pillBg
+            setPadding((8 * density).toInt(), (3 * density).toInt(), (8 * density).toInt(), (3 * density).toInt())
+            visibility = View.GONE
+        }
+
+        frameLayout.addView(progressBar)
+        frameLayout.addView(imageView)
+        frameLayout.addView(tvHint)
+        cardView.addView(frameLayout)
+        container.addView(cardView)
+
+        executor.execute {
+            val bitmap = loadBitmapWithCache(activity, imageUrl)
+            mainHandler.post {
+                if (activity.isFinishing || activity.isDestroyed) return@post
+                progressBar.visibility = View.GONE
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap)
+                    imageView.visibility = View.VISIBLE
+                    tvHint.visibility = View.VISIBLE
+                    cardView.setOnClickListener {
+                        showFullScreenImageDialog(activity, bitmap)
+                    }
+                } else {
+                    cardView.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    /**
+     * Tải và cache ảnh từ URL với xử lý HTTP redirects & decode tối ưu RAM
+     */
+    private fun loadBitmapWithCache(context: Context, urlString: String, maxWidth: Int = 1080): android.graphics.Bitmap? {
+        try {
+            val cacheDir = File(context.cacheDir, "changelog_images").apply { if (!exists()) mkdirs() }
+            val safeName = "img_${urlString.hashCode()}.cache"
+            val cachedFile = File(cacheDir, safeName)
+
+            if (!cachedFile.exists() || cachedFile.length() == 0L) {
+                var currentUrl = urlString
+                var redirectCount = 0
+                var finalConn: HttpURLConnection? = null
+                var finalStream: InputStream? = null
+
+                while (redirectCount < 6) {
+                    val conn = (URL(currentUrl).openConnection() as HttpURLConnection).apply {
+                        connectTimeout = 15000
+                        readTimeout = 15000
+                        setRequestProperty("User-Agent", "Mozilla/5.0 (Android; LIMI App)")
+                        setRequestProperty("Accept", "image/*,*/*")
+                        instanceFollowRedirects = true
+                    }
+                    val code = conn.responseCode
+                    if (code in 300..399) {
+                        val location = conn.getHeaderField("Location") ?: break
+                        currentUrl = if (location.startsWith("http")) location else URL(URL(currentUrl), location).toString()
+                        redirectCount++
+                        conn.disconnect()
+                    } else if (code in 200..299) {
+                        finalConn = conn
+                        finalStream = conn.inputStream
+                        break
+                    } else {
+                        conn.disconnect()
+                        break
+                    }
+                }
+
+                finalStream?.use { input ->
+                    FileOutputStream(cachedFile).use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                finalConn?.disconnect()
+            }
+
+            if (!cachedFile.exists() || cachedFile.length() == 0L) return null
+
+            val boundsOptions = android.graphics.BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            android.graphics.BitmapFactory.decodeFile(cachedFile.absolutePath, boundsOptions)
+
+            var sampleSize = 1
+            if (boundsOptions.outWidth > maxWidth) {
+                sampleSize = boundsOptions.outWidth / maxWidth
+                if (sampleSize < 1) sampleSize = 1
+            }
+
+            val decodeOptions = android.graphics.BitmapFactory.Options().apply {
+                inSampleSize = sampleSize
+                inPreferredConfig = android.graphics.Bitmap.Config.RGB_565
+            }
+
+            return android.graphics.BitmapFactory.decodeFile(cachedFile.absolutePath, decodeOptions)
+        } catch (e: Throwable) {
+            return null
+        }
+    }
+
+    /**
+     * Mở hộp thoại phóng to ảnh toàn màn hình chất lượng cao như Limi AI khi người dùng bấm vào ảnh
+     */
+    private fun showFullScreenImageDialog(activity: Activity, bitmap: android.graphics.Bitmap) {
+        com.xiaomi.fixnotification.ai.LimiImageViewerHelper.show(activity, bitmap, "Minh họa cập nhật")
     }
 
     /**
@@ -180,9 +474,9 @@ object AppUpdateManager {
     fun getCurrentVersionName(context: Context): String {
         return try {
             val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            pInfo.versionName ?: "1.2.8.4.ntd"
+            pInfo.versionName ?: "1.2.8.5.ntd"
         } catch (_: Throwable) {
-            "1.2.8.4.ntd"
+            "1.2.8.5.ntd"
         }
     }
 
@@ -205,10 +499,10 @@ object AppUpdateManager {
                 if (r < c) return false
             }
 
-            // Nếu các số phiên bản bằng nhau, so sánh chuỗi đầy đủ khác nhau
-            return !remote.equals(current, ignoreCase = true) && !remote.equals("v$current", ignoreCase = true)
+            // Nếu các số phiên bản bằng nhau (ví dụ 1.3.3.1.ntd vs v1.3.3.1.ntd hoặc 1.3.3.1), không coi là mới hơn
+            return false
         } catch (_: Throwable) {
-            return !remote.equals(current, ignoreCase = true)
+            return false
         }
     }
 
@@ -395,7 +689,7 @@ object AppUpdateManager {
                     tvPercent.text = "100%"
                     tvBytes.text = "${formatFileSize(totalDownloaded)} / ${formatFileSize(totalLength)}"
                     tvSpeed.text = "Hoàn tất"
-                    tvStatusTitle.text = "⚡ Đang tiến hành cài đặt bản cập nhật..."
+                    tvStatusTitle.text = "Đang tiến hành cài đặt bản cập nhật..."
 
                     // Bắt đầu cài đặt
                     executeInstall(activity, apkFile, dialog)

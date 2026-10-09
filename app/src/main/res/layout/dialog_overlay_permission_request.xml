@@ -1,184 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardDialogOverlayPermRoot"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardDialogOverlayPermRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginHorizontal="22dp"
+  app:cardBackgroundColor="@color/card_bg"
+  app:cardCornerRadius="24dp"
+  app:cardElevation="6dp"
+  app:strokeColor="@color/popup_stroke"
+  app:strokeWidth="1dp">
+
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="22dp"
-    app:cardBackgroundColor="@color/card_bg"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="6dp"
-    app:strokeColor="@color/popup_stroke"
-    app:strokeWidth="1dp">
+    android:orientation="vertical"
+    android:padding="20dp">
 
+    <!-- Header: Icon, Tiêu đề & Nút đóng -->
     <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_vertical"
+      android:orientation="horizontal">
+
+      <com.google.android.material.card.MaterialCardView
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:cardBackgroundColor="#262979FF"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:strokeColor="#502979FF"
+        app:strokeWidth="1dp">
+
+        <ImageView
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:layout_gravity="center"
+          android:src="@drawable/ic_popup_window"
+          app:tint="#2979FF" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal">
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quyền Cửa Sổ Nổi"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/badge_pill_bg"
+            android:backgroundTint="#262979FF"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="1.5dp"
+            android:text="POPUP HUD"
+            android:textColor="#2979FF"
+            android:textSize="9.5sp"
+            android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:text="Hiển thị giám sát trên màn hình chính"
+          android:textColor="@color/text_secondary"
+          android:textSize="11.5sp" />
+      </LinearLayout>
+
+      <ImageView
+        android:id="@+id/btnDialogOverlayPermClose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_close_white"
+        app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="0.8dp"
+      android:layout_marginTop="14dp"
+      android:layout_marginBottom="12dp"
+      android:background="@color/card_stroke" />
+
+    <!-- Box mô tả quyền -->
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/bg_code_box"
+      android:orientation="vertical"
+      android:padding="12dp">
+
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <!-- Header: Icon, Tiêu đề & Nút đóng -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                app:cardBackgroundColor="#262979FF"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#502979FF"
-                app:strokeWidth="1dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_popup_window"
-                    app:tint="#2979FF" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quyền Cửa Sổ Nổi"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/badge_pill_bg"
-                        android:backgroundTint="#262979FF"
-                        android:paddingHorizontal="6dp"
-                        android:paddingVertical="1.5dp"
-                        android:text="POPUP HUD"
-                        android:textColor="#2979FF"
-                        android:textSize="9.5sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Hiển thị giám sát trên màn hình chính"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="11.5sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/btnDialogOverlayPermClose"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="8dp"
-                android:src="@drawable/ic_close_white"
-                app:tint="@color/text_secondary" />
-        </LinearLayout>
-
-        <!-- Divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/card_stroke" />
-
-        <!-- Box mô tả quyền -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_code_box"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="3.5dp"
-                android:text="Để hiển thị bảng nhiệt độ CPU &amp; Pin nổi tự do trên màn hình chính và các ứng dụng khác (khi chơi game, lướt web), vui lòng cấp 2 quyền hệ thống:\n\n• 1. Hiển thị trên các ứng dụng khác (Cửa sổ nổi).\n• 2. Hiển thị cửa sổ Pop-up khi chạy nền (HyperOS / MIUI)."
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Nút 1: Tự động cấp quyền qua Shizuku (nếu có Shizuku) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGrantOverlayViaShizuku"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="14dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="⚡  Tự động cấp quyền 1-chạm (Shizuku)"
-            android:textColor="#34D399"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="#2634D399"
-            app:cornerRadius="22dp"
-            app:strokeColor="#5034D399"
-            app:strokeWidth="1dp" />
-
-        <!-- Nút 2: Mở cài đặt hệ thống cấp quyền thủ công -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnOpenSettingsForOverlay"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp"
-            android:minHeight="44dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Cấp quyền qua Cài đặt hệ thống"
-            android:textColor="@color/text_nav_active"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/nav_active_indicator_pill"
-            app:cornerRadius="22dp"
-            app:strokeColor="@color/nav_active_indicator_stroke"
-            app:strokeWidth="1dp" />
-
-        <!-- Nút 3: Hủy -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelOverlayPerm"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_marginTop="8dp"
-            android:minHeight="42dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Hủy bỏ"
-            android:textColor="@color/text_secondary"
-            android:textSize="12.5sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/button_capsule_bg"
-            app:cornerRadius="21dp"
-            app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp" />
-
+        android:lineSpacingExtra="3.5dp"
+        android:text="Để hiển thị bảng nhiệt độ CPU &amp; Pin nổi tự do trên màn hình chính và các ứng dụng khác (khi chơi game, lướt web), vui lòng cấp 2 quyền hệ thống:\n\n• 1. Hiển thị trên các ứng dụng khác (Cửa sổ nổi).\n• 2. Hiển thị cửa sổ Pop-up khi chạy nền (HyperOS / MIUI)."
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp" />
     </LinearLayout>
+
+    <!-- Nút 1: Tự động cấp quyền qua Shizuku (nếu có Shizuku) -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnGrantOverlayViaShizuku"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="14dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Tự động cấp quyền 1-chạm (Shizuku)"
+      android:textColor="#34D399"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="#2634D399"
+      app:cornerRadius="22dp"
+      app:strokeColor="#5034D399"
+      app:strokeWidth="1dp" />
+
+    <!-- Nút 2: Mở cài đặt hệ thống cấp quyền thủ công -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnOpenSettingsForOverlay"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:layout_marginTop="10dp"
+      android:minHeight="44dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Cấp quyền qua Cài đặt hệ thống"
+      android:textColor="@color/text_nav_active"
+      android:textSize="13sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/nav_active_indicator_pill"
+      app:cornerRadius="22dp"
+      app:strokeColor="@color/nav_active_indicator_stroke"
+      app:strokeWidth="1dp" />
+
+    <!-- Nút 3: Hủy -->
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnCancelOverlayPerm"
+      style="@style/Widget.Material3.Button.TonalButton"
+      android:layout_width="match_parent"
+      android:layout_height="42dp"
+      android:layout_marginTop="8dp"
+      android:minHeight="42dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:text="Hủy bỏ"
+      android:textColor="@color/text_secondary"
+      android:textSize="12.5sp"
+      android:textStyle="bold"
+      app:backgroundTint="@color/button_capsule_bg"
+      app:cornerRadius="21dp"
+      app:strokeColor="@color/card_stroke"
+      app:strokeWidth="1dp" />
+
+  </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

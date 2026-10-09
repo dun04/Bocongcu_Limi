@@ -34,8 +34,12 @@ object BatteryHealthManager {
     private const val KEY_LAST_HEALTH = "last_health"
     private const val KEY_LAST_EST_MAH = "last_est_mah"
     private const val KEY_BASELINE_GENERATED = "baseline_generated"
+    private const val KEY_CUSTOM_DESIGN_CAPACITY = "custom_design_capacity_mah"
 
-    fun getDesignCapacity(context: Context): Int {
+    /**
+     * Lấy dung lượng pin gốc ban đầu do nhà sản xuất công bố (xuất xưởng)
+     */
+    fun getOriginalDesignCapacity(context: Context): Int {
         return try {
             val profileCap = DeviceInfoUtils.getBatteryProfile(context).capacity
             if (profileCap > 2000) {
@@ -51,6 +55,67 @@ object BatteryHealthManager {
             }
         } catch (_: Throwable) {
             DeviceInfoUtils.getBatteryProfile(context).capacity
+        }
+    }
+
+    /**
+     * Lấy dung lượng xếp hạng hiện hành:
+     * Ưu tiên dung lượng tùy chỉnh do người dùng nhập (nếu đã độ/thay pin dung lượng cao),
+     * nếu chưa tùy chỉnh thì lấy dung lượng gốc xuất xưởng của máy.
+     */
+    fun getDesignCapacity(context: Context): Int {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val customCap = prefs.getInt(KEY_CUSTOM_DESIGN_CAPACITY, -1)
+        if (customCap in 1000..30000) {
+            return customCap
+        }
+        return getOriginalDesignCapacity(context)
+    }
+
+    fun hasCustomDesignCapacity(context: Context): Boolean {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val customCap = prefs.getInt(KEY_CUSTOM_DESIGN_CAPACITY, -1)
+        return customCap in 1000..30000
+    }
+
+    fun getCustomDesignCapacity(context: Context): Int {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getInt(KEY_CUSTOM_DESIGN_CAPACITY, -1)
+    }
+
+    /**
+     * Cập nhật dung lượng pin mới (cho người dùng thay pin dung lượng cao) hoặc khôi phục về gốc (khi customMah <= 0)
+     */
+    fun setCustomDesignCapacity(context: Context, customMah: Int) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        if (customMah in 1000..30000) {
+            editor.putInt(KEY_CUSTOM_DESIGN_CAPACITY, customMah)
+        } else {
+            editor.remove(KEY_CUSTOM_DESIGN_CAPACITY)
+        }
+        editor.apply()
+
+        // Tính toán lại ngay tỷ lệ % sức khỏe pin theo dung lượng thiết kế mới
+        val currentDesignCap = getDesignCapacity(context)
+        val lastEstMah = prefs.getInt(KEY_LAST_EST_MAH, -1)
+        if (lastEstMah > 0) {
+            val updatedHealthPct = ((lastEstMah.toDouble() / currentDesignCap.toDouble()) * 100.0).roundToInt().coerceIn(20, 100)
+            prefs.edit().putInt(KEY_LAST_HEALTH, updatedHealthPct).apply()
+        } else {
+            // Chưa có phiên đo, nạp lại baseline theo dung lượng mới
+            val bmsSoh = readHardwareBmsSoh()
+            val cycleCount = readHardwareCycleCount(context)
+            val baselinePct = when {
+                bmsSoh in 50..100 -> bmsSoh
+                cycleCount > 0 -> (100.0 - (cycleCount * 0.012)).roundToInt().coerceIn(75, 100)
+                else -> 98
+            }
+            val baselineEstMah = ((currentDesignCap * (baselinePct / 100.0))).roundToInt()
+            prefs.edit()
+                .putInt(KEY_LAST_HEALTH, baselinePct)
+                .putInt(KEY_LAST_EST_MAH, baselineEstMah)
+                .apply()
         }
     }
 
@@ -197,9 +262,23 @@ object BatteryHealthManager {
             }
         }
 
-        // 4. Shizuku fallback
+        // 4. Shizuku fallback (đọc dumpsys battery từ Android Health HAL & kernel nodes)
         try {
             if (ShizukuUtils.hasShizukuPermission()) {
+                val dumpRes = ShizukuUtils.execShizukuCommand("dumpsys battery 2>/dev/null")
+                if (dumpRes.exitCode == 0 && dumpRes.stdout.isNotBlank()) {
+                    for (line in dumpRes.stdout.lines()) {
+                        val trimmed = line.trim()
+                        if (trimmed.startsWith("Cycle count:", ignoreCase = true) ||
+                            trimmed.startsWith("Battery cycle count:", ignoreCase = true) ||
+                            trimmed.startsWith("mSavedBatteryAsoc:", ignoreCase = true)
+                        ) {
+                            val num = trimmed.substringAfter(":").trim().toIntOrNull()
+                            if (num != null && num > 0) return num
+                        }
+                    }
+                }
+
                 for (path in cycleFiles) {
                     val res = ShizukuUtils.execShizukuCommand("cat $path 2>/dev/null")
                     if (res.exitCode == 0 && res.stdout.isNotBlank()) {
@@ -210,6 +289,43 @@ object BatteryHealthManager {
             }
         } catch (_: Throwable) {}
 
+        return -1
+    }
+
+    /**
+     * Đọc dung lượng tích điện tối đa thực tế của cell Pin từ chip BMS (uAh -> mAh)
+     */
+    fun readHardwareChargeFull(): Int {
+        val fullFiles = listOf(
+            "/sys/class/power_supply/bms/charge_full",
+            "/sys/class/power_supply/battery/charge_full",
+            "/sys/class/power_supply/battery/full_cap",
+            "/sys/class/power_supply/main/charge_full"
+        )
+        for (path in fullFiles) {
+            val f = File(path)
+            if (f.exists() && f.canRead()) {
+                val raw = try { f.readText().trim().toLongOrNull() ?: 0L } catch (_: Throwable) { 0L }
+                if (raw > 1000) {
+                    val mah = if (raw > 50000) (raw / 1000).toInt() else raw.toInt()
+                    if (mah in 1500..12000) return mah
+                }
+            }
+        }
+        try {
+            if (ShizukuUtils.hasShizukuPermission()) {
+                for (path in fullFiles) {
+                    val res = ShizukuUtils.execShizukuCommand("cat $path 2>/dev/null")
+                    if (res.exitCode == 0 && res.stdout.isNotBlank()) {
+                        val raw = res.stdout.trim().toLongOrNull() ?: continue
+                        if (raw > 1000) {
+                            val mah = if (raw > 50000) (raw / 1000).toInt() else raw.toInt()
+                            if (mah in 1500..12000) return mah
+                        }
+                    }
+                }
+            }
+        } catch (_: Throwable) {}
         return -1
     }
 

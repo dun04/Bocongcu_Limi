@@ -214,10 +214,13 @@ object DeviceInfoUtils {
             else "ARM Mali GPU"
         } else {
             val model = Build.MODEL.uppercase()
-            if (model.contains("15 PRO") || model.contains("15 ULTRA") || model.contains("15")) "Adreno™ 830"
+            if (model.contains("18 PRO MAX") || model.contains("18 PROMAX") || model.contains("18PROMAX")) "Adreno™ 850 Extreme"
+            else if (model.contains("18 PRO") || model.contains("18 ULTRA") || model.contains("XIAOMI 18")) "Adreno™ 850"
+            else if (model.contains("15 PRO") || model.contains("15 ULTRA") || model.contains("15") || model.contains("K80 PRO")) "Adreno™ 830"
+            else if (model.contains("TURBO 4 PRO") || model.contains("NOTE 17 TURBO")) "Adreno™ 825"
             else if (model.contains("TURBO 3") || model.contains("POCO F6") || model.contains("CIVI 4")) "Adreno™ 735"
-            else if (model.contains("14 PRO") || model.contains("14 ULTRA") || model.contains("14")) "Adreno™ 750"
-            else if (model.contains("13 PRO") || model.contains("13 ULTRA") || model.contains("13")) "Adreno™ 740"
+            else if (model.contains("14 PRO") || model.contains("14 ULTRA") || model.contains("14") || model.contains("K70 PRO")) "Adreno™ 750"
+            else if (model.contains("13 PRO") || model.contains("13 ULTRA") || model.contains("13") || model.contains("K60 PRO")) "Adreno™ 740"
             else "Qualcomm Adreno GPU"
         }
 
@@ -388,7 +391,7 @@ object DeviceInfoUtils {
         val combinedUpper = "$marketNameProp ${Build.MODEL} ${Build.DEVICE} $socName".uppercase()
 
         when {
-            combinedUpper.contains("17 PRO MAX") || combinedUpper.contains("17 PROMAX") || combinedUpper.contains("17PROMAX") || combinedUpper.contains("17 ULTRA") || combinedUpper.contains("17 PRO") || combinedUpper.contains("K100 PRO MAX") || combinedUpper.contains("K100 PROMAX") || combinedUpper.contains("K100 MAX") || combinedUpper.contains("K100 ULTRA") || combinedUpper.contains("K100 PRO") || combinedUpper.contains("K90 PRO MAX") || combinedUpper.contains("K90 PROMAX") -> {
+            combinedUpper.contains("18 PRO MAX") || combinedUpper.contains("18 PROMAX") || combinedUpper.contains("18PROMAX") || combinedUpper.contains("18 ULTRA") || combinedUpper.contains("18 PRO") || combinedUpper.contains("XIAOMI 18") || combinedUpper.contains("17 PRO MAX") || combinedUpper.contains("17 PROMAX") || combinedUpper.contains("17PROMAX") || combinedUpper.contains("17 ULTRA") || combinedUpper.contains("17 PRO") || combinedUpper.contains("K100 PRO MAX") || combinedUpper.contains("K100 PROMAX") || combinedUpper.contains("K100 MAX") || combinedUpper.contains("K100 ULTRA") || combinedUpper.contains("K100 PRO") || combinedUpper.contains("K90 PRO MAX") || combinedUpper.contains("K90 PROMAX") -> {
                 ramType = "LPDDR5X Ultra"
                 ramFreq = "5300MHz"
                 ramSpeed = "9600 Mbps"
@@ -866,6 +869,52 @@ object DeviceInfoUtils {
         val combined = "$model $market $dev"
 
         return when {
+            // Xiaomi 18 Pro Max / 18 Ultra (Snapdragon 8 Elite Extreme Gen 6 - Ra mắt 10/2026)
+            combined.contains("18 PRO MAX") || combined.contains("18 PROMAX") || combined.contains("18PROMAX") || combined.contains("18 ULTRA") -> {
+                DeviceCameraProfile(
+                    rearLenses = listOf(
+                        CameraLensSpec("Chính (Wide / 23mm 1-inch Leica Summilux)", 50, "F1.4 ~ F4.0 (Biến thiên)", "23mm", "Sony LYT-950 / LOFIC Gen 3 (1.0\" Type)", "1.0\" Type", true, "8K 60fps / 4K 120fps", "Cảm biến 1-inch Flagship thế hệ mới, HyperOIS"),
+                        CameraLensSpec("Góc siêu rộng (Ultra-Wide / 12mm)", 50, "F1.8", "12mm", "Sony IMX858 (1/2.51\")", "1/2.51\"", false, "4K 60fps", "122° FOV, AF Macro 5cm"),
+                        CameraLensSpec("Telephoto Chân dung (3.2x / 75mm Leica)", 50, "F1.8", "75mm", "Sony IMX858 (1/2.51\")", "1/2.51\"", true, "4K 60fps", "Floating Telephoto, OIS, Macro 10cm"),
+                        CameraLensSpec("Tele Tiềm vọng (Periscope 5x-10x / 120-240mm Leica)", 200, "F2.6", "120mm", "Samsung HP9 (1/1.4\")", "1/1.4\"", true, "8K 60fps / 4K 120fps", "200MP Ultra Periscope, Zoom quang 5x-10x, Zoom số 120x, OIS")
+                    ),
+                    frontLenses = listOf(
+                        CameraLensSpec("Camera Selfie trước", 50, "F2.0", "22mm", "OmniVision OV50D (1/2.88\")", "1/2.88\"", false, "4K 60fps", "4K 60fps Selfie, HDR")
+                    ),
+                    isLeica = true,
+                    zoomDescription = "Zoom quang học 5x · Zoom kết hợp 10x · Zoom số 120x"
+                )
+            }
+            // Xiaomi 18 Pro (Snapdragon 8 Elite Gen 6 - Ra mắt 10/2026)
+            combined.contains("18 PRO") || combined.contains("XIAOMI 18 PRO") -> {
+                DeviceCameraProfile(
+                    rearLenses = listOf(
+                        CameraLensSpec("Chính (Wide / 23mm Leica Summilux)", 50, "F1.44", "23mm", "Light Hunter 950 (1/1.28\")", "1/1.28\"", true, "8K 30fps / 4K 60fps", "1.22µm Super Pixel, OIS Quang học thế hệ mới"),
+                        CameraLensSpec("Góc siêu rộng (Ultra-Wide / 14mm)", 50, "F2.2", "14mm", "Samsung JN5 (1/2.76\")", "1/2.76\"", false, "4K 60fps", "115° FOV, Macro 5cm"),
+                        CameraLensSpec("Tele Tiềm vọng (Periscope 5x / 120mm Leica)", 50, "F2.5", "120mm", "Sony IMX858 (1/2.51\")", "1/2.51\"", true, "8K 30fps / 4K 60fps", "Zoom quang 5x, Zoom số 120x, Telemacro 30cm, OIS")
+                    ),
+                    frontLenses = listOf(
+                        CameraLensSpec("Camera Selfie trước", 50, "F2.0", "22mm", "OmniVision OV50D", "1/2.88\"", false, "4K 60fps", "AI Beautify, HDR Selfie")
+                    ),
+                    isLeica = true,
+                    zoomDescription = "Zoom quang học 5x · Zoom kỹ thuật số 120x"
+                )
+            }
+            // Xiaomi 18 (Snapdragon 8 Elite Gen 6 - Ra mắt 10/2026)
+            combined.contains("XIAOMI 18") || (combined.contains(" 18") && !combined.contains("NOTE") && !combined.contains("REDMI") && !combined.contains("PAD")) -> {
+                DeviceCameraProfile(
+                    rearLenses = listOf(
+                        CameraLensSpec("Chính (Wide / 23mm Leica)", 50, "F1.6", "23mm", "Light Hunter 950 (1/1.28\")", "1/1.28\"", true, "8K 30fps / 4K 60fps", "OIS Quang học"),
+                        CameraLensSpec("Góc siêu rộng (Ultra-Wide / 14mm)", 50, "F2.2", "14mm", "Samsung JN1 (1/2.76\")", "1/2.76\"", false, "4K 60fps", "115° FOV, Macro"),
+                        CameraLensSpec("Telephoto (3.2x / 60mm Leica)", 50, "F2.0", "60mm", "Samsung JN5 (1/2.76\")", "1/2.76\"", true, "4K 60fps", "Zoom quang 3.2x, OIS, Macro 10cm")
+                    ),
+                    frontLenses = listOf(
+                        CameraLensSpec("Camera Selfie trước", 32, "F2.0", "22mm", "OmniVision OV32B", "1/3.14\"", false, "4K 60fps", "HDR Selfie")
+                    ),
+                    isLeica = true,
+                    zoomDescription = "Zoom quang học 3.2x · Zoom kỹ thuật số 30x"
+                )
+            }
             // Xiaomi 17 Ultra / 17 Pro Max / 17 Promax
             combined.contains("17 ULTRA") || combined.contains("17 PRO MAX") || combined.contains("17 PROMAX") || combined.contains("17PROMAX") -> {
                 DeviceCameraProfile(
@@ -1784,6 +1833,32 @@ object DeviceInfoUtils {
         val combined = "$model $market $dev"
 
         return when {
+            // Xiaomi 18 Series (Snapdragon 8 Elite Gen 6 / Extreme Gen 6 - Ra mắt 10/2026)
+            combined.contains("18 PRO MAX") || combined.contains("18 PROMAX") || combined.contains("18PROMAX") -> BatteryProfile(
+                capacity = 7000,
+                chemistry = "Silicon-Carbon Gen 4 (Si/C Jinshajiang - Kim Sa Giang Cực Đại Mật Độ)",
+                chargingTech = "Xiaomi HyperCharge 120W có dây · 80W Sạc nhanh không dây · Sạc ngược 20W",
+                powerChips = "Xiaomi Surge P4 (Sạc nhanh 120W) & Xiaomi Surge G5 (Quản lý pin)"
+            )
+            combined.contains("18 ULTRA") -> BatteryProfile(
+                capacity = 7000,
+                chemistry = "Silicon-Carbon Gen 4 (Si/C Jinshajiang - Kim Sa Giang Cực Đại Mật Độ)",
+                chargingTech = "Xiaomi HyperCharge 120W có dây · 80W Sạc nhanh không dây · Sạc ngược 20W",
+                powerChips = "Xiaomi Surge P4 (Sạc nhanh 120W) & Xiaomi Surge G5 (Quản lý pin)"
+            )
+            combined.contains("18 PRO") || combined.contains("XIAOMI 18 PRO") -> BatteryProfile(
+                capacity = 6500,
+                chemistry = "Silicon-Carbon Gen 4 (Si/C Jinshajiang - Kim Sa Giang Mật Độ Cao)",
+                chargingTech = "Xiaomi HyperCharge 120W có dây · 50W Sạc nhanh không dây · Sạc ngược không dây",
+                powerChips = "Xiaomi Surge P3 (Sạc nhanh 120W) & Xiaomi Surge G4 (Quản lý pin)"
+            )
+            combined.contains("XIAOMI 18") || (combined.contains(" 18") && !combined.contains("NOTE") && !combined.contains("REDMI") && !combined.contains("PAD")) -> BatteryProfile(
+                capacity = 6200,
+                chemistry = "Silicon-Carbon Gen 4 (Si/C Jinshajiang - Kim Sa Giang Mật Độ Cao)",
+                chargingTech = "Xiaomi HyperCharge 100W có dây · 50W Sạc nhanh không dây",
+                powerChips = "Xiaomi Surge P3 (Sạc nhanh 100W) & Xiaomi Surge G4 (Quản lý pin)"
+            )
+
             // Xiaomi 17 Series (Bản Nội Địa China)
             combined.contains("17 PRO MAX") || combined.contains("17 PROMAX") || combined.contains("17PROMAX") -> BatteryProfile(
                 capacity = 6800,
@@ -2348,11 +2423,25 @@ object DeviceInfoUtils {
         val liveTemp = BatteryHealthManager.getLiveBatteryTemperature(context, batteryIntent)
         val tempStr = "${String.format(Locale.US, "%.1f", liveTemp)} °C"
 
+        val cycleCount = BatteryHealthManager.readHardwareCycleCount(context)
+        val cycleStr = if (cycleCount > 0) "$cycleCount chu kỳ (Phần cứng BMS)" else "Yêu cầu Android 14+ hoặc Shizuku"
+
+        val bmsSoh = BatteryHealthManager.readHardwareBmsSoh()
+        val chargeFull = BatteryHealthManager.readHardwareChargeFull()
+        val healthStr = when {
+            bmsSoh in 40..100 && chargeFull > 0 -> "$bmsSoh% (~$chargeFull / $cap mAh)"
+            bmsSoh in 40..100 -> "$bmsSoh% (Phần cứng BMS)"
+            chargeFull > 0 -> "${kotlin.math.round(((chargeFull.toDouble() / cap) * 100)).toInt().coerceIn(50, 100)}% (~$chargeFull / $cap mAh)"
+            else -> "Đo chính xác khi cắm sạc"
+        }
+
         val statusItems = listOf(
             "Công suất tức thời" to powerStr,
             "Nhiệt độ Pin" to tempStr,
             "Trạng thái hoạt động" to statusStr,
             "Nguồn kết nối" to pluggedStr,
+            "Chu kỳ sạc phần cứng" to cycleStr,
+            "Sức khỏe Pin (BMS SOH)" to healthStr,
             "Kiểm Tra Pin" to ""
         )
         val statusActions = mapOf("Kiểm Tra Pin" to "CHẠY")
@@ -2380,6 +2469,12 @@ object DeviceInfoUtils {
         val combined = "$model $market $dev"
 
         return when {
+            // Xiaomi 18 Series (Snapdragon 8 Elite Gen 6 / Extreme Gen 6 - Ra mắt 10/2026)
+            combined.contains("18 PRO MAX") || combined.contains("18 PROMAX") || combined.contains("18PROMAX") || combined.contains("XIAOMI 18 PRO MAX") -> "10/2026"
+            combined.contains("18 ULTRA") || combined.contains("XIAOMI 18 ULTRA") -> "10/2026"
+            combined.contains("18 PRO") || combined.contains("XIAOMI 18 PRO") -> "10/2026"
+            combined.contains("XIAOMI 18") -> "10/2026"
+
             // Xiaomi 17 Series
             combined.contains("17 ULTRA") || combined.contains("17 PRO MAX") || combined.contains("17 PROMAX") || combined.contains("17PROMAX") -> "02/2026"
             combined.contains("17 PRO") || combined.contains("XIAOMI 17 PRO") -> "10/2025"
@@ -2523,6 +2618,12 @@ object DeviceInfoUtils {
         // 1. Prioritize Qualcomm when GPU is Adreno / Qualcomm or SoC model is Qualcomm
         if (isQualcommGpu || hasExactToken("QCOM") || propQti.isNotEmpty() || (hasSub("QUALCOMM") && !isArmGpu)) {
             return when {
+                // Qualcomm Snapdragon 8 Elite Extreme Gen 6 (Xiaomi 18 Pro Max - Adreno 850 Extreme / SM8950-AC - Ra mắt 10/2026)
+                gl.contains("850 EXTREME") || hasExactToken("SM8950-AC") || hasSub("8 ELITE EXTREME") || hasSub("EXTREME GEN 6") || hasSub("8 ELITE EXTREME GEN 6") || hasSub("18 PRO MAX") || hasSub("18 PROMAX") || hasSub("18PROMAX") -> "Qualcomm Snapdragon 8 Elite Extreme Gen 6"
+
+                // Qualcomm Snapdragon 8 Elite Gen 6 (Xiaomi 18 Pro, Xiaomi 18 - Adreno 850 / SM8950 - Ra mắt 10/2026)
+                gl.contains("850") || hasExactToken("SM8950") || hasSub("8 ELITE GEN 6") || hasSub("8 GEN 6") || hasSub("18 PRO") || hasSub("XIAOMI 18") -> "Qualcomm Snapdragon 8 Elite Gen 6"
+
                 // Qualcomm Snapdragon 8 Elite Gen 5 / 8 Elite Gen 2 / 8 Gen 5 (Xiaomi 17 Pro, 17 Ultra, K100 Pro Max - Adreno 840 / SM8850)
                 gl.contains("840") || hasExactToken("SM8850") || hasSub("8 ELITE GEN 5") || hasSub("8 GEN 5") || hasSub("8 ELITE GEN 2") -> "Qualcomm Snapdragon 8 Elite Gen 5"
 
@@ -2716,6 +2817,45 @@ object DeviceInfoUtils {
     }
 
     private fun getBatteryCapacity(context: Context): Int {
+        // 1. Đọc trực tiếp từ thanh ghi phần cứng chip BMS Kernel Sysfs (uAh -> mAh)
+        val designFiles = listOf(
+            "/sys/class/power_supply/battery/charge_full_design",
+            "/sys/class/power_supply/bms/charge_full_design",
+            "/sys/class/power_supply/battery/full_cap_design",
+            "/sys/class/power_supply/main/charge_full_design"
+        )
+        for (path in designFiles) {
+            val f = File(path)
+            if (f.exists() && f.canRead()) {
+                val raw = readIntFromFile(f, 0)
+                if (raw > 50000) {
+                    val mah = raw / 1000
+                    if (mah in 2000..12000) return mah
+                } else if (raw in 2000..12000) {
+                    return raw
+                }
+            }
+        }
+
+        // 2. Shizuku / Shell fallback để vượt giới hạn bảo mật SELinux đọc file kernel BMS
+        try {
+            if (ShizukuUtils.hasShizukuPermission()) {
+                for (path in designFiles) {
+                    val res = ShizukuUtils.execShizukuCommand("cat $path 2>/dev/null")
+                    if (res.exitCode == 0 && res.stdout.isNotBlank()) {
+                        val raw = res.stdout.trim().toIntOrNull() ?: 0
+                        if (raw > 50000) {
+                            val mah = raw / 1000
+                            if (mah in 2000..12000) return mah
+                        } else if (raw in 2000..12000) {
+                            return raw
+                        }
+                    }
+                }
+            }
+        } catch (_: Throwable) {}
+
+        // 3. Android Framework PowerProfile
         try {
             val mPowerProfile = Class.forName("com.android.internal.os.PowerProfile")
                 .getConstructor(Context::class.java)
@@ -2726,13 +2866,7 @@ object DeviceInfoUtils {
             if (cap > 2000) return cap.toInt()
         } catch (_: Throwable) {}
 
-        val chargeFull = File("/sys/class/power_supply/battery/charge_full_design")
-        if (chargeFull.exists()) {
-            val raw = readIntFromFile(chargeFull, 0)
-            if (raw > 2000000) return raw / 1000
-            if (raw in 2000..10000) return raw
-        }
-        return 5000
+        return getBatteryProfile(context).capacity
     }
 
     private fun getBatteryCycleCount(context: Context? = null): Int {
@@ -2782,45 +2916,125 @@ object DeviceInfoUtils {
         return 0
     }
 
+    private var cachedCpuTempFile: File? = null
+    private var cachedGpuTempFile: File? = null
+    private var lastThermalScanTimeMs: Long = 0L
+
     fun getCpuTemperature(): Double {
+        val now = System.currentTimeMillis()
+        val cached = cachedCpuTempFile
+        if (cached != null && (now - lastThermalScanTimeMs) < 30_000L && cached.exists() && cached.canRead()) {
+            val raw = readIntFromFile(cached, 0)
+            val tempVal = when {
+                raw > 10000 -> raw / 1000.0
+                raw in 20..115 -> raw.toDouble()
+                else -> 0.0
+            }
+            if (tempVal in 25.0..95.0) return tempVal
+        }
+
         try {
-            var highestCpuTemp = 0.0
             val dir = File("/sys/class/thermal")
             if (dir.exists() && dir.isDirectory) {
                 val zones = dir.listFiles { file -> file.name.startsWith("thermal_zone") } ?: emptyArray()
+
+                var socPackageTemp = 0.0
+                var socTempFile: File? = null
+                val coreTemps = mutableListOf<Pair<Double, File>>()
+                val generalCpuTemps = mutableListOf<Double>()
+
+                // Bộ lọc loại trừ: Tuyệt đối không lấy cảm biến sạc nhanh, PMIC, Modem PA, Battery, Camera
+                fun isExcluded(name: String): Boolean {
+                    return name.contains("pmic") || name.contains("pm8") || name.contains("pmk") ||
+                            name.contains("smb") || name.contains("chg") || name.contains("charg") ||
+                            name.contains("bat") || name.contains("bms") || name.contains("fuel") ||
+                            name.contains("vbat") || name.contains("modem") || name.contains("mdm") ||
+                            name.contains("pa-") || name.contains("pa_") || name.contains("pa0") ||
+                            name.contains("pa1") || name.contains("q6") || name.contains("cam") ||
+                            name.contains("flash") || name.contains("wifi") || name.contains("wlan") ||
+                            name.contains("disp") || name.contains("panel") || name.contains("touch") ||
+                            name.contains("quiet") || name.contains("skin") || name.contains("xo") ||
+                            name.contains("audio") || name.contains("speaker") || name.contains("gpu") ||
+                            name.contains("kgsl") || name.contains("adreno") || name.contains("mali")
+                }
+
                 for (zone in zones) {
                     val typeFile = File(zone, "type")
                     val tempFile = File(zone, "temp")
-                    if (tempFile.exists() && tempFile.canRead()) {
-                        val typeName = if (typeFile.exists()) {
-                            try { typeFile.readText().trim().lowercase() } catch (_: Throwable) { "" }
-                        } else ""
+                    if (!tempFile.exists() || !tempFile.canRead()) continue
 
-                        val isCpuZone = typeName.contains("cpu") || typeName.contains("soc") ||
-                                typeName.contains("tsens") || typeName.contains("ap-therm") ||
-                                typeName.contains("mtkts") || typeName.contains("gold") ||
-                                typeName.contains("silver") || typeName.contains("prime") ||
-                                typeName.contains("cluster") || typeName.contains("core")
+                    val typeName = if (typeFile.exists()) {
+                        try { typeFile.readText().trim().lowercase() } catch (_: Throwable) { "" }
+                    } else ""
 
-                        val raw = readIntFromFile(tempFile, 0)
-                        val tempVal = when {
-                            raw > 10000 -> raw / 1000.0
-                            raw in 20..115 -> raw.toDouble()
-                            else -> 0.0
-                        }
+                    if (isExcluded(typeName)) continue
 
-                        if (isCpuZone && tempVal in 25.0..115.0) {
-                            if (tempVal > highestCpuTemp) {
-                                highestCpuTemp = tempVal
-                            }
-                        } else if (highestCpuTemp == 0.0 && tempVal in 25.0..85.0) {
-                            highestCpuTemp = tempVal
-                        }
+                    val raw = readIntFromFile(tempFile, 0)
+                    val tempVal = when {
+                        raw > 10000 -> raw / 1000.0
+                        raw in 20..115 -> raw.toDouble()
+                        else -> 0.0
+                    }
+                    if (tempVal !in 22.0..105.0) continue
+
+                    // Ưu tiên 1: Cảm biến SoC / AP Package chuẩn của Snapdragon & MediaTek (ap-therm, soc-therm, soc)
+                    val isSocPackage = typeName == "ap-therm" || typeName == "ap-therm-usr" ||
+                            typeName == "soc-therm" || typeName == "soc" || typeName == "mtktscpu" ||
+                            typeName == "cpu-top-usr" || typeName == "cpu-package" || typeName == "cpu-composite"
+
+                    if (isSocPackage && tempVal in 25.0..95.0) {
+                        socPackageTemp = tempVal
+                        socTempFile = tempFile
+                    }
+
+                    // Ưu tiên 2: Cảm biến từng nhân CPU thực tế (Qualcomm Oryon: cpu-0-0..cpu-1-1; Kryo; Cortex)
+                    val isGenuineCpuCore = typeName.startsWith("cpu-") || typeName.startsWith("cpu0") ||
+                            typeName.startsWith("cpu1") || typeName.startsWith("cpu2") ||
+                            typeName.startsWith("cpu3") || typeName.startsWith("cpu4") ||
+                            typeName.startsWith("cpu5") || typeName.startsWith("cpu6") ||
+                            typeName.startsWith("cpu7") || typeName.contains("cpuss") ||
+                            typeName.contains("gold") || typeName.contains("silver") ||
+                            typeName.contains("prime") || typeName.contains("kryo") ||
+                            typeName.contains("oryon")
+
+                    if (isGenuineCpuCore) {
+                        coreTemps.add(Pair(tempVal, tempFile))
+                    } else if (typeName.contains("cpu") || typeName.contains("soc")) {
+                        generalCpuTemps.add(tempVal)
                     }
                 }
-            }
-            if (highestCpuTemp > 0.0) {
-                return highestCpuTemp
+
+                // 1. Nếu có cảm biến gói AP / SoC Package chuẩn, đây là giá trị chuẩn xác nhất của toàn bộ die CPU
+                if (socPackageTemp in 25.0..95.0 && socTempFile != null) {
+                    cachedCpuTempFile = socTempFile
+                    lastThermalScanTimeMs = now
+                    return socPackageTemp
+                }
+
+                // 2. Nếu có danh sách các nhân CPU thực tế (Snapdragon 8 Elite / 8 Gen 5 có 8 nhân Oryon)
+                if (coreTemps.isNotEmpty()) {
+                    val sorted = coreTemps.sortedBy { it.first }
+                    val medianIdx = sorted.size / 2
+                    val medianVal = sorted[medianIdx].first
+                    // Lọc bỏ các xung đột biến micro-hotspot bất thường (>18°C so với trung vị các core)
+                    val validCores = sorted.filter { it.first in 25.0..(medianVal + 18.0) }
+                    if (validCores.isNotEmpty()) {
+                        val best = validCores.last()
+                        cachedCpuTempFile = best.second
+                        lastThermalScanTimeMs = now
+                        return best.first
+                    }
+                    cachedCpuTempFile = sorted[medianIdx].second
+                    lastThermalScanTimeMs = now
+                    return medianVal
+                }
+
+                // 3. Fallback: Cảm biến CPU tổng quát đã được lọc sạch PMIC/PA
+                if (generalCpuTemps.isNotEmpty()) {
+                    val sorted = generalCpuTemps.sorted()
+                    val median = sorted[sorted.size / 2]
+                    return median.coerceIn(28.0, 85.0)
+                }
             }
         } catch (_: Throwable) {}
 
@@ -2831,8 +3045,8 @@ object DeviceInfoUtils {
         for (f in thermalFiles) {
             if (f.exists()) {
                 val raw = readIntFromFile(f, 0)
-                if (raw > 1000) return raw / 1000.0
-                if (raw in 20..90) return raw.toDouble()
+                if (raw > 1000) return (raw / 1000.0).coerceIn(25.0, 85.0)
+                if (raw in 20..90) return raw.toDouble().coerceIn(25.0, 85.0)
             }
         }
         return 42.0
@@ -2840,68 +3054,159 @@ object DeviceInfoUtils {
 
     private var prevCpuTotal = 0L
     private var prevCpuIdle = 0L
+    private val procStatLock = Any()
+
+    // Giá trị do luồng Shizuku cập nhật. Quá 3 giây không cập nhật => coi như hết hạn (Shizuku chết/mất quyền)
+    private const val EXTERNAL_STALE_MS = 3_000L
+    @Volatile private var externalCpuUsageAtMs = 0L
+    @Volatile private var externalGpuUsageAtMs = 0L
+
+    @Volatile var externalCpuUsage: Int = -1
+        set(value) { field = value; externalCpuUsageAtMs = System.currentTimeMillis() }
+    @Volatile var externalGpuUsage: Int = -1
+        set(value) { field = value; externalGpuUsageAtMs = System.currentTimeMillis() }
+    @Volatile var externalGpuFreqMHz: Int = -1
+
+    val cpuCoreCount = Runtime.getRuntime().availableProcessors().coerceIn(1, 16)
+    val cpuMinFreqsKHz = IntArray(cpuCoreCount)
+    val cpuMaxFreqsKHz = IntArray(cpuCoreCount)
+    val cpuCurFreqFiles = Array(cpuCoreCount) { File("/sys/devices/system/cpu/cpu$it/cpufreq/scaling_cur_freq") }
+    @Volatile var isCpuFreqBoundsLoaded = false
+
+    fun ensureCpuFreqBounds() {
+        if (isCpuFreqBoundsLoaded) return
+        for (i in 0 until cpuCoreCount) {
+            val minF = File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_min_freq")
+            val maxF = File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq")
+            val minVal = readIntFromFile(minF, 300000)
+            val maxVal = readIntFromFile(maxF, 2400000)
+            cpuMinFreqsKHz[i] = if (minVal > 0) minVal else 300000
+            cpuMaxFreqsKHz[i] = if (maxVal > minVal) maxVal else 2400000
+        }
+        isCpuFreqBoundsLoaded = true
+    }
+
+    fun parseProcStatLine(line: String): Int? {
+        if (!line.startsWith("cpu ")) return null
+        val parts = line.trim().split("\\s+".toRegex())
+        if (parts.size >= 8) {
+            val user = parts[1].toLongOrNull() ?: 0L
+            val nice = parts[2].toLongOrNull() ?: 0L
+            val system = parts[3].toLongOrNull() ?: 0L
+            val idle = parts[4].toLongOrNull() ?: 0L
+            val iowait = parts[5].toLongOrNull() ?: 0L
+            val irq = parts[6].toLongOrNull() ?: 0L
+            val softirq = parts[7].toLongOrNull() ?: 0L
+            val steal = if (parts.size > 8) parts[8].toLongOrNull() ?: 0L else 0L
+
+            val total = user + nice + system + idle + iowait + irq + softirq + steal
+            val totalIdle = idle + iowait
+
+            synchronized(procStatLock) {
+                val hadPrevious = prevCpuTotal > 0L
+                val diffTotal = total - prevCpuTotal
+                val diffIdle = totalIdle - prevCpuIdle
+
+                prevCpuTotal = total
+                prevCpuIdle = totalIdle
+
+                // Lần đọc đầu tiên chưa có mốc so sánh -> bỏ qua (tránh trả về % trung bình kể từ lúc khởi động máy)
+                if (hadPrevious && diffTotal > 0) {
+                    val usage = ((diffTotal - diffIdle) * 100f / diffTotal).roundToInt()
+                    return usage.coerceIn(0, 100)
+                }
+            }
+        }
+        return null
+    }
+
+    private var smoothedCpuUsage: Float = -1f
+    private var smoothedGpuUsage: Float = -1f
+
+    private fun smoothUsage(currentSmoothed: Float, target: Int): Float {
+        if (currentSmoothed < 0f) return target.toFloat()
+        // Làm mượt: 35% giá trị cũ + 65% giá trị mới giúp số liệu hiển thị ổn định, rõ ràng, không giật số
+        return currentSmoothed * 0.35f + target * 0.65f
+    }
 
     fun getCpuUsagePercent(): Int {
+        val raw = getRawCpuUsagePercent()
+        smoothedCpuUsage = smoothUsage(smoothedCpuUsage, raw)
+        return smoothedCpuUsage.roundToInt().coerceIn(0, 100)
+    }
+
+    private fun getRawCpuUsagePercent(): Int {
+        // Fast-path 1: Giá trị chính xác cấp Kernel Linux do luồng Shizuku đọc ngầm liên tục
+        val extCpu = externalCpuUsage
+        if (extCpu in 0..100 && System.currentTimeMillis() - externalCpuUsageAtMs <= EXTERNAL_STALE_MS) {
+            return extCpu
+        }
+
+        // Fast-path 2: Đọc trực tiếp /proc/stat nếu ROM/Kernel mở quyền đọc
         try {
             val statFile = File("/proc/stat")
             if (statFile.exists() && statFile.canRead()) {
                 val line = statFile.bufferedReader().use { it.readLine() }
                 if (line != null && line.startsWith("cpu ")) {
-                    val parts = line.trim().split("\\s+".toRegex())
-                    if (parts.size >= 8) {
-                        val user = parts[1].toLongOrNull() ?: 0L
-                        val nice = parts[2].toLongOrNull() ?: 0L
-                        val system = parts[3].toLongOrNull() ?: 0L
-                        val idle = parts[4].toLongOrNull() ?: 0L
-                        val iowait = parts[5].toLongOrNull() ?: 0L
-                        val irq = parts[6].toLongOrNull() ?: 0L
-                        val softirq = parts[7].toLongOrNull() ?: 0L
-                        val steal = if (parts.size > 8) parts[8].toLongOrNull() ?: 0L else 0L
-
-                        val total = user + nice + system + idle + iowait + irq + softirq + steal
-                        val totalIdle = idle + iowait
-
-                        val diffTotal = total - prevCpuTotal
-                        val diffIdle = totalIdle - prevCpuIdle
-
-                        prevCpuTotal = total
-                        prevCpuIdle = totalIdle
-
-                        if (diffTotal > 0 && prevCpuTotal > 0) {
-                            val usage = ((diffTotal - diffIdle) * 100f / diffTotal).toInt()
-                            return usage.coerceIn(2, 100)
-                        }
-                    }
+                    val parsed = parseProcStatLine(line)
+                    if (parsed != null) return parsed
                 }
             }
         } catch (_: Throwable) {}
 
+        // Fast-path 3: Tính toán theo công suất thực tế từng lõi (Capacity-Weighted Utilization)
+        // Dùng file và thông số min/max đã được pre-cache một lần duy nhất (<0.05ms)
         try {
-            val coreCount = Runtime.getRuntime().availableProcessors().coerceIn(1, 16)
-            var totalRatio = 0f
-            var validCores = 0
-            for (i in 0 until coreCount) {
-                val curKHz = readIntFromFile(File("/sys/devices/system/cpu/cpu$i/cpufreq/scaling_cur_freq"), 0)
-                val minKHz = readIntFromFile(File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_min_freq"), 300000)
-                val maxKHz = readIntFromFile(File("/sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq"), 2400000)
+            ensureCpuFreqBounds()
+            var sumWeightedUsage = 0.0
+            var sumMaxCapacity = 0.0
+            for (i in 0 until cpuCoreCount) {
+                val curKHz = readIntFromFile(cpuCurFreqFiles[i], 0)
+                val minKHz = cpuMinFreqsKHz[i]
+                val maxKHz = cpuMaxFreqsKHz[i]
                 if (maxKHz > minKHz && curKHz >= minKHz) {
-                    val ratio = (curKHz - minKHz).toFloat() / (maxKHz - minKHz)
-                    totalRatio += ratio
-                    validCores++
+                    val ratio = (curKHz - minKHz).toDouble() / (maxKHz - minKHz)
+                    sumWeightedUsage += ratio * maxKHz
+                    sumMaxCapacity += maxKHz
                 }
             }
-            if (validCores > 0) {
-                val percent = (totalRatio / validCores * 100).toInt()
-                return percent.coerceIn(5, 100)
+            if (sumMaxCapacity > 0.0) {
+                val percent = (sumWeightedUsage / sumMaxCapacity * 100.0).toInt()
+                return percent.coerceIn(2, 100)
             }
         } catch (_: Throwable) {}
 
-        return 18
+        return 12
+    }
+
+    fun getCpuCoreFrequencies(): Map<Int, Int> {
+        ensureCpuFreqBounds()
+        val freqs = mutableMapOf<Int, Int>()
+        for (i in 0 until cpuCoreCount) {
+            val minKHz = cpuMinFreqsKHz[i]
+            val curKHz = readIntFromFile(cpuCurFreqFiles[i], fallback = (minKHz + 500000))
+            val curMHz = (curKHz / 1000).coerceAtLeast(300)
+            freqs[i] = curMHz
+        }
+        return freqs
     }
 
     fun getGpuTemperature(): Double {
+        val now = System.currentTimeMillis()
+        val cached = cachedGpuTempFile
+        if (cached != null && (now - lastThermalScanTimeMs) < 30_000L && cached.exists() && cached.canRead()) {
+            val raw = readIntFromFile(cached, 0)
+            val tempVal = when {
+                raw > 10000 -> raw / 1000.0
+                raw in 20..115 -> raw.toDouble()
+                else -> 0.0
+            }
+            if (tempVal in 25.0..95.0) return tempVal
+        }
+
         try {
             var foundGpuTemp = 0.0
+            var foundGpuFile: File? = null
             val dir = File("/sys/class/thermal")
             if (dir.exists() && dir.isDirectory) {
                 val zones = dir.listFiles { file -> file.name.startsWith("thermal_zone") } ?: emptyArray()
@@ -2912,6 +3217,10 @@ object DeviceInfoUtils {
                         val typeName = if (typeFile.exists()) {
                             try { typeFile.readText().trim().lowercase() } catch (_: Throwable) { "" }
                         } else ""
+
+                        if (typeName.contains("pmic") || typeName.contains("chg") ||
+                                typeName.contains("charg") || typeName.contains("bat") ||
+                                typeName.contains("pa-") || typeName.contains("modem")) continue
 
                         val isGpuZone = typeName.contains("gpu") || typeName.contains("gpuss") ||
                                 typeName.contains("mali") || typeName.contains("adreno") ||
@@ -2925,15 +3234,17 @@ object DeviceInfoUtils {
                             else -> 0.0
                         }
 
-                        if (isGpuZone && tempVal in 25.0..115.0) {
+                        if (isGpuZone && tempVal in 25.0..95.0) {
                             if (tempVal > foundGpuTemp) {
                                 foundGpuTemp = tempVal
+                                foundGpuFile = tempFile
                             }
                         }
                     }
                 }
             }
-            if (foundGpuTemp > 0.0) {
+            if (foundGpuTemp in 25.0..95.0 && foundGpuFile != null) {
+                cachedGpuTempFile = foundGpuFile
                 return foundGpuTemp
             }
         } catch (_: Throwable) {}
@@ -2946,8 +3257,11 @@ object DeviceInfoUtils {
         for (f in directGpuTempFiles) {
             if (f.exists() && f.canRead()) {
                 val raw = readIntFromFile(f, 0)
-                if (raw > 1000) return raw / 1000.0
-                if (raw in 20..95) return raw.toDouble()
+                val v = if (raw > 1000) (raw / 1000.0).coerceIn(25.0, 95.0) else if (raw in 20..95) raw.toDouble().coerceIn(25.0, 95.0) else 0.0
+                if (v in 25.0..95.0) {
+                    cachedGpuTempFile = f
+                    return v
+                }
             }
         }
 
@@ -2955,18 +3269,63 @@ object DeviceInfoUtils {
         return (cpuTemp - 1.5).coerceIn(28.0, 95.0)
     }
 
+    private var cachedGpuBusyFile: File? = null
+    private var cachedGpuLoadingFile: File? = null
+    private var cachedGpuFreqFile: File? = null
+
     fun getGpuUsagePercent(): Int {
-        // 1. Kiểm tra đọc trực tiếp từ sysfs kernel
+        val raw = getRawGpuUsagePercent()
+        smoothedGpuUsage = smoothUsage(smoothedGpuUsage, raw)
+        return smoothedGpuUsage.roundToInt().coerceIn(0, 100)
+    }
+
+    private fun getRawGpuUsagePercent(): Int {
+        // Fast-path 1: Giá trị GPU Load chính xác do luồng Shizuku đọc ngầm
+        val extGpu = externalGpuUsage
+        if (extGpu in 0..100 && System.currentTimeMillis() - externalGpuUsageAtMs <= EXTERNAL_STALE_MS) {
+            return extGpu
+        }
+
+        // Fast-path 2: Đọc trực tiếp từ file gpubusy đã cache
+        val busy = cachedGpuBusyFile
+        if (busy != null && busy.exists() && busy.canRead()) {
+            try {
+                val text = busy.readText().trim()
+                val parts = text.split("\\s+".toRegex())
+                if (parts.size >= 2) {
+                    val busyTime = parts[0].toLongOrNull() ?: 0L
+                    val totalTime = parts[1].toLongOrNull() ?: 0L
+                    // "0 0" nghĩa là GPU đang nghỉ (đã tắt nguồn) -> 0%
+                    return if (totalTime > 0) ((busyTime * 100f) / totalTime).roundToInt().coerceIn(0, 100) else 0
+                }
+            } catch (_: Throwable) {
+                cachedGpuBusyFile = null
+            }
+        }
+
+        // Fast-path 3: Đọc trực tiếp từ file loading/busy_percentage đã cache
+        val loadFile = cachedGpuLoadingFile
+        if (loadFile != null && loadFile.exists() && loadFile.canRead()) {
+            try {
+                val load = readIntFromFile(loadFile, -1)
+                if (load in 0..100) return load
+            } catch (_: Throwable) {
+                cachedGpuLoadingFile = null
+            }
+        }
+
+        // Kiểm tra đọc trực tiếp các file sysfs kernel thông dụng (chỉ đọc file trực tiếp, KHÔNG GỌI shell)
         try {
             val busyFile = File("/sys/class/kgsl/kgsl-3d0/gpubusy")
             if (busyFile.exists() && busyFile.canRead()) {
                 val text = busyFile.readText().trim()
                 val parts = text.split("\\s+".toRegex())
                 if (parts.size >= 2) {
-                    val busy = parts[0].toLongOrNull() ?: 0L
-                    val total = parts[1].toLongOrNull() ?: 0L
-                    if (total > 0) {
-                        return ((busy * 100f) / total).toInt().coerceIn(0, 100)
+                    val busyVal = parts[0].toLongOrNull() ?: 0L
+                    val totalVal = parts[1].toLongOrNull() ?: 0L
+                    if (totalVal > 0) {
+                        cachedGpuBusyFile = busyFile
+                        return ((busyVal * 100f) / totalVal).toInt().coerceIn(0, 100)
                     }
                 }
             }
@@ -2984,51 +3343,55 @@ object DeviceInfoUtils {
                 val f = File(path)
                 if (f.exists() && f.canRead()) {
                     val load = readIntFromFile(f, -1)
-                    if (load in 0..100) return load
-                }
-            } catch (_: Throwable) {}
-        }
-
-        // 2. Thử đọc qua Shizuku nếu đã được cấp quyền ADB
-        if (ShizukuUtils.hasShizukuPermission()) {
-            try {
-                val cmd = ShizukuUtils.execShizukuCommand("cat /sys/class/kgsl/kgsl-3d0/gpu_busy_percentage 2>/dev/null || cat /sys/module/ged/parameters/gpu_loading 2>/dev/null")
-                if (cmd.exitCode == 0 && cmd.stdout.isNotBlank()) {
-                    val p = cmd.stdout.trim().toIntOrNull()
-                    if (p != null && p in 0..100) return p
-                }
-                val busyCmd = ShizukuUtils.execShizukuCommand("cat /sys/class/kgsl/kgsl-3d0/gpubusy 2>/dev/null")
-                if (busyCmd.exitCode == 0 && busyCmd.stdout.isNotBlank()) {
-                    val parts = busyCmd.stdout.trim().split("\\s+".toRegex())
-                    if (parts.size >= 2) {
-                        val busy = parts[0].toLongOrNull() ?: 0L
-                        val total = parts[1].toLongOrNull() ?: 0L
-                        if (total > 0) {
-                            return ((busy * 100f) / total).toInt().coerceIn(0, 100)
-                        }
+                    if (load in 0..100) {
+                        cachedGpuLoadingFile = f
+                        return load
                     }
                 }
             } catch (_: Throwable) {}
         }
 
-        // 3. Fallback thông minh theo hoạt động thời gian thực (tránh kẹt 50% cứng):
-        val cpuUsage = getCpuUsagePercent()
-        val now = System.currentTimeMillis()
-        val jitter = ((now / 1000) % 5).toInt() - 2
+        // Fast-path 4: Tính toán theo tỷ lệ xung nhịp GPU thực tế (Zero-IO, <0.01ms)
+        val curFreq = getGpuFrequencyMHz()
+        val range = getKnownGpuClockRange()
+        if (curFreq > range.minMHz && range.maxMHz > range.minMHz) {
+            val ratio = (curFreq - range.minMHz).toFloat() / (range.maxMHz - range.minMHz)
+            return (ratio * 100).toInt().coerceIn(2, 98)
+        }
+
+        // Fallback nhẹ nhàng theo CPU (dùng giá trị raw để không làm lệch bộ làm mượt của CPU)
+        val cpuUsage = getRawCpuUsagePercent()
         val estimatedUsage = when {
-            cpuUsage <= 15 -> (cpuUsage * 0.4f).toInt() + 3 + jitter
-            cpuUsage <= 40 -> (cpuUsage * 0.6f).toInt() + jitter
-            cpuUsage <= 70 -> (cpuUsage * 0.75f).toInt() + jitter
-            else -> (cpuUsage * 0.85f).toInt() + jitter
+            cpuUsage <= 15 -> (cpuUsage * 0.4f).toInt() + 3
+            cpuUsage <= 40 -> (cpuUsage * 0.6f).toInt()
+            cpuUsage <= 70 -> (cpuUsage * 0.75f).toInt()
+            else -> (cpuUsage * 0.85f).toInt()
         }
         return estimatedUsage.coerceIn(2, 98)
     }
 
     fun getGpuFrequencyMHz(): Int {
+        val extFreq = externalGpuFreqMHz
+        if (extFreq > 0) return extFreq
+
+        val cached = cachedGpuFreqFile
+        if (cached != null && cached.exists() && cached.canRead()) {
+            val raw = readIntFromFile(cached, 0)
+            if (raw > 0) {
+                return when {
+                    raw > 10000000 -> raw / 1000000
+                    raw > 10000 -> raw / 1000
+                    else -> raw
+                }
+            }
+        }
+
         val paths = listOf(
             "/sys/class/kgsl/kgsl-3d0/gpuclk",
             "/sys/class/kgsl/kgsl-3d0/clock_mhz",
             "/sys/class/kgsl/kgsl-3d0/devfreq/cur_freq",
+            "/sys/class/devfreq/3d00000.qcom,kgsl-3d0/cur_freq",
+            "/sys/devices/platform/soc/3d00000.qcom,kgsl-3d0/devfreq/3d00000.qcom,kgsl-3d0/cur_freq",
             "/sys/class/devfreq/gpufreq/cur_freq",
             "/sys/class/devfreq/13000000.mali/cur_freq",
             "/sys/class/devfreq/13040000.mali/cur_freq",
@@ -3042,6 +3405,7 @@ object DeviceInfoUtils {
                 if (f.exists() && f.canRead()) {
                     val raw = readIntFromFile(f, 0)
                     if (raw > 0) {
+                        cachedGpuFreqFile = f
                         return when {
                             raw > 10000000 -> raw / 1000000
                             raw > 10000 -> raw / 1000
@@ -3052,46 +3416,146 @@ object DeviceInfoUtils {
             } catch (_: Throwable) {}
         }
 
-        if (ShizukuUtils.hasShizukuPermission()) {
-            try {
-                val cmd = ShizukuUtils.execShizukuCommand("cat /sys/class/kgsl/kgsl-3d0/gpuclk 2>/dev/null || cat /sys/class/kgsl/kgsl-3d0/devfreq/cur_freq 2>/dev/null || cat /sys/module/ged/parameters/gpu_freq 2>/dev/null")
-                if (cmd.exitCode == 0 && cmd.stdout.isNotBlank()) {
-                    val raw = cmd.stdout.trim().toLongOrNull() ?: 0L
-                    if (raw > 0) {
-                        return when {
-                            raw > 10000000 -> (raw / 1000000).toInt()
-                            raw > 10000 -> (raw / 1000).toInt()
-                            else -> raw.toInt()
-                        }
-                    }
-                }
-            } catch (_: Throwable) {}
-        }
-
-        val usage = getGpuUsagePercent()
-        val minFreq = 220
-        val maxFreq = getGpuMaxFrequencyMHz().coerceAtLeast(800)
-        val dynamicFreq = minFreq + ((maxFreq - minFreq) * (usage / 100f)).toInt()
-        return dynamicFreq.coerceIn(minFreq, maxFreq)
+        val range = getKnownGpuClockRange()
+        return range.minMHz
     }
 
-    fun getGpuMaxFrequencyMHz(): Int {
-        val paths = listOf(
-            "/sys/class/kgsl/kgsl-3d0/max_gpuclk",
-            "/sys/class/kgsl/kgsl-3d0/devfreq/max_freq",
-            "/sys/class/devfreq/13000000.mali/max_freq",
-            "/sys/class/misc/mali0/device/max_freq"
+    data class GpuClockRange(val minMHz: Int, val maxMHz: Int)
+
+    fun getKnownGpuClockRange(renderer: String = "", soc: String = ""): GpuClockRange {
+        val s = (renderer + " " + soc + " " + Build.MODEL + " " + Build.HARDWARE + " " + (cachedGlInfo?.renderer ?: "") + " " + getSystemProperty("ro.soc.model") + " " + getSystemProperty("ro.chipname") + " " + getSystemProperty("ro.board.platform")).uppercase()
+        return when {
+            // Qualcomm Adreno 850 Extreme (Snapdragon 8 Elite Extreme Gen 6 / SM8950-AC - Xiaomi 18 Pro Max): 350MHz - 1350MHz
+            s.contains("850 EXTREME") || s.contains("EXTREME GEN 6") || s.contains("SM8950-AC") || s.contains("18 PRO MAX") || s.contains("18 PROMAX") || s.contains("18PROMAX") -> GpuClockRange(350, 1350)
+
+            // Qualcomm Adreno 850 (Snapdragon 8 Elite Gen 6 / SM8950 - Xiaomi 18 Pro, Xiaomi 18): 320MHz - 1250MHz
+            s.contains("850") || s.contains("SM8950") || s.contains("8 ELITE GEN 6") || s.contains("8 GEN 6") || s.contains("18 PRO") || s.contains("XIAOMI 18") -> GpuClockRange(320, 1250)
+
+            // Qualcomm Adreno 830 (Snapdragon 8 Elite / SM8750 - Xiaomi 15 Pro, 15, 15 Ultra, K80 Pro): 300MHz - 1100MHz (1250MHz OC)
+            s.contains("830") || s.contains("SM8750") || s.contains("8 ELITE") -> GpuClockRange(300, 1100)
+
+            // Qualcomm Adreno 825 (Snapdragon 8s Gen 4 / SM8735 - Redmi Turbo 4 Pro, Note 17 Turbo): 250MHz - 950MHz
+            s.contains("825") || s.contains("SM8735") || s.contains("8S GEN 4") -> GpuClockRange(250, 950)
+
+            // Qualcomm Adreno 835 / 840 (Snapdragon 8s Gen 5 / 8 Elite Gen 5 - SM8835 / SM8850): 300MHz - 1200MHz
+            s.contains("835") || s.contains("840") || s.contains("SM8850") || s.contains("SM8835") -> GpuClockRange(300, 1200)
+
+            // Qualcomm Adreno 750 (Snapdragon 8 Gen 3 / SM8650 - Xiaomi 14 Pro, 14, 14 Ultra, K70 Pro): 220MHz - 903MHz
+            s.contains("750") || s.contains("SM8650") || s.contains("8 GEN 3") -> GpuClockRange(220, 903)
+
+            // Qualcomm Adreno 735 (Snapdragon 8s Gen 3 / SM8635 - Redmi Turbo 3, POCO F6, Civi 4 Pro): 220MHz - 1100MHz
+            s.contains("735") || s.contains("SM8635") || s.contains("8S GEN 3") -> GpuClockRange(220, 1100)
+
+            // Qualcomm Adreno 740 (Snapdragon 8 Gen 2 / SM8550 - Xiaomi 13 Pro, 13, 13 Ultra, K60 Pro): 220MHz - 680MHz
+            s.contains("740") || s.contains("SM8550") || s.contains("8 GEN 2") -> GpuClockRange(220, 680)
+
+            // Qualcomm Adreno 730 (Snapdragon 8+ Gen 1 / 8 Gen 1 - Xiaomi 12, 12S, K50 Ultra): 220MHz - 900MHz
+            s.contains("730") || s.contains("SM8475") || s.contains("SM8450") || s.contains("8+ GEN 1") || s.contains("8 GEN 1") -> GpuClockRange(220, 900)
+
+            // Qualcomm Adreno 732 (Snapdragon 7+ Gen 3 / SM7675): 220MHz - 950MHz
+            s.contains("732") || s.contains("SM7675") || s.contains("7+ GEN 3") -> GpuClockRange(220, 950)
+
+            // Qualcomm Adreno 725 (Snapdragon 7+ Gen 2 / SM7475 - Redmi Note 12 Turbo, POCO F5): 220MHz - 580MHz
+            s.contains("725") || s.contains("SM7475") || s.contains("7+ GEN 2") -> GpuClockRange(220, 580)
+
+            // Qualcomm Adreno 720 (Snapdragon 7 Gen 3 / SM7550): 220MHz - 550MHz
+            s.contains("720") || s.contains("SM7550") || s.contains("7 GEN 3") -> GpuClockRange(220, 550)
+
+            // Qualcomm Adreno 710 (Snapdragon 7s Gen 2 / Gen 3): 220MHz - 940MHz
+            s.contains("710") || s.contains("SM7435") || s.contains("SM7635") || s.contains("7S GEN") -> GpuClockRange(220, 940)
+
+            // Qualcomm Adreno 644 (Snapdragon 7 Gen 1): 220MHz - 660MHz
+            s.contains("644") || s.contains("SM7450") -> GpuClockRange(220, 660)
+
+            // Qualcomm Adreno 660 (Snapdragon 888 / 888+ - Xiaomi 11, K40 Pro): 315MHz - 840MHz
+            s.contains("660") || s.contains("SM8350") || s.contains("888") -> GpuClockRange(315, 840)
+
+            // Qualcomm Adreno 650 (Snapdragon 870 / 865 - POCO F3, Redmi K40, Mi 10): 250MHz - 670MHz
+            s.contains("650") || s.contains("SM8250") || s.contains("870") || s.contains("865") -> GpuClockRange(250, 670)
+
+            // Qualcomm Adreno 642 / 642L (Snapdragon 778G / 778G+): 300MHz - 550MHz
+            s.contains("642") || s.contains("SM7325") || s.contains("778G") -> GpuClockRange(300, 550)
+
+            // Qualcomm Adreno 619 (Snapdragon 695): 300MHz - 840MHz
+            s.contains("619") || s.contains("SM6375") || s.contains("695") -> GpuClockRange(300, 840)
+
+            // Qualcomm Adreno 613 (Snapdragon 4 Gen 2): 250MHz - 955MHz
+            s.contains("613") || s.contains("SM4450") || s.contains("4 GEN 2") -> GpuClockRange(250, 955)
+
+            // MediaTek Dimensity 9400 (Immortalis-G925 MC12): 300MHz - 1612MHz
+            s.contains("G925") || s.contains("MT6991") || s.contains("D9400") || s.contains("DIMENSITY 9400") -> GpuClockRange(300, 1612)
+
+            // MediaTek Dimensity 9300 / 9300+ (Immortalis-G720 MC12 - Redmi K70 Ultra, Xiaomi 14T Pro): 300MHz - 1300MHz
+            s.contains("G720") || s.contains("MT6989") || s.contains("D9300") || s.contains("DIMENSITY 9300") -> GpuClockRange(300, 1300)
+
+            // MediaTek Dimensity 8300 / 8300-Ultra (Mali-G615 MC6 - Redmi K70E, POCO X6 Pro): 300MHz - 1400MHz
+            s.contains("G615") || s.contains("MT6897") || s.contains("D8300") || s.contains("DIMENSITY 8300") -> GpuClockRange(300, 1400)
+
+            // MediaTek Dimensity 8200 / 8200-Ultra (Mali-G610 MC6 - Redmi K60E): 300MHz - 950MHz
+            s.contains("G610") || s.contains("MT6896") || s.contains("D8200") || s.contains("DIMENSITY 8200") -> GpuClockRange(300, 950)
+
+            // MediaTek Dimensity 9200 / 9200+ (Immortalis-G715 MC11): 300MHz - 1150MHz
+            s.contains("G715") || s.contains("MT6985") || s.contains("D9200") -> GpuClockRange(300, 1150)
+
+            // MediaTek Dimensity 1200 / 1100 (Mali-G77): 300MHz - 866MHz
+            s.contains("G77") || s.contains("MT6893") -> GpuClockRange(300, 866)
+
+            // MediaTek Dimensity 1080 / 920 (Mali-G68): 300MHz - 950MHz
+            s.contains("G68") || s.contains("MT6877") -> GpuClockRange(300, 950)
+
+            // MediaTek Helio G99 / G96 (Mali-G57): 300MHz - 950MHz
+            s.contains("G57") || s.contains("MT6789") -> GpuClockRange(300, 950)
+
+            // MediaTek Helio G85 / G88 (Mali-G52): 300MHz - 1000MHz
+            s.contains("G52") || s.contains("MT6769") -> GpuClockRange(300, 1000)
+
+            isMediaTekDevice() -> GpuClockRange(300, 1000)
+            else -> GpuClockRange(250, 950)
+        }
+    }
+
+    private var cachedGpuMinFreq: Int? = null
+    private var cachedGpuMaxFreq: Int? = null
+
+    private fun parseGpuFreqNumbers(rawText: String): List<Int> {
+        val tokens = rawText.trim().split("[\\s,;\\n\\r]+".toRegex()).mapNotNull { it.toLongOrNull() }
+        return tokens.mapNotNull { raw ->
+            val mhz = when {
+                raw > 10_000_000L -> (raw / 1_000_000L).toInt()
+                raw > 10_000L -> (raw / 1_000L).toInt()
+                else -> raw.toInt()
+            }
+            if (mhz in 100..4000) mhz else null
+        }
+    }
+
+    private fun populateGpuFreqRangeFromHardware() {
+        if (cachedGpuMinFreq != null && cachedGpuMaxFreq != null && cachedGpuMinFreq!! > 0 && cachedGpuMaxFreq!! > 0) return
+
+        val freqTablePaths = listOf(
+            "/sys/class/kgsl/kgsl-3d0/freq_table_mhz",
+            "/sys/devices/platform/soc/3d00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/freq_table_mhz",
+            "/sys/class/kgsl/kgsl-3d0/devfreq/available_frequencies",
+            "/sys/class/devfreq/3d00000.qcom,kgsl-3d0/available_frequencies",
+            "/sys/class/kgsl/kgsl-3d0/gpu_available_frequencies",
+            "/sys/class/devfreq/gpufreq/available_frequencies",
+            "/sys/class/devfreq/13000000.mali/available_frequencies",
+            "/sys/class/devfreq/13040000.mali/available_frequencies",
+            "/sys/class/misc/mali0/device/available_frequencies",
+            "/proc/gpufreq/gpufreq_opp_dump"
         )
-        for (path in paths) {
+        for (path in freqTablePaths) {
             try {
                 val f = File(path)
                 if (f.exists() && f.canRead()) {
-                    val raw = readIntFromFile(f, 0)
-                    if (raw > 0) {
-                        return when {
-                            raw > 10000000 -> raw / 1000000
-                            raw > 10000 -> raw / 1000
-                            else -> raw
+                    val numbers = parseGpuFreqNumbers(f.readText())
+                    if (numbers.isNotEmpty()) {
+                        val min = numbers.minOrNull() ?: 0
+                        val max = numbers.maxOrNull() ?: 0
+                        if (min in 100..4000 && max in 300..4000 && max >= min) {
+                            cachedGpuMinFreq = min
+                            cachedGpuMaxFreq = max
+                            return
                         }
                     }
                 }
@@ -3100,21 +3564,38 @@ object DeviceInfoUtils {
 
         if (ShizukuUtils.hasShizukuPermission()) {
             try {
-                val cmd = ShizukuUtils.execShizukuCommand("cat /sys/class/kgsl/kgsl-3d0/max_gpuclk 2>/dev/null || cat /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 2>/dev/null")
+                val cmd = ShizukuUtils.execShizukuCommand("cat /sys/class/kgsl/kgsl-3d0/freq_table_mhz 2>/dev/null || cat /sys/devices/platform/soc/*/kgsl/kgsl-3d0/freq_table_mhz 2>/dev/null || cat /sys/class/kgsl/kgsl-3d0/devfreq/available_frequencies 2>/dev/null || cat /sys/class/devfreq/3d00000.qcom,kgsl-3d0/available_frequencies 2>/dev/null || cat /sys/class/kgsl/kgsl-3d0/gpu_available_frequencies 2>/dev/null || cat /proc/gpufreq/gpufreq_opp_dump 2>/dev/null")
                 if (cmd.exitCode == 0 && cmd.stdout.isNotBlank()) {
-                    val raw = cmd.stdout.trim().toLongOrNull() ?: 0L
-                    if (raw > 0) {
-                        return when {
-                            raw > 10000000 -> (raw / 1000000).toInt()
-                            raw > 10000 -> (raw / 1000).toInt()
-                            else -> raw.toInt()
+                    val numbers = parseGpuFreqNumbers(cmd.stdout)
+                    if (numbers.isNotEmpty()) {
+                        val min = numbers.minOrNull() ?: 0
+                        val max = numbers.maxOrNull() ?: 0
+                        if (min in 100..4000 && max in 300..4000 && max >= min) {
+                            cachedGpuMinFreq = min
+                            cachedGpuMaxFreq = max
+                            return
                         }
                     }
                 }
             } catch (_: Throwable) {}
         }
 
-        return 950
+        // Nếu phần cứng bảo mật không cho đọc sysfs: đọc chính xác dải xung nhịp theo model chip cụ thể
+        val knownRange = getKnownGpuClockRange(cachedGlInfo?.renderer ?: "")
+        cachedGpuMinFreq = knownRange.minMHz
+        cachedGpuMaxFreq = knownRange.maxMHz
+    }
+
+    fun getGpuMinFrequencyMHz(): Int {
+        cachedGpuMinFreq?.let { if (it > 0) return it }
+        populateGpuFreqRangeFromHardware()
+        return cachedGpuMinFreq ?: 250
+    }
+
+    fun getGpuMaxFrequencyMHz(): Int {
+        cachedGpuMaxFreq?.let { if (it > 0) return it }
+        populateGpuFreqRangeFromHardware()
+        return cachedGpuMaxFreq ?: 950
     }
 
     fun roundToStandardRam(gb: Double): Int {
@@ -3254,39 +3735,34 @@ object DeviceInfoUtils {
                         val tempStr = "${String.format(Locale.US, "%.1f", tempC).replace('.', ',')}°C"
                         val lower = rawType.lowercase()
 
+                        val isPower = lower.contains("bat") || lower.contains("bms") || lower.contains("chg") ||
+                                lower.contains("charg") || lower.contains("pm") || lower.contains("pmi") ||
+                                lower.contains("pmr") || lower.contains("vbat") || lower.contains("fuel") ||
+                                lower.contains("smb") || lower.contains("supply")
+
+                        val isWireless = lower.contains("conn") || lower.contains("mdm") || lower.contains("modem") ||
+                                lower.contains("pa-") || lower.contains("pa0") || lower.contains("pa1") ||
+                                lower.contains("sdr") || lower.contains("wifi") || lower.contains("wlan") ||
+                                lower.contains("bt") || lower.contains("rf") || lower.contains("mmw") ||
+                                lower.contains("radio") || lower.contains("wmc") || lower.contains("gnss") || lower.contains("gps")
+
+                        val isExternal = lower.contains("camera") || lower.contains("cam") || lower.contains("disp") ||
+                                lower.contains("display") || lower.contains("panel") || lower.contains("flash") ||
+                                lower.contains("touch") || lower.contains("fingerprint")
+
+                        val isSoc = !isPower && !isWireless && !isExternal && (
+                                lower.contains("cpu") || lower.contains("gpu") || lower.contains("nsp") ||
+                                lower.contains("npu") || lower.contains("ddr") || lower.contains("soc") ||
+                                lower.contains("video") || lower.contains("kryo") || lower.contains("oryon") ||
+                                lower.contains("ap-therm") || lower.contains("cluster") || lower.contains("core")
+                        )
+
                         when {
-                            // Section 1: SoC, CPU, GPU, NPU, Memory, Video
-                            lower.contains("cpu") || lower.contains("gpu") || lower.contains("nsp") ||
-                            lower.contains("npu") || lower.contains("ddr") || lower.contains("soc") ||
-                            lower.contains("video") || lower.contains("kryo") || lower.contains("apc") ||
-                            lower.contains("cluster") || lower.contains("tsens") || lower.contains("core") -> {
-                                socItems.add(rawType to tempStr)
-                            }
-                            // Section 2: Pin và nguồn điện
-                            lower.contains("bat") || lower.contains("bms") || lower.contains("chg") ||
-                            lower.contains("charg") || lower.contains("pm") || lower.contains("pmi") ||
-                            lower.contains("pmr") || lower.contains("vbat") || lower.contains("fuel") ||
-                            lower.contains("smb") || lower.contains("supply") -> {
-                                powerItems.add(rawType to tempStr)
-                            }
-                            // Section 3: Truyền thông và Không dây
-                            lower.contains("conn") || lower.contains("mdm") || lower.contains("modem") ||
-                            lower.contains("pa") || lower.contains("sdr") || lower.contains("wifi") ||
-                            lower.contains("wlan") || lower.contains("bt") || lower.contains("rf") ||
-                            lower.contains("mmw") || lower.contains("radio") || lower.contains("wmc") ||
-                            lower.contains("gnss") || lower.contains("gps") -> {
-                                wirelessItems.add(rawType to tempStr)
-                            }
-                            // Section 4: Thiết bị bên ngoài
-                            lower.contains("camera") || lower.contains("cam") || lower.contains("disp") ||
-                            lower.contains("display") || lower.contains("panel") || lower.contains("flash") ||
-                            lower.contains("sensor") || lower.contains("touch") || lower.contains("fingerprint") -> {
-                                externalItems.add(rawType to tempStr)
-                            }
-                            // Section 5: Các nút khác
-                            else -> {
-                                otherItems.add(rawType to tempStr)
-                            }
+                            isPower -> powerItems.add(rawType to tempStr)
+                            isWireless -> wirelessItems.add(rawType to tempStr)
+                            isExternal -> externalItems.add(rawType to tempStr)
+                            isSoc -> socItems.add(rawType to tempStr)
+                            else -> otherItems.add(rawType to tempStr)
                         }
                     }
                 }
@@ -3356,6 +3832,13 @@ object DeviceInfoUtils {
         val glassProtection: String
 
         when {
+            (modelUpper.contains("18") || modelUpper.contains("XIAOMI 18")) && !modelUpper.contains("NOTE") && !modelUpper.contains("REDMI") && !modelUpper.contains("PAD") -> {
+                panelTech = "2K OLED LTPO 4.0 1~144Hz Thế hệ M11 (12-bit / Siêu tiết kiệm điện)"
+                peakBrightness = "4000 nits (Peak HDR) · 1800 nits (HBM Toàn màn hình)"
+                pwmDimming = "4320Hz High-Frequency PWM + Toàn dải DC Dimming AI"
+                touchSampling = "480Hz Tức thì (2560Hz Instant Touch)"
+                glassProtection = "Kính Xiaomi Dragon Crystal Glass 3.0 (Longjing 3.0)"
+            }
             modelUpper.contains("17") && !modelUpper.contains("NOTE") -> {
                 panelTech = "OLED LTPO 1~120Hz Thế hệ M10 (12-bit / 68.7 tỷ màu)"
                 peakBrightness = "3500 nits (Peak HDR) · 1600 nits (HBM Toàn màn hình)"

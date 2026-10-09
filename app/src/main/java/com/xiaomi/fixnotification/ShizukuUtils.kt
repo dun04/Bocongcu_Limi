@@ -47,6 +47,10 @@ object ShizukuUtils {
     )
 
     fun execShizukuCommand(command: String): CommandResult {
+        return execShizukuCommandArgs(arrayOf("sh", "-c", command))
+    }
+
+    fun execShizukuCommandArgs(cmdArgs: Array<String>): CommandResult {
         if (!hasShizukuPermission()) {
             return CommandResult(-1, "", "Lỗi: Chưa được cấp quyền Shizuku (ADB).")
         }
@@ -59,9 +63,23 @@ object ShizukuUtils {
                 String::class.java
             )
             newProcessMethod.isAccessible = true
+            val actualArgs = if (cmdArgs.isNotEmpty() && !cmdArgs[0].startsWith("/")) {
+                val fullPath = when (cmdArgs[0]) {
+                    "sh" -> "/system/bin/sh"
+                    "dumpsys" -> "/system/bin/dumpsys"
+                    "service" -> "/system/bin/service"
+                    "cat" -> "/system/bin/cat"
+                    "grep" -> "/system/bin/grep"
+                    else -> "/system/bin/${cmdArgs[0]}"
+                }
+                arrayOf(fullPath, *cmdArgs.sliceArray(1 until cmdArgs.size))
+            } else {
+                cmdArgs
+            }
+
             val process = newProcessMethod.invoke(
                 null,
-                arrayOf("sh", "-c", command),
+                actualArgs,
                 null,
                 null
             ) as Process
