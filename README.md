@@ -14,89 +14,91 @@
 
 ---
 
-## 🌟 Giới Thiệu Tổng Quan
+## Tổng quan
 
-**LIMI Tool** là bộ công cụ tối ưu hóa hệ thống chuyên sâu và toàn diện dành riêng cho người dùng các dòng máy Xiaomi, Redmi và POCO chạy giao diện HyperOS (1, 2, 3) hoặc MIUI trên các phiên bản Android 13, 14, 15, 16.
+Trên các bản ROM MIUI và HyperOS (đặc biệt là máy nội địa Trung Quốc hoặc các bản cập nhật Android 14/15/16), hệ thống thường áp dụng các cơ chế quản lý năng lượng nghiêm ngặt (Doze Mode, Cached Apps Freezer, Millet Traffic Freeze) khiến các ứng dụng nhắn tin và ứng dụng ngân hàng bị trễ thông báo hoặc bị đóng băng khi tắt màn hình.
 
-Ứng dụng can thiệp an toàn vào các tầng quản lý tiến trình Android và nhân tùy biến của Xiaomi mà **không cần can thiệp Root** (thông qua môi trường cấp phép Shizuku hoặc lệnh ADB tiêu chuẩn), giải quyết dứt điểm các hạn chế cố hữu về trễ thông báo, đóng băng ứng dụng chạy ngầm, sai lệch GPS, đo lường chính xác độ chai pin và tích hợp sẵn Trợ lý AI thông minh giải đáp mọi lỗi kỹ thuật.
-
----
-
-## 🚀 Các Tính Năng Nổi Bật & Công Dụng Chính
-
-### 1. 🔔 Đặc Trị Trễ Thông Báo Chuyên Sâu (Doze & HyperOS Freeze Fix)
-* **Vô hiệu hóa Cached Apps Freezer của Android 15/16:** Ngăn chặn cơ chế đóng băng tiến trình cấp nhân kernel khi tắt màn hình trên Xiaomi 14/15/15 Pro và các thiết bị cập nhật HyperOS 2 / HyperOS 3.
-* **Xóa bỏ nghẽn Doze Sleep 24h:** Gỡ triệt để hằng số `deviceidle_constants` 86.400.000ms gây kẹt mạng và trễ thông báo suốt cả ngày.
-* **Duy trì Socket FCM Heartbeat 120s:** Giữ kết nối liên tục với máy chủ Google Cloud Messaging, đảm bảo tin nhắn Zalo, Messenger, Telegram, Gmail, App Ngân hàng (BIDV, MB Bank, Vietcombank, Techcombank, Vietinbank...) nổ chuông tức thì kể cả khi tắt màn hình qua đêm.
-* **Cấp quyền chạy ngầm tuyệt đối AppOps 10008 & AUTO_START:** Mở quyền thức ngầm và tự khởi chạy cho Google Services (GMS/GSF) và danh sách ứng dụng được chọn.
-* **Kích hoạt đánh thức màn hình khóa:** Đảm bảo sáng màn hình và hiển thị nội dung thông báo đầy đủ trên màn hình khóa HyperOS.
-* **Miễn trừ danh sách trắng MILLET:** Nạp trực tiếp danh sách ứng dụng quan trọng vào danh sách trắng của cơ chế quản lý tài nguyên độc quyền Millet Xiaomi.
-
-### 2. ⚡ Bộ Lệnh Flagship Nâng Cao (Dành cho máy cấu hình cao)
-* **Tắt Millet Traffic Freeze:** Mở cổng socket dữ liệu mạng nền không bị ngắt.
-* **Vô hiệu hóa Android Phantom Process Killer:** Nâng giới hạn tiến trình con ngầm từ 32 lên mức tối đa `2.147.483.647`, ngăn chặn hệ thống tự ý tắt tiến trình dịch vụ ngầm.
-* **Khóa bộ đóng băng MIUI Freezer & HyperCore:** Giữ app chạy nền mượt mà, không bị load lại.
-* **Tắt AI quản lý pin thích ứng (Adaptive Battery Management):** Chống AI tự động bóp tài nguyên mạng và CPU của các app ít mở.
-* **Tối ưu hóa PowerKeeper:** Giữ lại cơ chế đánh thức nhưng vô hiệu hóa hành vi tự đóng băng app.
-
-### 3. 🤖 Trợ Lý Thông Minh Limi AI (Tích Hợp Sẵn)
-* **Tư vấn & khắc phục lỗi Xiaomi/HyperOS chuyên sâu:** Được nạp sẵn kho tri thức kỹ thuật độc quyền của LIMI, tự động phân tích và đưa ra giải pháp sửa lỗi theo từng mã máy.
-* **Hỗ trợ phân tích đa phương tiện:** Cho phép đính kèm file hình ảnh, ảnh chụp màn hình lỗi và tài liệu văn bản (`.txt`, `.log`, `.md`, `.json`, `.csv`, `.docx`, `.pdf`).
-* Trình xem ảnh nghệ thuật toàn màn hình (Cinematic Viewer)
-* Trải nghiệm hội thoại cao cấp 
-
-### 4. 🔄 Cập Nhật Ứng Dụng Tự Động (In-App OTA Updates)
-* **Quét ngầm tự động khi mở app:** Tự động kết nối tới GitHub Releases trong nền và so sánh phiên bản mới nhất mà không gây trễ giao diện.
-* **Thông báo bằng chấm đỏ thông minh:** Tự động hiện chấm đỏ tại tab Cài đặt và nhãn "MỚI" bên cạnh nút cập nhật khi có bản phát hành mới.
-* **Giao diện hộp thoại HyperOS Frosted Glass:** Khung xem nhật ký thay đổi (Changelog) mở rộng dài, cuộn mượt mà với hình ảnh minh họa tính năng mới và tính năng tải/cài đặt file APK trực tiếp trong ứng dụng.
-
-### 5. 🔋 Đo Chai Pin & Giám Sát Cảm Biến Sạc Chuyên Nghiệp
-* **Thuật toán Sensor Fusion & Coulomb Counting:** Đo lượng điện tích nạp vào (mAh) trực tiếp qua chip sạc Xiaomi Surge / Qualcomm PMIC kết hợp chu kỳ nạp phần cứng BMS.
-* **Biểu đồ Telemetry thời gian thực:** Theo dõi trực quan Dòng nạp (mA), Điện thế (V), Công suất sạc (W) và Nhiệt độ pin (°C).
-* **Đặc quyền cho người thay pin độ / pin dung lượng cao:** Cho phép nhấn giữ để nhập dung lượng định mức tùy chỉnh (ví dụ: 6000mAh, 6500mAh...) để tính toán chuẩn xác tỷ lệ chai pin thực tế.
-
-### 6. 🗑️ Dọn Rác & Gỡ Ứng Dụng Hệ Thống (Debloat)
-* Danh sách phân loại ứng dụng rác hệ thống an toàn có thể gỡ bỏ mà không làm treo máy hay brick hệ điều hành.
-* Hỗ trợ khôi phục các ứng dụng hệ thống đã gỡ chỉ với một chạm.
-
-### 7. 🛰️ Tối Ưu Định Vị GPS Chuẩn Xác Tại Việt Nam
-* **Đồng bộ NTP Server Việt Nam:** Chuyển máy chủ thời gian về `vn.pool.ntp.org`, giúp GPS bắt sóng vệ tinh nhanh gấp 3 lần.
-* **Kích hoạt A-GPS & Quét Wi-Fi/BLE độ chính xác cao:** Tải trước dữ liệu quỹ đạo vệ tinh định kỳ, hỗ trợ điều hướng Google Maps, Grab, Be... chuẩn xác từng mét.
-
-### 8. 📊 Bảng Kiểm Tra Tiến Độ FIX Hệ Thống
-* Đo lường chi tiết 17 tiêu chí hệ thống theo thời gian thực trực tiếp qua `ContentResolver`.
-* Chấm điểm trực quan giúp người dùng biết chính xác thiết bị của mình đã đạt tối ưu 100% hay chưa.
+**LIMI Tool** được xây dựng nhằm cung cấp một giao diện trực quan và các tập lệnh cấu hình hệ thống chuẩn mực để:
+- Điều chỉnh các tham số `deviceidle`, `fcm_heartbeat` và `appops` mà không làm hỏng cấu trúc hệ điều hành.
+- Giữ ứng dụng hoạt động ổn định trong nền mà không cần mở khóa Bootloader hay can thiệp vào phân vùng hệ thống.
+- Cung cấp các công cụ kiểm tra pin phần cứng, dọn dẹp bloatware an toàn và hỗ trợ điều hướng GPS.
 
 ---
 
-## 📖 Hướng Dẫn Sử Dụng Nhanh
+## Tính năng chính
 
-### Bước 1: Chuẩn bị quyền thực thi
-Ứng dụng hoạt động hoàn toàn không cần Root qua 1 trong 2 cách:
-1. **Qua ứng dụng Shizuku (Khuyên dùng):**
-   * Cài đặt và kích hoạt [Shizuku](https://shizuku.rikka.app/) trên điện thoại qua Wi-Fi Debugging.
-   * Mở ứng dụng LIMI và cấp quyền Shizuku khi có thông báo yêu cầu.
-2. **Qua máy tính (ADB PC):**
-   * Sao chép từng dòng lệnh trong ứng dụng và chạy qua cửa sổ Terminal/CMD của ADB.
+### 1. Quản lý tiến trình & Khắc phục trễ thông báo
+- **Cấu hình Doze Mode**: Tinh chỉnh chu kỳ sleep của `deviceidle_constants` về giá trị tiêu chuẩn, tránh tình trạng ngủ sâu kéo dài ngắt kết nối mạng ngầm.
+- **Duy trì kết nối FCM Heartbeat**: Giảm khoảng thời gian heartbeat về mức khuyến nghị để duy trì socket Google Push Notification liên tục.
+- **Thiết lập AppOps 10008 & Auto-start**: Cấp cờ khởi chạy nền cho Google Services Framework và các ứng dụng OTT (Zalo, Messenger, Telegram, Gmail, ứng dụng ngân hàng...).
+- **Xử lý Phantom Process Killer & App Freezer**: Nâng ngưỡng giới hạn tiến trình con trên Android 13+ và giảm thiểu việc đóng băng ứng dụng đột ngột.
 
-### Bước 2: Chạy bộ lệnh tối ưu thông báo
-1. Mở tab **Hệ thống** trong ứng dụng LIMI.
-2. Kiểm tra danh sách các ứng dụng cần nhận thông báo tức thì (Zalo, Messenger, Telegram, App Ngân hàng...).
-3. Nhấn **"Chạy tất cả Lệnh 1 -> 4"**.
-4. Khởi động lại thiết bị để hệ điều hành nạp lại toàn bộ cấu hình mới.
+### 2. Gỡ bỏ ứng dụng rác (Debloat)
+- Danh mục đóng gói được phân loại an toàn: Bloatware rác, dịch vụ quảng cáo và app theo dõi của hãng.
+- Thực hiện lệnh `pm uninstall -k --user 0` an toàn, có thể khôi phục lại trực tiếp (`pm install-existing`) bất cứ lúc nào.
 
-### Bước 3: Thiết lập sau khi Fix (Khuyên dùng cho App Ngân Hàng & Giữ 94% tiến độ)
-* **TẮT "Gỡ lỗi không dây" (Wireless Debugging)** & **TẮT "Gỡ lỗi USB" (USB Debugging)**: Giúp 100% ứng dụng ngân hàng, ví điện tử và VNeID hoạt động bình thường, không bị cảnh báo phát hiện ADB.
-### Bước 4: Thiết lập sau khi Fix (Khuyên dùng cho App Ngân Hàng & Giữ 94% tiến độ)
-* **TẮT "Gỡ lỗi không dây" (Wireless Debugging)** & **TẮT "Gỡ lỗi USB" (USB Debugging)**: Giúp 100% các ứng dụng ngân hàng (BIDV, MB Bank, Vietcombank, Techcombank...), ví điện tử và VNeID mở và giao dịch bình thường, hoàn toàn không bị chặn hay báo phát hiện ADB.
-* **Tắt công tắc tổng "Tùy chọn cho nhà phát triển"**
-* **Danh sách app đã có sẵn**: Zalo, Messenger, Telegram, WhatsApp, TikTok (đầy đủ bản Quốc tế `com.zhiliaoapp.musically`, Châu Á `com.ss.android.ugc.trill` và TikTok Lite), Facebook, Instagram, Threads, YouTube ReVanced, Gmail, Mi Fitness, BIDV, MB Bank, VCB, Techcombank, VietinBank iPay... Người dùng có thể thêm bất kỳ ứng dụng nào khác (Shopee, Grab, Be...) vào ô package ở tab Hệ Thống và bấm chạy lại Lệnh 4 là xong.
+### 3. Giám sát pin & Cảm biến phần cứng
+- Đọc dữ liệu trực tiếp từ các node kernel `/sys/class/power_supply/battery`.
+- Hỗ trợ tính toán dung lượng thực tế qua chu kỳ sạc (Coulomb Counting / Battery Management System).
+- Theo dõi điện thế, dòng sạc tức thời và nhiệt độ phần cứng theo thời gian thực.
+
+### 4. Tối ưu GPS & NTP Server
+- Đồng bộ máy chủ thời gian mạng về cụm máy chủ khu vực Việt Nam (`vn.pool.ntp.org`).
+- Nạp cấu hình A-GPS và hỗ trợ bắt sóng vệ tinh nhanh hơn trong điều kiện đô thị.
+
+### 5. Trợ lý kỹ thuật số tích hợp
+- Hỗ trợ tra cứu nhanh mã lỗi, cách cấu hình phân quyền và giải đáp các vấn đề tương thích theo từng dòng máy Xiaomi.
 
 ---
 
-## 👨‍💻 Tác Giả & Bản Quyền
+## Yêu cầu hệ điều hành & Môi trường
 
-* **Tác giả phát triển:** **DUNGNGUYEN**
-* **Dự án:** LIMI Tool (Bộ công cụ LIMI)
-* **Kho lưu trữ:** [https://github.com/dun04/Bocongcu_Limi](https://github.com/dun04/Bocongcu_Limi)
-* **Bản quyền:** © 2026 DUNGNGUYEN. Mọi quyền được bảo lưu.
+| Mục | Yêu cầu |
+| --- | --- |
+| Hệ điều hành | Android 10 trở lên (Tối ưu tốt nhất trên Android 13, 14, 15, 16) |
+| Giao diện | HyperOS 1.0 / 2.0 / 3.0, MIUI 12 / 13 / 14 |
+| Quyền hạn | **Không cần Root**. Cần cấp quyền qua **Shizuku** hoặc **ADB qua USB / Wi-Fi** |
+
+---
+
+## Cài đặt & Hướng dẫn sử dụng
+
+### Phương pháp 1: Sử dụng Shizuku (Khuyến nghị)
+1. Tải và kích hoạt [Shizuku](https://shizuku.rikka.app/) trên thiết bị (qua tính năng Ghép nối Gỡ lỗi không dây).
+2. Cài đặt file APK LIMI Tool từ mục Releases.
+3. Mở ứng dụng LIMI và chọn **Cho phép** khi Shizuku hiển thị hộp thoại cấp quyền.
+
+### Phương pháp 2: Sử dụng lệnh ADB qua máy tính
+Nếu không dùng Shizuku, bạn có thể kết nối điện thoại với máy tính đã cài đặt ADB và chạy các lệnh cấu hình được cung cấp trực tiếp trong ứng dụng.
+
+---
+
+## Quy trình cấu hình khuyến nghị
+
+1. **Bước 1**: Mở tab **Fix Noti**, chọn các ứng dụng quan trọng cần nhận thông báo tức thời.
+2. **Bước 2**: Nhấn chạy bộ lệnh tối ưu (Lệnh 1 đến Lệnh 4).
+3. **Bước 3**: Khởi động lại thiết bị để hệ thống nạp lại các tham số kernel và Framework.
+4. **Bước 4 (Dành cho app ngân hàng)**: Sau khi chạy lệnh thành công, bạn có thể tắt **Gỡ lỗi USB** và **Gỡ lỗi không dây** trong Tùy chọn nhà phát triển. Toàn bộ cấu hình đã áp dụng vẫn được lưu vĩnh viễn trong `Settings.Global` và `Settings.Secure`, giúp các ứng dụng ngân hàng và VNeID không phát hiện môi trường debug.
+
+---
+
+## Biên dịch từ mã nguồn
+
+Dự án sử dụng Gradle tiêu chuẩn với Android Gradle Plugin 8.x:
+
+```powershell
+git clone https://github.com/dun04/Bocongcu_Limi.git
+cd Bocongcu_Limi
+
+# Cấu hình JDK 17 hoặc 21
+./gradlew assembleRelease
+```
+
+File APK đầu ra sẽ nằm tại `app/build/outputs/apk/release/app-release.apk`.
+
+---
+
+## Giấy phép & Đóng góp
+
+- Dự án phát triển bởi **DUNGNGUYEN**.
+- Đóng góp mã nguồn và báo lỗi: vui lòng tạo Issue hoặc Pull Request trên GitHub.
